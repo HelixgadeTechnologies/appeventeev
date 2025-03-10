@@ -11,6 +11,8 @@ import ForgotPassword from "./pages/SignIn/ForgotPassword";
 import SignUp from "./pages/SignUp";
 import EmailVerification from "./pages/SignUp/EmailVerification";
 import OrgForm from "./components/OrgForm";
+import Dashboard from "./pages/Dashboard";
+
 
 const App = () => {
   const routes = createBrowserRouter(
@@ -21,6 +23,7 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPassword/>} />
         <Route path="/verify" element={<EmailVerification />} />
         <Route path="/OrganizationDetails" element={<OrgForm />} />
+        <Route path="/dashboard" element={<Dashboard/> } />
         
       </Route>
     )

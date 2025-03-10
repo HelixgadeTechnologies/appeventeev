@@ -1,13 +1,28 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom'
-import DisplayLayout from './DisplayLayout'
+import React from "react";
+import { Outlet, useLocation } from "react-router-dom";
+import DisplayLayout from "./DisplayLayout";
 
 const RootLayout = () => {
-  return (
-    <DisplayLayout>
-      <Outlet/>
-    </DisplayLayout>
-  )
-}
+  const location = useLocation();
 
-export default RootLayout
+  const noLayoutRoutes = [
+    "/signUp",
+    "/signin",
+    "/",
+    "/forgot-password",
+    "/verify",
+    "/OrganizationDetails",
+  ];
+
+  const isNoLayoutRoute = noLayoutRoutes.includes(location.pathname);
+
+  return isNoLayoutRoute ? (
+    <Outlet />
+  ) : (
+    <DisplayLayout>
+      <Outlet />
+    </DisplayLayout>
+  );
+};
+
+export default RootLayout;
