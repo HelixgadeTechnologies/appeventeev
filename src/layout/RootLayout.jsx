@@ -1,11 +1,12 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
+import DisplayLayout from './DisplayLayout'
 
 const RootLayout = () => {
   return (
-    <div>
+    <DisplayLayout>
       <Outlet/>
-    </div>
+    </DisplayLayout>
   )
 }
 
