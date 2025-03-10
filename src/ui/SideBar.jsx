@@ -19,15 +19,16 @@ const SideBar = () => {
   };
 
   return (
-    <aside className="w-[250px] bg-white py-[40px] border-r border-[#E4E7EC] fixed top-0 left-0 h-screen">
+    <aside className="w-[250px] bg-white py-[30px] border-r border-[#E4E7EC] fixed top-0 left-0 h-screen">
       <Flex justifyContent={"space-between"} flexDir={"column"} height={"90%"}>
         <Box>
           <Image
             src="https://res.cloudinary.com/dnou1zvji/image/upload/v1741554375/Eventeev_blac-08_5_gtcyzt.png"
             alt="Eventeev Logo"
             paddingLeft={"6"}
+            height={"30px"}
           />
-          <Box height={"297px"} marginTop={"12px"} padding={"2"}>
+          <Box height={"297px"} marginTop={"8px"} padding={"2"}>
             {sidebarTopLinks.map((link, index) => (
               <Flex
                 key={index}
@@ -36,6 +37,7 @@ const SideBar = () => {
                 gap={"12px"}
                 alignItems={"center"}
                 borderRadius={"4px"}
+                _hover={{cursor: "pointer", bg: "#fdf4f0"}}
                 // bg={"#FFECE5"}
               >
                 <Image src={link.icon} />
@@ -57,6 +59,7 @@ const SideBar = () => {
                 gap={"12px"}
                 alignItems={"center"}
                 borderRadius={"4px"}
+                _hover={{cursor: "pointer", bg: "#fdf4f0"}}
                 // bg={"#FFECE5"}
               >
                 <Image src={link.icon} />
@@ -73,7 +76,7 @@ const SideBar = () => {
         paddingY={"8px"}
         paddingX={"12px"}
         display={"block"}
-        marginTop={"30px"}
+        marginTop={"20px"}
       >
         <Flex gap={"12px"} alignItems={"center"}>
           <Avatar name={userData.username} size={"md"}>
