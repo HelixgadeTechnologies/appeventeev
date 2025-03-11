@@ -11,8 +11,10 @@ import {
 } from "@chakra-ui/react";
 import { sidebarBottomLinks, sidebarTopLinks } from "../utils/sidebarLinks";
 import signOut from "../assets/icons/sign-out.svg";
+import { useLocation } from "react-router-dom";
 
 const SideBar = () => {
+  const location = useLocation();
   const userData = {
     username: "Richard Edem",
     email: "richard@gmail.com",
@@ -37,8 +39,8 @@ const SideBar = () => {
                 gap={"12px"}
                 alignItems={"center"}
                 borderRadius={"4px"}
-                _hover={{cursor: "pointer", bg: "#fdf4f0"}}
-                // bg={"#FFECE5"}
+                _hover={{cursor: "pointer", bg: `${location.pathname !== link.route && "#fcf7f5"}`}}
+                bg={ location.pathname === link.route && "#FFECE5" }
               >
                 <Image src={link.icon} />
                 <Text fontWeight={"normal"} fontSize={"sm"} color={"#101928"}>
@@ -59,8 +61,8 @@ const SideBar = () => {
                 gap={"12px"}
                 alignItems={"center"}
                 borderRadius={"4px"}
-                _hover={{cursor: "pointer", bg: "#fdf4f0"}}
-                // bg={"#FFECE5"}
+                _hover={{cursor: "pointer", bg: `${location.pathname !== link.route && "#fcf7f5"}`}}
+                bg={ location.pathname === link.route && "#FFECE5" }
               >
                 <Image src={link.icon} />
                 <Text fontWeight={"normal"} fontSize={"sm"} color={"#101928"}>
