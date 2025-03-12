@@ -34,10 +34,10 @@ const CreateEventLayout = ({ children, description, activeStep = 1 }) => {
   ];
 
   return (
-    <Flex gap={"2.5"} height={"100vh"}>
+    <Flex gap={"2.5"}>
       <Box
         width={"60%"}
-        height={"100%"}
+        // height={"fit"}
         bg={"white"}
         borderRadius={"10px"}
         borderWidth={"thin"}
@@ -56,7 +56,7 @@ const CreateEventLayout = ({ children, description, activeStep = 1 }) => {
       </Box>
       <Center
         width={"40%"}
-        height={"90%"}
+        height={"100%"}
         bg={"white"}
         borderRadius={"10px"}
         borderWidth={"thin"}
@@ -71,7 +71,7 @@ const CreateEventLayout = ({ children, description, activeStep = 1 }) => {
           {createEventSteps.map((step, index) => (
             <Flex key={index} gap={"16px"} alignItems={"center"} width={"full"}>
               <Circle
-                fonntWeight={activeStep == step.stepNumber ? "bold" : "medium"}
+                fontWeight={activeStep == step.stepNumber ? "bold" : "medium"}
                 fontSize={"xl"}
                 size={"48px"}
                 bg={activeStep == step.stepNumber ? `#F56630` : `transparent`}

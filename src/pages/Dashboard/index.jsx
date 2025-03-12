@@ -32,6 +32,7 @@ const Dashboard = () => {
             paddingX={"24px"}
             borderRadius={"lg"}
             color={"white"}
+            fontWeight={"medium"}
           >
             Create your first event
           </Button>
