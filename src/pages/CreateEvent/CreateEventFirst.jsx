@@ -2,7 +2,6 @@ import React from "react";
 import CreateEventLayout from "../../layout/CreateEventLayout";
 import {
   Box,
-  Center,
   FormControl,
   FormLabel,
   Input,
@@ -16,13 +15,18 @@ import {
   Button,
   Flex,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 const CreateEventFirst = () => {
+    const navigate = useNavigate();
+
+    const handleSubmit = () => {
+        navigate("/create-event-setup-2")
+    }
   return (
-    <CreateEventLayout
-      description={"Fill out these details to create your event"}
-    >
-      <Box className="space-y-5 text-sm">
+    <CreateEventLayout>
+      <Box>
+        <form action="" className="space-y-5 text-sm">
         <FormControl>
           <FormLabel fontWeight={"medium"} fontSize={"sm"} color={"#475367"}>
             Event Name
@@ -71,7 +75,7 @@ const CreateEventFirst = () => {
                 Event Start Date
               </FormLabel>
               <Input
-                type="text"
+                type={"text"}
                 placeholder="01 September 2024"
                 _placeholder={{ color: "#98A2B3", fontSize: "14px" }}
                 focusBorderColor="#FA9874"
@@ -90,7 +94,7 @@ const CreateEventFirst = () => {
                 Event End Date
               </FormLabel>
               <Input
-                type="text"
+                type={"text"}
                 placeholder="01 September 2024"
                 _placeholder={{ color: "#98A2B3", fontSize: "14px" }}
                 focusBorderColor="#FA9874"
@@ -109,8 +113,8 @@ const CreateEventFirst = () => {
                 Event Start Time
               </FormLabel>
               <Input
-                type="text"
-                placeholder="01 September 2024"
+                type={"time"}
+                placeholder="01:00 AM"
                 _placeholder={{ color: "#98A2B3", fontSize: "14px" }}
                 focusBorderColor="#FA9874"
                 fontSize={"sm"}
@@ -128,8 +132,8 @@ const CreateEventFirst = () => {
                 Event End Time
               </FormLabel>
               <Input
-                type="text"
-                placeholder="01 September 2024"
+                type="time"
+                placeholder="01:00 PM"
                 _placeholder={{ color: "#98A2B3", fontSize: "14px" }}
                 focusBorderColor="#FA9874"
                 fontSize={"sm"}
@@ -165,8 +169,10 @@ const CreateEventFirst = () => {
             color={"#EB5017"}
             borderColor={"#EB5017"}
             _hover={{ bg: "orange.50" }}
+            onClick={() => navigate('/dashboard')}
             >Cancel</Button>
             <Button
+            onClick={() => handleSubmit()}
             width={"60%"}
             bg={"#EB5017"}
             size={"md"}
@@ -179,6 +185,7 @@ const CreateEventFirst = () => {
             fontWeight={"medium"}
             >Next Step</Button>
         </Flex>
+        </form>
       </Box>
     </CreateEventLayout>
   );

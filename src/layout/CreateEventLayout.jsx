@@ -8,28 +8,38 @@ import {
   Button,
   Circle,
 } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
-const CreateEventLayout = ({ children, description, activeStep = 1 }) => {
+const CreateEventLayout = ({
+  children,
+  description = "Fill out these details to create your event",
+  heading = "Create a new Event",
+  activeStep = 1,
+}) => {
   const createEventSteps = [
     {
       stepNumber: 1,
       heading: "Create New Campaign",
       description: "Event Name, Description, Start date, End Date ....",
+      route: "/create-event-setup-1"
     },
     {
       stepNumber: 2,
       heading: "Add Category",
       description: "Banner,Event Type, Location, Category",
+      route: "/create-event-setup-2"
     },
     {
       stepNumber: 3,
       heading: "Add Socials",
       description: "Website, Facebook, Instagram, X (Twitter)",
+      route: "/create-event-setup-3"
     },
     {
       stepNumber: 4,
       heading: "Review and Publish",
       description: "Setup your customer journey flow",
+      route: "/create-event-setup-4"
     },
   ];
 
@@ -44,9 +54,9 @@ const CreateEventLayout = ({ children, description, activeStep = 1 }) => {
         borderColor={"#E4E7EC"}
         padding={"6"}
       >
-        <Center flexDir={"column"} height={"60x"} gap={"1"}>
+        <Center flexDir={"column"} height={"60x"} gap={"1"} marginBottom={"3"}>
           <Heading fontSize={"20px"} fontWeight={"semibold"} color={"#1A1A21"}>
-            Create a new Event
+            {heading}
           </Heading>
           <Text fontWeight={"normal"} fontSize={"sm"} color={"#8C94A6"}>
             {description}
@@ -56,7 +66,7 @@ const CreateEventLayout = ({ children, description, activeStep = 1 }) => {
       </Box>
       <Center
         width={"40%"}
-        height={"100%"}
+        // height={"100%"}
         bg={"white"}
         borderRadius={"10px"}
         borderWidth={"thin"}
@@ -70,17 +80,19 @@ const CreateEventLayout = ({ children, description, activeStep = 1 }) => {
         <Box className="space-y-6" height={"264px"}>
           {createEventSteps.map((step, index) => (
             <Flex key={index} gap={"16px"} alignItems={"center"} width={"full"}>
-              <Circle
-                fontWeight={activeStep == step.stepNumber ? "bold" : "medium"}
-                fontSize={"xl"}
-                size={"48px"}
-                bg={activeStep == step.stepNumber ? `#F56630` : `transparent`}
-                borderWidth={activeStep != step.stepNumber ? `1px` : `none`}
-                borderColor={"#98A2B3"}
-                color={activeStep != step.stepNumber ? `#98A2B3` : `white`}
-              >
-                {step.stepNumber}
-              </Circle>
+              <Link to={step.route}>
+                <Circle
+                  fontWeight={activeStep == step.stepNumber ? "bold" : "medium"}
+                  fontSize={"xl"}
+                  size={"48px"}
+                  bg={activeStep == step.stepNumber ? `#F56630` : `transparent`}
+                  borderWidth={activeStep != step.stepNumber ? `1px` : `none`}
+                  borderColor={"#98A2B3"}
+                  color={activeStep != step.stepNumber ? `#98A2B3` : `white`}
+                >
+                  {step.stepNumber}
+                </Circle>
+              </Link>
               <Box className="space-y-1.5" width={"full"}>
                 <Heading
                   fontWeight={"semibold"}

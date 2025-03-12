@@ -13,6 +13,9 @@ import EmailVerification from "./pages/SignUp/EmailVerification";
 import OrgForm from "./components/OrgForm";
 import Dashboard from "./pages/Dashboard";
 import CreateEventFirst from "./pages/CreateEvent/CreateEventFirst";
+import CreateEventSecond from "./pages/CreateEvent/CreateEventSecond";
+import CreateEventThird from "./pages/CreateEvent/CreateEventThird";
+import CreateEventFourth from "./pages/CreateEvent/CreateEventFourth";
 
 
 const App = () => {
@@ -26,6 +29,9 @@ const App = () => {
         <Route path="/OrganizationDetails" element={<OrgForm />} />
         <Route path="/dashboard" element={<Dashboard/> } />
         <Route path="/create-event-setup-1" element={<CreateEventFirst/>} />
+        <Route path="/create-event-setup-2" element={<CreateEventSecond/>} /> 
+        <Route path="/create-event-setup-3" element={<CreateEventThird/>} /> 
+        <Route path="/create-event-setup-4" element={<CreateEventFourth/>} /> 
       </Route>
     )
   )
