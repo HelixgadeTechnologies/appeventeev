@@ -28,7 +28,7 @@ const CreateEventFirst = () => {
       <Box>
         <form action="" className="space-y-5 text-sm">
         <FormControl>
-          <FormLabel fontWeight={"medium"} fontSize={"sm"} color={"#475367"}>
+          <FormLabel fontWeight={"medium"} fontSize={"small"} color={"#475367"}>
             Event Name
           </FormLabel>
           <Input
@@ -36,12 +36,12 @@ const CreateEventFirst = () => {
             placeholder="Enter Subject"
             _placeholder={{ color: "#98A2B3", fontSize: "14px" }}
             focusBorderColor="#FA9874"
-            fontSize={"sm"}
+            fontSize={"small"}
             textTransform={"capitalize"}
           />
         </FormControl>
         <FormControl>
-          <FormLabel fontWeight={"medium"} fontSize={"sm"} color={"#475367"}>
+          <FormLabel fontWeight={"medium"} fontSize={"small"} color={"#475367"}>
             Event Description
           </FormLabel>
           <Textarea
@@ -49,7 +49,7 @@ const CreateEventFirst = () => {
             placeholder="Enter text here..."
             _placeholder={{ color: "#98A2B3", fontSize: "14px" }}
             focusBorderColor="#FA9874"
-            fontSize={"sm"}
+            fontSize={"small"}
           />
           <FormHelperText
             fontSize={"xs"}
@@ -69,7 +69,7 @@ const CreateEventFirst = () => {
             <FormControl>
               <FormLabel
                 fontWeight={"medium"}
-                fontSize={"sm"}
+                fontSize={"small"}
                 color={"#475367"}
               >
                 Event Start Date
@@ -79,7 +79,7 @@ const CreateEventFirst = () => {
                 placeholder="01 September 2024"
                 _placeholder={{ color: "#98A2B3", fontSize: "14px" }}
                 focusBorderColor="#FA9874"
-                fontSize={"sm"}
+                fontSize={"small"}
                 textTransform={"capitalize"}
               />
             </FormControl>
@@ -88,7 +88,7 @@ const CreateEventFirst = () => {
             <FormControl>
               <FormLabel
                 fontWeight={"medium"}
-                fontSize={"sm"}
+                fontSize={"small"}
                 color={"#475367"}
               >
                 Event End Date
@@ -98,7 +98,7 @@ const CreateEventFirst = () => {
                 placeholder="01 September 2024"
                 _placeholder={{ color: "#98A2B3", fontSize: "14px" }}
                 focusBorderColor="#FA9874"
-                fontSize={"sm"}
+                fontSize={"small"}
                 textTransform={"capitalize"}
               />
             </FormControl>
@@ -107,7 +107,7 @@ const CreateEventFirst = () => {
             <FormControl>
               <FormLabel
                 fontWeight={"medium"}
-                fontSize={"sm"}
+                fontSize={"small"}
                 color={"#475367"}
               >
                 Event Start Time
@@ -117,7 +117,7 @@ const CreateEventFirst = () => {
                 placeholder="01:00 AM"
                 _placeholder={{ color: "#98A2B3", fontSize: "14px" }}
                 focusBorderColor="#FA9874"
-                fontSize={"sm"}
+                fontSize={"small"}
                 textTransform={"capitalize"}
               />
             </FormControl>
@@ -126,7 +126,7 @@ const CreateEventFirst = () => {
             <FormControl>
               <FormLabel
                 fontWeight={"medium"}
-                fontSize={"sm"}
+                fontSize={"small"}
                 color={"#475367"}
               >
                 Event End Time
@@ -136,7 +136,7 @@ const CreateEventFirst = () => {
                 placeholder="01:00 PM"
                 _placeholder={{ color: "#98A2B3", fontSize: "14px" }}
                 focusBorderColor="#FA9874"
-                fontSize={"sm"}
+                fontSize={"small"}
                 textTransform={"capitalize"}
               />
             </FormControl>

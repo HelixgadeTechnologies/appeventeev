@@ -55,10 +55,10 @@ const CreateEventLayout = ({
         padding={"6"}
       >
         <Center flexDir={"column"} height={"60x"} gap={"1"} marginBottom={"3"}>
-          <Heading fontSize={"20px"} fontWeight={"semibold"} color={"#1A1A21"}>
+          <Heading fontSize={"18px"} fontWeight={"semibold"} color={"#1A1A21"}>
             {heading}
           </Heading>
-          <Text fontWeight={"normal"} fontSize={"sm"} color={"#8C94A6"}>
+          <Text fontWeight={"normal"} fontSize={"small"} color={"#8C94A6"}>
             {description}
           </Text>
         </Center>
@@ -79,12 +79,12 @@ const CreateEventLayout = ({
       >
         <Box className="space-y-6" height={"264px"}>
           {createEventSteps.map((step, index) => (
-            <Flex key={index} gap={"16px"} alignItems={"center"} width={"full"}>
+            <Flex key={index} gap={"12px"} alignItems={"center"} width={"full"}>
               <Link to={step.route}>
                 <Circle
                   fontWeight={activeStep == step.stepNumber ? "bold" : "medium"}
                   fontSize={"xl"}
-                  size={"48px"}
+                  size={"40px"}
                   bg={activeStep == step.stepNumber ? `#F56630` : `transparent`}
                   borderWidth={activeStep != step.stepNumber ? `1px` : `none`}
                   borderColor={"#98A2B3"}
@@ -96,14 +96,14 @@ const CreateEventLayout = ({
               <Box className="space-y-1.5" width={"full"}>
                 <Heading
                   fontWeight={"semibold"}
-                  fontSize={"16px"}
+                  fontSize={"15px"}
                   color={activeStep != step.stepNumber ? `gray.500` : `#101928`}
                 >
                   {step.heading}
                 </Heading>
                 <Text
                   fontWeight={"normal"}
-                  fontSize={"12px"}
+                  fontSize={"11px"}
                   color={activeStep != step.stepNumber ? `#667185` : `#475367`}
                 >
                   {step.description}
