@@ -1,6 +1,14 @@
 import React from "react";
 import SearchBar from "./SearchBar";
-import { Box, Flex, Heading, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Divider,
+  Flex,
+  Heading,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 
 const Header = () => {
   return (
@@ -10,34 +18,34 @@ const Header = () => {
         borderBottomWidth={"1px"}
         paddingX={"36px"}
         paddingY={"10px"}
+        bg={"white"}
       >
         <SearchBar />
       </Box>
-      <Flex
-        justifyContent={"space-between"}
-        alignItems={"center"}
-      >
-        <Box bg={"#F9FAFB"} width={"full"} paddingLeft={"5"} paddingY={"5"}>
+      <Flex justifyContent={"space-between"} alignItems={"center"}>
+        <Box
+          bg={"white"}
+          width={"full"}
+          marginX={"5"}
+          marginTop={"5"}
+          padding={"5"}
+          borderTopRadius={"lg"}
+        >
           <Stack>
             {" "}
             {/* Controls spacing */}
-            <Heading
-              fontWeight={"bold"}
-              fontSize={"24px"}
-              color="#000"
-            >
+            <Heading fontWeight={"bold"} fontSize={"24px"} color="#000">
               Welcome GDG Port Harcourt
             </Heading>
-            <Text
-              color={"#667185"}
-              fontSize={"16px"}
-              fontWeight={"normal"}
-            >
+            <Text color={"#667185"} fontSize={"16px"} fontWeight={"normal"}>
               Control your profile setup and integrations
             </Text>
           </Stack>
         </Box>
       </Flex>
+      <Center marginX={"10"}>
+        <Divider />
+      </Center>
     </Box>
   );
 };

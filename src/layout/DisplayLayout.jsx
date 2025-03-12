@@ -9,9 +9,9 @@ const DisplayLayout = ({ children }) => {
       {/* sidebar */}
       <SideBar />
       {/* nav and main content */}
-      <Box className="w-full ml-[240px]">
+      <Box className="w-full ml-[240px] bg-[#F9FAFB] ">
         <Header />
-        <main className="px-5 bg-[#F9FAFB] h-screen">{ children }</main>
+        <main className="p-5 h-screen bg-white rounded-b-lg mx-5">{ children }</main>
       </Box>
     </Box>
   );
