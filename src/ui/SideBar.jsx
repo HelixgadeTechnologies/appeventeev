@@ -11,10 +11,12 @@ import {
 } from "@chakra-ui/react";
 import { sidebarBottomLinks, sidebarTopLinks } from "../utils/sidebarLinks";
 import signOut from "../assets/icons/sign-out.svg";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const SideBar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  
   const userData = {
     username: "Richard Edem",
     email: "richard@gmail.com",
@@ -33,6 +35,7 @@ const SideBar = () => {
           <Box height={"297px"} marginTop={"8px"} padding={"2"}>
             {sidebarTopLinks.map((link, index) => (
               <Flex
+                onClick={() => navigate(link.route)}
                 key={index}
                 paddingY={"12px"}
                 paddingX={"16px"}
