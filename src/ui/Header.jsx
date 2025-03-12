@@ -9,8 +9,10 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { useLocation } from "react-router-dom";
 
 const Header = () => {
+  const location = useLocation();
   return (
     <Box>
       <Box
@@ -24,10 +26,10 @@ const Header = () => {
       </Box>
       <Flex justifyContent={"space-between"} alignItems={"center"}>
         <Box
-          bg={"white"}
+          bg={location.pathname === `/dashboard` ? `white` : `#F9FAFB`}
           width={"full"}
           marginX={"5"}
-          marginTop={"5"}
+          marginTop={"3.5"}
           padding={"5"}
           borderTopRadius={"lg"}
         >
@@ -43,9 +45,11 @@ const Header = () => {
           </Stack>
         </Box>
       </Flex>
-      <Center marginX={"10"}>
-        <Divider />
-      </Center>
+      {location.pathname === `/dashboard` && (
+        <Center marginX={"10"}>
+          <Divider />
+        </Center>
+      )}
     </Box>
   );
 };
