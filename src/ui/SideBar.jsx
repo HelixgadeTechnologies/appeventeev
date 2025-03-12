@@ -11,8 +11,12 @@ import {
 } from "@chakra-ui/react";
 import { sidebarBottomLinks, sidebarTopLinks } from "../utils/sidebarLinks";
 import signOut from "../assets/icons/sign-out.svg";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const SideBar = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  
   const userData = {
     username: "Richard Edem",
     email: "richard@gmail.com",
@@ -31,17 +35,18 @@ const SideBar = () => {
           <Box height={"297px"} marginTop={"8px"} padding={"2"}>
             {sidebarTopLinks.map((link, index) => (
               <Flex
+                onClick={() => navigate(link.route)}
                 key={index}
                 paddingY={"12px"}
                 paddingX={"16px"}
-                gap={"12px"}
+                gap={"8px"}
                 alignItems={"center"}
                 borderRadius={"4px"}
-                _hover={{cursor: "pointer", bg: "#fdf4f0"}}
-                // bg={"#FFECE5"}
+                _hover={{cursor: "pointer", bg: `${location.pathname !== link.route && "#fcf7f5"}`}}
+                bg={ location.pathname === link.route && "#FFECE5" }
               >
-                <Image src={link.icon} />
-                <Text fontWeight={"normal"} fontSize={"sm"} color={"#101928"}>
+                <Image src={link.icon} height={"18px"} />
+                <Text fontWeight={"normal"} fontSize={"xs"} color={"#101928"}>
                   {link.text}
                 </Text>
               </Flex>
@@ -56,14 +61,14 @@ const SideBar = () => {
                 key={index}
                 paddingY={"12px"}
                 paddingX={"16px"}
-                gap={"12px"}
+                gap={"8px"}
                 alignItems={"center"}
                 borderRadius={"4px"}
-                _hover={{cursor: "pointer", bg: "#fdf4f0"}}
-                // bg={"#FFECE5"}
+                _hover={{cursor: "pointer", bg: `${location.pathname !== link.route && "#fcf7f5"}`}}
+                bg={ location.pathname === link.route && "#FFECE5" }
               >
-                <Image src={link.icon} />
-                <Text fontWeight={"normal"} fontSize={"sm"} color={"#101928"}>
+                <Image src={link.icon} height={"18px"} />
+                <Text fontWeight={"normal"} fontSize={"xs"} color={"#101928"}>
                   {link.text}
                 </Text>
               </Flex>
@@ -78,15 +83,15 @@ const SideBar = () => {
         display={"block"}
         marginTop={"20px"}
       >
-        <Flex gap={"12px"} alignItems={"center"}>
+        <Flex gap={"8px"} alignItems={"center"}>
           <Avatar name={userData.username} size={"md"}>
-            <AvatarBadge boxSize="1em" bg="green.500" />
+            <AvatarBadge boxSize="18px" bg="green.500" />
           </Avatar>
           <Box>
-            <Text fontSize={"sm"} fontWeight={"semibold"} color={"#101928"}>
+            <Text fontSize={"small"} fontWeight={"semibold"} color={"#101928"}>
               {userData.username}
             </Text>
-            <Text color={"#475367"} fontSize={"sm"} fontWeight={"normal"}>
+            <Text color={"#475367"} fontSize={"small"} fontWeight={"normal"}>
               {userData.email}
             </Text>
           </Box>
