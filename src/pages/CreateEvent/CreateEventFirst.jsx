@@ -14,6 +14,7 @@ import {
   Text,
   Button,
   Flex,
+  Divider,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
@@ -65,6 +66,7 @@ const CreateEventFirst = () => {
           templateColumns={"repeat(2,1fr)"}
           templateRows={"repeat(2,1fr)"}
           gap={"20px"}
+          paddingBottom={"2"}
         >
           <GridItem>
             <FormControl>
@@ -143,7 +145,7 @@ const CreateEventFirst = () => {
             </FormControl>
           </GridItem>
         </Grid>
-
+        <Divider/>
         <Box className="space-y-3">
           <FormControl
             display="flex"
@@ -154,8 +156,9 @@ const CreateEventFirst = () => {
               htmlFor="recurrent-event"
               mb="0"
               fontWeight={"medium"}
-              fontSize={"sm"}
+              fontSize={"small"}
               color={"#1D2739"}
+              _hover={{ cursor: "pointer" }}
             >
               Recurrent event?
             </FormLabel>
@@ -164,27 +167,27 @@ const CreateEventFirst = () => {
           <Text color={"#667185"} fontSize={"xs"}>You can set up a <Link color={"#8F2802"}>custom domain or connect your email service provider</Link> to change this.</Text>
         </Box>
         <Flex gap={"20px"}>
-            <Button
-            variant={"outline"}
-            width={"40%"}
-            color={"#EB5017"}
-            borderColor={"#EB5017"}
-            _hover={{ bg: "orange.50" }}
-            onClick={() => navigate('/dashboard')}
-            >Cancel</Button>
-            <Button
-            onClick={() => handleSubmit()}
-            width={"60%"}
-            bg={"#EB5017"}
-            size={"md"}
-            _hover={{ bg: "#e84a11" }}
-            variant={"solid"}
-            paddingY={"16px"}
-            paddingX={"24px"}
-            borderRadius={"lg"}
-            color={"white"}
-            fontWeight={"medium"}
-            >Next Step</Button>
+          <Button
+          variant={"outline"}
+          width={"40%"}
+          color={"#EB5017"}
+          borderColor={"#EB5017"}
+          _hover={{ bg: "orange.50" }}
+          onClick={() => navigate('/dashboard')}
+          >Cancel</Button>
+          <Button
+          onClick={() => handleSubmit()}
+          width={"60%"}
+          bg={"#EB5017"}
+          size={"md"}
+          _hover={{ bg: "#e84a11" }}
+          variant={"solid"}
+          paddingY={"16px"}
+          paddingX={"24px"}
+          borderRadius={"lg"}
+          color={"white"}
+          fontWeight={"medium"}
+          >Next Step</Button>
         </Flex>
         </form>
       </Box>
