@@ -1,6 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const VerifiedPage = () => {
+
+  const navigate = useNavigate();
   return (
     <div className="flex items-center justify-center min-h-screen bg-black">
       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/checkered-light.png')] opacity-10"></div>
@@ -23,7 +26,7 @@ const VerifiedPage = () => {
         </p>
 
         {/* Proceed Button */}
-        <button className="w-full bg-orange-600 hover:bg-orange-700 text-white py-2 rounded-lg font-medium">
+        <button className="w-full bg-orange-600 hover:bg-orange-700 text-white py-2 rounded-lg font-medium" onClick={()=> navigate('/OrganizationDetails')}>
           Proceed to dashboard
         </button>
       </div>

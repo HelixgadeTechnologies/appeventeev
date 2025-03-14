@@ -18,6 +18,8 @@ const App = () => {
   const routes = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={ <RootLayout/> }>
+
+        {/* auth routes for signup  and signIn process */}
         <Route index element={<SignIn/> } /> 
         <Route path="/signUp" element={<SignUp />}/>
         <Route path="/forgot-password" element={<ForgotPassword/>} />

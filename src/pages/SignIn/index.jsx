@@ -1,9 +1,11 @@
+import axios from 'axios';
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 const SignIn = () => {
 
   const [formData ,setFormData] = useState({email:'', password: ''})
+  const [button, setButton ] = useState('Sign In')
 
   const navigate = useNavigate();
 
@@ -11,12 +13,24 @@ const SignIn = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   
-  const handleSubmit = ()=>{
+  const handleSubmit = async (e)=>{
+   e.preventDefault();
+   setButton('Loading....')
 
     // verifications
+    try {
+      const response = await axios.post("https://eventeevapi.onrender.com/auth/login", formData);
+  
+      if (response.status === 201 || response.status === 200) {
+        console.log("Login successful:", response.data);
+        navigate("/dashboard"); // Navigate after success
+      }
+    } catch (error) {
+      setButton('Try Again')
+      console.error("Login failed:", error.response?.data?.message || "Unknown error");
+      
     
-    // return dashboard home
-    navigate('/verify')
+    }
 
   }
 
@@ -50,18 +64,10 @@ const SignIn = () => {
         </p>
         </div>
         <button className="w-full flex items-center justify-center gap-2 bg-white border border-gray-300 rounded-lg py-2 mb-4 shadow-sm hover:bg-gray-100">
-          <img src="/google-icon.png" alt="Google" className="w-5 h-5" />
+          <img src="https://res.cloudinary.com/dnou1zvji/image/upload/v1741679396/google-removebg-preview_uc9m89.png" alt="Google" className="w-5 h-5" />
           Continue with Google
-        </button>
-       
-       
-       <div className='flex w-full place-items-baseline'>
-        <hr className='w-1/2' />
+        </button>   
        <div className="text-center text-gray-400 mb-4">OR</div>
-       <hr className='w-1/2'/>
-       </div>
-
-
        <form  onSubmit={handleSubmit}>
        <input
           type="email"
@@ -89,8 +95,8 @@ const SignIn = () => {
             Forgot Password?
           </Link>
         </div>
-        <button style={{background: "#EB5017"}} className="w-full  text-white py-2 rounded-lg hover:bg-orange-600">
-          Sign in
+        <button style={{background: "#EB5017"}} className="w-full  text-white py-2 rounded-lg hover:bg-orange-600 active:border-2 active:border-black transition-all duration-100" type='submit'>
+         {button}
         </button>
        </form>
        
