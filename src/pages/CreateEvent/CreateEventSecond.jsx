@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import FileUpload from "../../ui/FileUpload"
 
 const CreateEventSecond = () => {
+  
   const navigate = useNavigate();
 
   const handleSubmit = () => {
@@ -84,7 +85,7 @@ const CreateEventSecond = () => {
             color={"white"}
             fontWeight={"medium"}
             >Next Step</Button>
-                  </Flex>
+          </Flex>
         </form>
       </Box>
     </CreateEventLayout>

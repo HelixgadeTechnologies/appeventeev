@@ -1,8 +1,15 @@
 import React from 'react'
 import CreateEventLayout from '../../layout/CreateEventLayout'
 import { Box, FormControl, FormLabel, Input, Switch, Link, Text, Flex, Button } from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom'
 
 const CreateEventSecond = () => {
+
+  const navigate = useNavigate();
+
+  const handleSubmit = () => {
+    navigate("/create-event-setup-4")
+  }
   return (
     <CreateEventLayout heading="Event Social Details" activeStep={3}>
       <Box>
@@ -86,8 +93,8 @@ const CreateEventSecond = () => {
               color={"#EB5017"}
               borderColor={"#EB5017"}
               _hover={{ bg: "orange.50" }}
-              onClick={() => navigate('/dashboard')}
-              >Cancel</Button>
+              onClick={() => navigate('/create-event-setup-2')}
+              >Previous</Button>
               <Button
               onClick={() => handleSubmit()}
               width={"60%"}

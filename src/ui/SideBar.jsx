@@ -24,7 +24,7 @@ const SideBar = () => {
 
   return (
     <aside className="w-[250px] bg-white py-[30px] border-r border-[#E4E7EC] fixed top-0 left-0 h-screen">
-      <Flex justifyContent={"space-between"} flexDir={"column"} height={"93%"}>
+      <Flex justifyContent={"space-between"} flexDir={"column"} height={"95%"}>
         <Box>
           <Image
             src="https://res.cloudinary.com/dnou1zvji/image/upload/v1741554375/Eventeev_blac-08_5_gtcyzt.png"
@@ -86,18 +86,18 @@ const SideBar = () => {
         // marginTop={"20px"}
       >
         <Flex gap={"8px"} alignItems={"center"}>
-          <Avatar name={userData.username} size={"md"}>
+          <Avatar name={userData.username} size={"sm"}>
             <AvatarBadge boxSize="18px" bg="green.500" />
           </Avatar>
           <Box>
             <Text fontSize={"small"} fontWeight={"semibold"} color={"#101928"}>
               {userData.username}
             </Text>
-            <Text color={"#475367"} fontSize={"small"} fontWeight={"normal"}>
+            <Text color={"#475367"} fontSize={"xs"} fontWeight={"normal"}>
               {userData.email}
             </Text>
           </Box>
-          <Image src={signOut} className="hover:cursor-pointer" />
+          <Image src={signOut} className="hover:cursor-pointer"  height={"20px"} />
         </Flex>
       </Center>
     </aside>

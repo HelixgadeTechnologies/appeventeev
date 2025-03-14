@@ -38,7 +38,7 @@ const ImageUploader = () => {
           <Text className="text-gray-600 mt-2">
             <span className="text-orange-500 font-medium">Click to upload</span> or drag and drop
           </Text>
-          <Text className="text-sm text-gray-400">SVG, PNG, JPG or GIF (max. 800×400px)</Text>
+          <Text className="text-xs text-gray-400">SVG, PNG, JPG or GIF (max. 800×400px)</Text>
         </Box>
       ) : (
         // Image Preview

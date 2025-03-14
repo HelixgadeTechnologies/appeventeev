@@ -1,10 +1,15 @@
 import React from 'react'
 import CreateEventLayout from '../../layout/CreateEventLayout'
+import { Box } from '@chakra-ui/react'
 
 const CreateEventSecond = () => {
   return (
     <CreateEventLayout heading="Event Review" activeStep={4}>
-        this is the fourth event step form
+        <Box>
+          <form className="space-y-4">
+            
+          </form>
+        </Box>
     </CreateEventLayout>
   )
 }

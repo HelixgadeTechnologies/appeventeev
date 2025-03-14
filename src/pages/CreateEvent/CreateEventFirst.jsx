@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios"
 import CreateEventLayout from "../../layout/CreateEventLayout";
 import {
   Box,
@@ -16,14 +17,38 @@ import {
   Flex,
   Divider,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 
 const CreateEventFirst = () => {
     const navigate = useNavigate();
 
-    const handleSubmit = () => {
+    const [userData, setUserData] = useState({
+      name: "",
+      description: "",
+      startDate: "",
+      endDate: "",
+      startTime: "",
+      endTime: "",
+    });
+
+    const handleChange = (e) => {
+      setFormData((prevData) => ({
+          ...prevData,
+          [e.target.name]: e.target.value,
+      }));
+  };
+
+    const handleSubmit = async () => {
+      try {
+        // const response = await axios.post("http://localhost:5000/event/publishevent", {})
+        // setTimeout(() => {
+        // }, 500)
         navigate("/create-event-setup-2")
-    }
+      } catch (error) {
+        console.error("An error occured: ", error)
+      }
+    };
+
   return (
     <CreateEventLayout>
       <Box>
@@ -39,6 +64,8 @@ const CreateEventFirst = () => {
             focusBorderColor="#FA9874"
             fontSize={"small"}
             textTransform={"capitalize"}
+            value={userData.name}
+            onChange={handleChange}
           />
         </FormControl>
         <FormControl>
@@ -52,6 +79,8 @@ const CreateEventFirst = () => {
             _placeholder={{ color: "#98A2B3", fontSize: "small" }}
             focusBorderColor="#FA9874"
             fontSize={"small"}
+            value={userData.description}
+            onChange={handleChange}
           />
           <FormHelperText
             fontSize={"smaller"}
@@ -78,12 +107,14 @@ const CreateEventFirst = () => {
                 Event Start Date
               </FormLabel>
               <Input
-                type={"text"}
+                type={"date"}
                 placeholder="01 September 2024"
                 _placeholder={{ color: "#98A2B3", fontSize: "small" }}
                 focusBorderColor="#FA9874"
                 fontSize={"small"}
                 textTransform={"capitalize"}
+                value={userData.startDate}
+                onChange={handleChange}
               />
             </FormControl>
           </GridItem>
@@ -97,12 +128,14 @@ const CreateEventFirst = () => {
                 Event End Date
               </FormLabel>
               <Input
-                type={"text"}
+                type={"date"}
                 placeholder="01 September 2024"
                 _placeholder={{ color: "#98A2B3", fontSize: "small" }}
                 focusBorderColor="#FA9874"
                 fontSize={"small"}
                 textTransform={"capitalize"}
+                value={userData.endDate}
+                onChange={handleChange}
               />
             </FormControl>
           </GridItem>
@@ -122,6 +155,8 @@ const CreateEventFirst = () => {
                 focusBorderColor="#FA9874"
                 fontSize={"small"}
                 textTransform={"capitalize"}
+                value={userData.startTime}
+                onChange={handleChange}
               />
             </FormControl>
           </GridItem>
@@ -141,6 +176,8 @@ const CreateEventFirst = () => {
                 focusBorderColor="#FA9874"
                 fontSize={"small"}
                 textTransform={"capitalize"}
+                value={userData.endTime}
+                onChange={handleChange}
               />
             </FormControl>
           </GridItem>
