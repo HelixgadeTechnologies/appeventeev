@@ -26,7 +26,7 @@ const CreateEventFirst = () => {
   return (
     <CreateEventLayout>
       <Box>
-        <form action="" className="space-y-5 text-sm">
+        <form action="" className="space-y-3 text-sm">
         <FormControl>
           <FormLabel fontWeight={"medium"} fontSize={"small"} color={"#475367"}>
             Event Name
@@ -34,7 +34,7 @@ const CreateEventFirst = () => {
           <Input
             type="text"
             placeholder="Enter Subject"
-            _placeholder={{ color: "#98A2B3", fontSize: "14px" }}
+            _placeholder={{ color: "#98A2B3", fontSize: "small" }}
             focusBorderColor="#FA9874"
             fontSize={"small"}
             textTransform={"capitalize"}
@@ -46,13 +46,14 @@ const CreateEventFirst = () => {
           </FormLabel>
           <Textarea
             resize={"none"}
+            size={"md"}
             placeholder="Enter text here..."
-            _placeholder={{ color: "#98A2B3", fontSize: "14px" }}
+            _placeholder={{ color: "#98A2B3", fontSize: "small" }}
             focusBorderColor="#FA9874"
             fontSize={"small"}
           />
           <FormHelperText
-            fontSize={"xs"}
+            fontSize={"smaller"}
             color={"#667185"}
             fontWeight={"normal"}
           >
@@ -77,7 +78,7 @@ const CreateEventFirst = () => {
               <Input
                 type={"text"}
                 placeholder="01 September 2024"
-                _placeholder={{ color: "#98A2B3", fontSize: "14px" }}
+                _placeholder={{ color: "#98A2B3", fontSize: "small" }}
                 focusBorderColor="#FA9874"
                 fontSize={"small"}
                 textTransform={"capitalize"}
@@ -96,7 +97,7 @@ const CreateEventFirst = () => {
               <Input
                 type={"text"}
                 placeholder="01 September 2024"
-                _placeholder={{ color: "#98A2B3", fontSize: "14px" }}
+                _placeholder={{ color: "#98A2B3", fontSize: "small" }}
                 focusBorderColor="#FA9874"
                 fontSize={"small"}
                 textTransform={"capitalize"}
@@ -115,7 +116,7 @@ const CreateEventFirst = () => {
               <Input
                 type={"time"}
                 placeholder="01:00 AM"
-                _placeholder={{ color: "#98A2B3", fontSize: "14px" }}
+                _placeholder={{ color: "#98A2B3", fontSize: "small" }}
                 focusBorderColor="#FA9874"
                 fontSize={"small"}
                 textTransform={"capitalize"}
@@ -134,7 +135,7 @@ const CreateEventFirst = () => {
               <Input
                 type="time"
                 placeholder="01:00 PM"
-                _placeholder={{ color: "#98A2B3", fontSize: "14px" }}
+                _placeholder={{ color: "#98A2B3", fontSize: "small" }}
                 focusBorderColor="#FA9874"
                 fontSize={"small"}
                 textTransform={"capitalize"}
