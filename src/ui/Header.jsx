@@ -6,7 +6,6 @@ import {
   Divider,
   Flex,
   Heading,
-  Stack,
   Text,
 } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
@@ -30,19 +29,15 @@ const Header = () => {
           width={"full"}
           marginX={"5"}
           marginTop={"3.5"}
-          padding={"5"}
+          padding={location.pathname === `/dashboard` ? `5` : `1.5`}
           borderTopRadius={"lg"}
         >
-          <Stack>
-            {" "}
-            {/* Controls spacing */}
             <Heading fontWeight={"bold"} fontSize={"24px"} color="#000">
               Welcome GDG Port Harcourt
             </Heading>
-            <Text color={"#667185"} fontSize={"16px"} fontWeight={"normal"}>
+            <Text color={"#667185"} fontSize={"small"} fontWeight={"normal"}>
               Control your profile setup and integrations
             </Text>
-          </Stack>
         </Box>
       </Flex>
       {location.pathname === `/dashboard` && (

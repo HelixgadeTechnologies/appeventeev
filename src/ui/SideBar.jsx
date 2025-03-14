@@ -24,7 +24,7 @@ const SideBar = () => {
 
   return (
     <aside className="w-[250px] bg-white py-[30px] border-r border-[#E4E7EC] fixed top-0 left-0 h-screen">
-      <Flex justifyContent={"space-between"} flexDir={"column"} height={"90%"}>
+      <Flex justifyContent={"space-between"} flexDir={"column"} height={"93%"}>
         <Box>
           <Image
             src="https://res.cloudinary.com/dnou1zvji/image/upload/v1741554375/Eventeev_blac-08_5_gtcyzt.png"
@@ -32,13 +32,14 @@ const SideBar = () => {
             paddingLeft={"6"}
             height={"30px"}
           />
-          <Box height={"297px"} marginTop={"8px"} padding={"2"}>
+          <Box marginTop={"8px"} padding={"2"}>
             {sidebarTopLinks.map((link, index) => (
               <Flex
                 onClick={() => navigate(link.route)}
                 key={index}
                 paddingY={"12px"}
                 paddingX={"16px"}
+                height={"35px"}
                 gap={"8px"}
                 alignItems={"center"}
                 borderRadius={"4px"}
@@ -55,13 +56,14 @@ const SideBar = () => {
           </Box>
         </Box>
         <Box>
-          <Box height={"145px"} padding={"2"}>
+          <Box padding={"2"}>
             {sidebarBottomLinks.map((link, index) => (
               <Flex
                 key={index}
                 paddingY={"12px"}
                 paddingX={"16px"}
                 gap={"8px"}
+                height={"35px"}
                 alignItems={"center"}
                 borderRadius={"4px"}
                 _hover={{cursor: "pointer", bg: `${location.pathname !== link.route && "#fcf7f5"}`}}
@@ -81,7 +83,7 @@ const SideBar = () => {
         paddingY={"8px"}
         paddingX={"12px"}
         display={"block"}
-        marginTop={"20px"}
+        // marginTop={"20px"}
       >
         <Flex gap={"8px"} alignItems={"center"}>
           <Avatar name={userData.username} size={"md"}>
