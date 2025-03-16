@@ -23,7 +23,7 @@ const SideBar = () => {
   };
 
   return (
-    <aside className="w-[250px] bg-white py-[30px] border-r border-[#E4E7EC] fixed top-0 left-0 h-screen">
+    <aside className="w-[250px] bg-white py-[30px] border-r border-[#E4E7EC] fixed top-0 left-0 h-screen z-50">
       <Flex justifyContent={"space-between"} flexDir={"column"} height={"95%"}>
         <Box>
           <Image
