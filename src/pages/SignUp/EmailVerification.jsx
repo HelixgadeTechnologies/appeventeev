@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 //import { useNavigate } from "react-router-dom";
 import VerifiedPage from "./Verified";
-import axios from "axios";
+
 
 const EmailVerification = () => {
 
@@ -9,24 +9,14 @@ const EmailVerification = () => {
 
   const verify = async (e)=>{
      e.preventDefault();
-
-    //verification request
-
-    try {
-       const response = await axios.get('https://eventeevapi.onrender.com/auth/verify/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2NlZDFhYjQ0OTMxNTBmYTM0ZWVkMmQiLCJpYXQiOjE3NDE2MDczMzksImV4cCI6MTc0MTYxMDkzOX0.l7GHq6xGRgazEwcBvsn8ialKYWBkKwLDBumZ1Z9hY8k')
-
-      if(response.status === 200){
-        console.log('Email verification successful:', response.data)
-      }
-      setView('verified')
-    }catch(error){
-      console.error('Email verification failed:', error.response?.data?.message || 'Unknown error')
-    }
-
-
+     
     // open gmail
     const gmailURL = "https://mail.google.com/mail/u/0/#inbox";
     window.open(gmailURL, "_blank");
+
+   setTimeout(()=>{
+    setView('verified')
+   }, 2000)
 
           
   }

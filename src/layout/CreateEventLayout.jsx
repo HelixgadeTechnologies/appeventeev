@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   Flex,
@@ -80,19 +80,19 @@ const CreateEventLayout = ({
         <Box className="space-y-6" height={"264px"}>
           {createEventSteps.map((step, index) => (
             <Flex key={index} gap={"12px"} alignItems={"center"} width={"full"}>
-              <Link to={step.route}>
-                <Circle
-                  fontWeight={activeStep == step.stepNumber ? "bold" : "medium"}
-                  fontSize={"xl"}
-                  size={"40px"}
-                  bg={activeStep == step.stepNumber ? `#F56630` : `transparent`}
-                  borderWidth={activeStep != step.stepNumber ? `1px` : `none`}
-                  borderColor={"#98A2B3"}
-                  color={activeStep != step.stepNumber ? `#98A2B3` : `white`}
-                >
-                  {step.stepNumber}
-                </Circle>
-              </Link>
+              <Circle
+                fontWeight={activeStep == step.stepNumber ? "bold" : "medium"}
+                fontSize={"xl"}
+                size={"40px"}
+                bg={activeStep == step.stepNumber ? `#F56630` : `transparent`}
+                borderWidth={activeStep != step.stepNumber ? `1px` : `none`}
+                borderColor={"#98A2B3"}
+                color={activeStep != step.stepNumber ? `#98A2B3` : `white`}
+              >
+                {step.stepNumber}
+              </Circle>
+              {/* <Link to={step.route}>
+              </Link> */}
               <Box className="space-y-1.5" width={"full"}>
                 <Heading
                   fontWeight={"semibold"}
