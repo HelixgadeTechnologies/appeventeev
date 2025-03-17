@@ -16,22 +16,34 @@ import CreateEventFirst from "./pages/CreateEvent/CreateEventFirst";
 import CreateEventSecond from "./pages/CreateEvent/CreateEventSecond";
 import CreateEventThird from "./pages/CreateEvent/CreateEventThird";
 import CreateEventFourth from "./pages/CreateEvent/CreateEventFourth";
+import TicketPage from "./pages/CreateTickets/CreateTicketPage";
+import AddTicket from "./pages/CreateTickets/TicketForms";
+
 
 
 const App = () => {
   const routes = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={ <RootLayout/> }>
+
+        {/* auth routes for signup  and signIn process */}
         <Route index element={<SignIn/> } /> 
         <Route path="/signUp" element={<SignUp />}/>
         <Route path="/forgot-password" element={<ForgotPassword/>} />
         <Route path="/verify" element={<EmailVerification />} />
         <Route path="/OrganizationDetails" element={<OrgForm />} />
         <Route path="/dashboard" element={<Dashboard/> } />
+
+        {/* create event routes */}
         <Route path="/create-event-setup-1" element={<CreateEventFirst/>} />
         <Route path="/create-event-setup-2" element={<CreateEventSecond/>} /> 
         <Route path="/create-event-setup-3" element={<CreateEventThird/>} /> 
         <Route path="/create-event-setup-4" element={<CreateEventFourth/>} /> 
+
+        {/* create ticket routes */}
+        <Route path="/tickets" element={<TicketPage />} />
+        <Route path="/create-ticket" element={<AddTicket/>} />
+        
       </Route>
     )
   )
