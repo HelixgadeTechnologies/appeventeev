@@ -18,7 +18,7 @@ import {
 import { eventType, eventCategory } from "../../utils/create-event";
 import { useNavigate, useLocation } from "react-router-dom";
 import { SlCloudUpload } from "react-icons/sl";
-import { IoMdClose } from "react-icons/io";
+import { IoClose } from "react-icons/io5";
 import { useDropzone } from "react-dropzone";
 
 const CreateEventSecond = () => {
@@ -154,7 +154,7 @@ const CreateEventSecond = () => {
                   alignItems={"center"}
                   _hover={{ cursor: "pointer", bg: "red.400" }}
                 >
-                  <IoMdClose className="text-xl" />
+                  <IoClose className="text-xl" />
                 </Flex>
               </Box>
             )}
@@ -202,6 +202,7 @@ const CreateEventSecond = () => {
               color="#475367"
               fontWeight="normal"
               fontSize={"small"}
+              placeholder="Select type"
               _placeholder={{ color: "#98A2B3", fontSize: "small" }}
               focusBorderColor="#FA9874"
               borderRadius={"6px"}
@@ -251,6 +252,7 @@ const CreateEventSecond = () => {
               _placeholder={{ color: "#98A2B3", fontSize: "small" }}
               focusBorderColor="#FA9874"
               borderRadius={"6px"}
+              placeholder="Select category"
               value={secondPageData.category}
               onChange={handleChange}
             >

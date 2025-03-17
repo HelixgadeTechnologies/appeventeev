@@ -52,11 +52,21 @@ const CreateEventFirst = () => {
 
   const today = new Date().toISOString().split("T")[0];
 
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "";
+
+    const date = new Date(dateStr);
+    const options = { day: "2-digit", month: "long", year: "numeric" };
+    return date.toLocaleDateString("en-US", options); // Example: "01 September 2024"
+  };
+
   const getCurrentTime = () => {
     const now = new Date();
     return now.toTimeString().slice(0, 5); // Extract HH:MM
   };
 
+  // console.log(firstPageData.startTime, firstPageData.endTime)
+  // console.log(firstPageData.startDate, firstPageData.endDate)
   return (
     <CreateEventLayout>
       <Box>

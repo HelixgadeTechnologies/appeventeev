@@ -1,16 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CreateEventLayout from "../../layout/CreateEventLayout";
-import { Box, Flex, Heading, Text, Button } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  Text,
+  Button,
+} from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import ImageDisplayBanner from "../../ui/ImageDisplayBanner";
 
 const CreateEventSecond = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const thirdPageData = location.state || {};
-
   console.log("Data being sent:", thirdPageData);
-
 
   const handleDraft = async () => {
     try {
@@ -35,13 +40,13 @@ const CreateEventSecond = () => {
       console.error("Error Publishing Event:", error);
     }
   };
+
+
   return (
     <CreateEventLayout heading="Event Review" activeStep={4}>
       <Box>
         {/* thumbnail */}
-        <Box>
-          {/* <p>{thirdPageData.thumbnail.name}</p> */}
-        </Box>
+        <ImageDisplayBanner thirdPageData={thirdPageData}/>
 
         {/* display */}
         <Box>
@@ -66,7 +71,7 @@ const CreateEventSecond = () => {
             borderBottomWidth={"1px"}
             height={"50px"}
           >
-            <Heading fontWeight={"800"} fontSize={"sm"}>
+            <Heading fontWeight={"800"} fontSize={"sm"} whiteSpace={"nowrap"}>
               Event Description:
             </Heading>
             <Text fontWeight={"medium"} fontSize={"sm"}>
