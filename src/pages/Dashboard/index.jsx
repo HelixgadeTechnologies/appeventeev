@@ -25,9 +25,9 @@ const Dashboard = () => {
           <Button
             onClick={() => navigate('/create-event-setup-1')}
             bg={"#EB5017"}
-            size={"sm"}
+            size={"md"}
             _hover={{ bg: "#e84a11" }}
-            fontSize={"small"}
+            fontSize={"sm"}
             variant={"solid"}
             paddingY={"16px"}
             paddingX={"24px"}
