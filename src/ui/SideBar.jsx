@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Flex,
   Image,
@@ -12,14 +12,16 @@ import {
 import { sidebarBottomLinks, sidebarTopLinks } from "../utils/sidebarLinks";
 import signOut from "../assets/icons/sign-out.svg";
 import { useLocation, useNavigate } from "react-router-dom";
+import { UserAuthContext } from "../contexts/UserAuthContext";
 
 const SideBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { userDetails } = useContext(UserAuthContext)
   
   const userData = {
-    username: "Richard Edem",
-    email: "richard@gmail.com",
+    username: `${userDetails.firstname + " " + userDetails.lastname}`,
+    email: `${userDetails.email}`,
   };
 
   return (

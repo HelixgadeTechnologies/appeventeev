@@ -4,11 +4,14 @@ import './index.css'
 import App from './App.jsx'
 import "@fontsource/inter";
 import { ChakraProvider } from "@chakra-ui/react"
+import UserAuthProvider from './contexts/UserAuthContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ChakraProvider>
-      <App />
+    <UserAuthProvider>
+    <App />
+    </UserAuthProvider>
     </ChakraProvider>
   </StrictMode>,
 )
