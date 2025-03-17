@@ -50,6 +50,13 @@ const CreateEventFirst = () => {
     }
   };
 
+  const today = new Date().toISOString().split("T")[0];
+
+  const getCurrentTime = () => {
+    const now = new Date();
+    return now.toTimeString().slice(0, 5); // Extract HH:MM
+  };
+
   return (
     <CreateEventLayout>
       <Box>
@@ -119,6 +126,7 @@ const CreateEventFirst = () => {
                 </FormLabel>
                 <Input
                   name="startDate"
+                  min={today}
                   type={"date"}
                   placeholder="01 September 2024"
                   _placeholder={{ color: "#98A2B3", fontSize: "small" }}
@@ -141,6 +149,7 @@ const CreateEventFirst = () => {
                 </FormLabel>
                 <Input
                   name="endDate"
+                  min={today}
                   type={"date"}
                   placeholder="01 September 2024"
                   _placeholder={{ color: "#98A2B3", fontSize: "small" }}
@@ -164,6 +173,7 @@ const CreateEventFirst = () => {
                 <Input
                   name="startTime"
                   type={"time"}
+                  min={firstPageData.startDate === today ? getCurrentTime() : undefined}
                   placeholder="01:00 AM"
                   _placeholder={{ color: "#98A2B3", fontSize: "small" }}
                   focusBorderColor="#FA9874"

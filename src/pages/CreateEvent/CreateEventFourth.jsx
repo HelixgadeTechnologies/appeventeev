@@ -39,7 +39,9 @@ const CreateEventSecond = () => {
     <CreateEventLayout heading="Event Review" activeStep={4}>
       <Box>
         {/* thumbnail */}
-        <Box></Box>
+        <Box>
+          {/* <p>{thirdPageData.thumbnail.name}</p> */}
+        </Box>
 
         {/* display */}
         <Box>

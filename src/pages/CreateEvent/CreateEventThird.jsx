@@ -29,6 +29,8 @@ const CreateEventSecond = () => {
     type: secondPageData.type,
     location: secondPageData.location,
     category: secondPageData.category,
+    thumbnail: secondPageData.thumbnail,
+    thumbnailPreview: secondPageData.thumbnailPreview,
     website: "",
     facebook: "",
     instagram: "",
