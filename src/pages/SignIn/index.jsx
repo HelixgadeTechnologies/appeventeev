@@ -32,9 +32,8 @@ const SignIn = () => {
         setIsVerified(userData.isVerified);
 
         // Save to localStorage
-        localStorage.setItem("userDetails", JSON.stringify(userData));
         localStorage.setItem("userId", userData._id);
-        localStorage.setItem("isVerified", userData.isVerified.toString());
+   
 
         navigate("/dashboard");
       }
