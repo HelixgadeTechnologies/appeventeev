@@ -2,7 +2,9 @@ import {
   Box, Button, Input, Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack, HStack, 
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, useDisclosure 
 } from "@chakra-ui/react";
-import { useState } from "react";
+import axios from "axios";
+import { useContext, useState } from "react";
+import { UserAuthContext } from "../../contexts/UserAuthContext";
 
 const AddTicket = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -56,7 +58,11 @@ const AddTicket = () => {
 };
 
 const TicketForm = ({ onClose, ticketType }) => {
+
+  const { token, userId } = useContext(UserAuthContext)
+
   const [formData, setFormData] = useState({
+    eventId: `${ userId }`,
     name: "",
     type: ticketType,
     quantity: "",
@@ -71,37 +77,38 @@ const TicketForm = ({ onClose, ticketType }) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form data:", formData);
     
-
+    if (!token) {
+      console.error("Error: Token is missing.");
+      return;
+    }
+  
+    console.log("Form data:", formData);
+    console.log("Token:", token);
+  
     try {
-      const response = await fetch("https://eventeevapi.onrender.com/ticket/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer MY_AUTH_TOKEN`, // If authentication is required
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to add ticket");
-      }
-
-      console.log("Ticket added successfully:", data);
-
-      // Close modal after success
+      const response = await axios.post(
+        "https://eventeevapi.onrender.com/ticket/create",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Correct format
+          },
+        }
+      );
+  
+      console.log("Ticket added successfully:", response.data);
       onClose();
     } catch (error) {
-      console.error("Error adding ticket:", error.message);
+      console.error("Error adding ticket:", error.response?.data?.message || error.message);
     }
-
   };
+  
+  
 
   return (
     <form onSubmit={handleSubmit}>

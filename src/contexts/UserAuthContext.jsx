@@ -7,6 +7,7 @@ const UserAuthProvider = ({ children }) => {
   // Load data from localStorage
   const [userId, setUserId] = useState(() => localStorage.getItem("userId") || "");
   const [token, setToken] = useState(() => localStorage.getItem("token") || "");
+  
   const [userDetails, setUserDetails] = useState(() => {
     const storedUser = localStorage.getItem("userDetails");
     return storedUser ? JSON.parse(storedUser) : {};

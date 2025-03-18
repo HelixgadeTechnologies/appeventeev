@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, {  useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
@@ -12,7 +12,6 @@ const SignUp = () => {
   });
 
   const [button, setButton] = useState("Sign Up");
- const { token, setToken } = useContext(UserAuthContext);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -25,11 +24,6 @@ const SignUp = () => {
     try {
       const response = await axios.post("https://eventeevapi.onrender.com/auth/register", formData);
       const userData = response.data;
-
-      setToken(userData.token)
-      console.log(token);
-
-      localStorage.setItem("userToken", JSON.stringify(userData.token));
       
   
       if (response.status === 201 || response.status === 200) {

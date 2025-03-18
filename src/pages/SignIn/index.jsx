@@ -7,7 +7,7 @@ import { UserAuthContext } from '../../contexts/UserAuthContext';
 const SignIn = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [button, setButton] = useState('Sign In');
-  const { setUserDetails, setUserId, setIsVerified } = useContext(UserAuthContext);
+  const { setUserDetails, setUserId, setIsVerified,  setToken, } = useContext(UserAuthContext);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -17,24 +17,32 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setButton('Loading...');
-
+  
     try {
       const response = await axios.post("https://eventeevapi.onrender.com/auth/login", formData);
-
+  
       if (response.status === 200 || response.status === 201) {
         toast.success("Login successful! 🎉");
-
+  
         const userData = response.data.user;
-
+        const authToken = response.data.token;
+  
+        console.log(response.data);
+  
         // Store user data in context
         setUserDetails(userData);
         setUserId(userData._id);
         setIsVerified(userData.isVerified);
-
-        // Save to localStorage
+        setToken(authToken); // Set token properly
+  
+        // Save to localStorage correctly
         localStorage.setItem("userId", userData._id);
-   
-
+        localStorage.setItem("userToken", JSON.stringify(authToken));
+        localStorage.setItem("userDetails", JSON.stringify(userData));
+  
+        console.log("User details stored:", userData);
+        console.log("Token stored:", authToken);
+  
         navigate("/dashboard");
       }
     } catch (error) {
@@ -43,6 +51,7 @@ const SignIn = () => {
       console.error("Login failed:", error.response?.data?.message || "Unknown error");
     }
   };
+  
 
   return (
     <div className="screen overflow-hidden relative flex items-center justify-center bg-contain bg-center flex-col">
