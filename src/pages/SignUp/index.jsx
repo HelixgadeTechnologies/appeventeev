@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, {  useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
@@ -12,32 +12,22 @@ const SignUp = () => {
   });
 
   const [button, setButton] = useState("Sign Up");
-  const { setUserDetails, setUserId, setIsVerified } = useContext(UserAuthContext);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setButton("Loading...");
-
+  
     try {
       const response = await axios.post("https://eventeevapi.onrender.com/auth/register", formData);
-      const userData = response.data.user;
-
-      // Store user data in context & local storage
-      setUserDetails(userData);
-      setUserId(userData._id);
-      setIsVerified(userData.isVerified);
-
-      localStorage.setItem("userDetails", JSON.stringify(userData));
-      localStorage.setItem("userId", userData._id);
-      localStorage.setItem("isVerified", userData.isVerified.toString());
-
+      const userData = response.data;
+      
+  
       if (response.status === 201 || response.status === 200) {
-        console.log("Signup successful:", response.data);
+        console.log("Signup successful:", userData);
         setTimeout(() => navigate("/verify"), 1000);
       }
     } catch (error) {
@@ -45,6 +35,8 @@ const SignUp = () => {
       setTimeout(() => setButton("Try Again"), 1000);
     }
   };
+  
+  
 
   return (
     <div className="grid min-h-screen grid-cols-1 md:grid-cols-2 ">
