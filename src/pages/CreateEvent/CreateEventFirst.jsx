@@ -183,7 +183,11 @@ const CreateEventFirst = () => {
                 <Input
                   name="startTime"
                   type={"time"}
-                  min={firstPageData.startDate === today ? getCurrentTime() : undefined}
+                  min={
+                    firstPageData.startDate === today
+                      ? getCurrentTime()
+                      : undefined
+                  }
                   placeholder="01:00 AM"
                   _placeholder={{ color: "#98A2B3", fontSize: "small" }}
                   focusBorderColor="#FA9874"
