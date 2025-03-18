@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Flex,
@@ -11,53 +11,58 @@ import {
 } from "@chakra-ui/react";
 import { IoClose } from "react-icons/io5";
 
+const ImageDisplayBanner = ({ thirdPageData, removeImage }) => {
+  const [imagePercentage, setImagePercentage] = useState(0);
 
-const ImageDisplayBanner = ({ thirdPageData }) => {
-    const [imagePercentage, setImagePercentage] = useState(0);
-  
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setImagePercentage((prev) => {
-          if (prev >= 100) {
-            clearInterval(interval);
-            return 100;
-          }
-          return prev + 1;
-        });
-      }, 50);
-  
-      return () => clearInterval(interval);
-    }, []);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setImagePercentage((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          return 100;
+        }
+        return prev + 1;
+      });
+    }, 50);
 
-    const lastModifiedDate = new Date(thirdPageData.thumbnail.lastModifiedDate);
-    
-      // Format Date (e.g., "11 Sep, 2025")
-      const formattedDate = lastModifiedDate.toLocaleDateString("en-US", {
+    return () => clearInterval(interval);
+  }, []);
+
+  const lastModifiedDate = thirdPageData?.thumbnail?.lastModifiedDate
+    ? new Date(thirdPageData.thumbnail.lastModifiedDate)
+    : null;
+
+  // Format Date (e.g., "11 Sep, 2025")
+  const formattedDate = lastModifiedDate
+    ? lastModifiedDate.toLocaleDateString("en-US", {
         day: "2-digit",
         month: "short",
         year: "numeric",
-      });
-    
-      // Format Time (e.g., "10:00 AM")
-      const formattedTime = lastModifiedDate.toLocaleTimeString("en-US", {
+      })
+    : "No date available";
+
+  // Format Time (e.g., "10:00 AM")
+  const formattedTime = lastModifiedDate
+    ? lastModifiedDate.toLocaleTimeString("en-US", {
         hour: "2-digit",
         minute: "2-digit",
         hour12: true, // Ensures AM/PM format
-      });
-    
-      const formatFileSize = (sizeInBytes) => {
-        if (sizeInBytes < 1024) {
-          return `${sizeInBytes} Bytes`; // Less than 1KB
-        } else if (sizeInBytes < 1024 * 1024) {
-          return `${(sizeInBytes / 1024).toFixed(2)} KB`; // Less than 1MB
-        } else if (sizeInBytes < 1024 * 1024 * 1024) {
-          return `${(sizeInBytes / (1024 * 1024)).toFixed(2)} MB`; // Less than 1GB
-        } else {
-          return `${(sizeInBytes / (1024 * 1024 * 1024)).toFixed(2)} GB`; // 1GB or more
-        }
-      };
-    
-      const fileSizeInBytes = thirdPageData.thumbnail.size;
+      })
+    : "No time available";
+
+  const formatFileSize = (sizeInBytes) => {
+    if (sizeInBytes < 1024) {
+      return `${sizeInBytes} Bytes`; // Less than 1KB
+    } else if (sizeInBytes < 1024 * 1024) {
+      return `${(sizeInBytes / 1024).toFixed(2)} KB`; // Less than 1MB
+    } else if (sizeInBytes < 1024 * 1024 * 1024) {
+      return `${(sizeInBytes / (1024 * 1024)).toFixed(2)} MB`; // Less than 1GB
+    } else {
+      return `${(sizeInBytes / (1024 * 1024 * 1024)).toFixed(2)} GB`; // 1GB or more
+    }
+  };
+
+  const fileSizeInBytes = thirdPageData?.thumbnail?.size ?? 0;
   return (
     <Center padding={"40px"}>
       <Flex
@@ -94,7 +99,10 @@ const ImageDisplayBanner = ({ thirdPageData }) => {
         <CircularProgress value={imagePercentage} color="#F56630">
           <CircularProgressLabel>{imagePercentage}%</CircularProgressLabel>
         </CircularProgress>
-        <IoClose className="text-2xl text-gray-500 hover:cursor-pointer" />
+        <IoClose
+          onClick={() => removeImage()}
+          className="text-2xl text-gray-500 hover:cursor-pointer"
+        />
       </Flex>
     </Center>
   );

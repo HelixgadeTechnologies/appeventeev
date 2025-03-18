@@ -11,4 +11,5 @@ export const eventCategory = [
     "Workshop",
     "Tech Talk / Speaker Session",
     "Hackathon",
+    "Other",
 ];

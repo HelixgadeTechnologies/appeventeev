@@ -1,12 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CreateEventLayout from "../../layout/CreateEventLayout";
-import {
-  Box,
-  Flex,
-  Heading,
-  Text,
-  Button,
-} from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, Button } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ImageDisplayBanner from "../../ui/ImageDisplayBanner";
@@ -15,6 +9,16 @@ const CreateEventSecond = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const thirdPageData = location.state || {};
+  console.log("Data being sent:", thirdPageData);
+
+  const [isImageDisplay, setIsImageDisplay] = useState(true);
+
+  const removeImage = () => {
+    setIsImageDisplay(false);
+    thirdPageData.thumbnail = null;
+    thirdPageData.thumbnailPreview = null;
+  };
+
   console.log("Data being sent:", thirdPageData);
 
   const handleDraft = async () => {
@@ -41,12 +45,16 @@ const CreateEventSecond = () => {
     }
   };
 
-
   return (
     <CreateEventLayout heading="Event Review" activeStep={4}>
       <Box>
         {/* thumbnail */}
-        <ImageDisplayBanner thirdPageData={thirdPageData}/>
+        {isImageDisplay && (
+          <ImageDisplayBanner
+            thirdPageData={thirdPageData}
+            removeImage={removeImage}
+          />
+        )}
 
         {/* display */}
         <Box>
