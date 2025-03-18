@@ -4,35 +4,36 @@ import { createContext, useState, useEffect } from "react";
 export const UserAuthContext = createContext();
 
 const UserAuthProvider = ({ children }) => {
-  // Load from localStorage or set default values
-  const [userDetails, setUserDetails] = useState(() => {
-    try {
-        const storedUser = localStorage.getItem("userDetails");
-        return storedUser ? JSON.parse(storedUser) : {};
-    } catch (error) {
-        console.error("Error parsing userDetails:", error);
-        return {};
-    }
-});
+  // Load userId from localStorage
+  const [userId, setUserId] = useState(() => localStorage.getItem("userId") || "");
+
+  const [token, setToken ] = useState(() => localStorage.getItem("token") || "")
+
+  
+
+  // Keep user details and verification status in memory (not localStorage)
+  const [userDetails, setUserDetails] = useState({});
+  const [isVerified, setIsVerified] = useState(false);
 
 
-  const [userId, setUserId] = useState(() => {
-    return localStorage.getItem("userId") || "";
-  });
 
-  const [isVerified, setIsVerified] = useState(() => {
-    return localStorage.getItem("isVerified") === "true"; // Convert string to boolean
-  });
 
-  // Update localStorage when state changes
+
+
+
+  // Update localStorage when userId changes
   useEffect(() => {
-    localStorage.setItem("userDetails", JSON.stringify(userDetails));
-    localStorage.setItem("userId", userId);
-    localStorage.setItem("isVerified", isVerified.toString());
-  }, [userDetails, userId, isVerified]);
+    if (userId) {
+      localStorage.setItem("token", token);
+      localStorage.setItem("userId", userId);
+    } else {
+      localStorage.removeItem("token")
+      localStorage.removeItem("userId"); // Remove when logged out
+    }
+  }, [userId]);
 
   return (
-    <UserAuthContext.Provider value={{ userDetails, setUserDetails, isVerified, setIsVerified, userId, setUserId }}>
+    <UserAuthContext.Provider value={{ userDetails, setUserDetails, isVerified, setIsVerified, userId, setUserId, token, setToken }}>
       {children}
     </UserAuthContext.Provider>
   );
