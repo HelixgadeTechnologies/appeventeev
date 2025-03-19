@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import CreateEventLayout from "../../layout/CreateEventLayout";
-import { Box, Flex, Heading, Text, Button } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  Text,
+  Button,
+  useToast,
+  Center,
+} from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ImageDisplayBanner from "../../components/ui/ImageDisplayBanner";
@@ -8,6 +16,8 @@ import ImageDisplayBanner from "../../components/ui/ImageDisplayBanner";
 const CreateEventSecond = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const toast = useToast();
+
   const thirdPageData = location.state || {};
   console.log("Data being sent:", thirdPageData);
 
@@ -22,26 +32,86 @@ const CreateEventSecond = () => {
   console.log("Data being sent:", thirdPageData);
 
   const handleDraft = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("Authentication token not found. Please login again.");
+    }
+
     try {
       const response = await axios.post(
         "https://eventeevapi.onrender.com/event/draftevent",
-        thirdPageData
+        thirdPageData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
+
+      toast({
+        title: "Event Drafted Successfully.",
+        description: "Your event has been added to your drafts.",
+        status: "success",
+        duration: 4000,
+        isClosable: true,
+        position: "top-right",
+      });
+      navigate("/all-events");
       console.log(response.data);
     } catch (error) {
       console.error("Error Drafting Event:", error);
+      toast({
+        title: "An error occurred.",
+        description: "Event was not drafted.",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+        position: "top-right",
+      });
     }
   };
 
   const handlePublish = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("Authentication token not found. Please login again.");
+    }
+
     try {
       const response = await axios.post(
         "https://eventeevapi.onrender.com/event/publishevent",
-        thirdPageData
+        thirdPageData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
       console.log(response.data);
+
+      toast({
+        title: "Event Published Successfully.",
+        description: "Your event has been created successfully!",
+        status: "success",
+        duration: 4000,
+        isClosable: true,
+        position: "top-right",
+      });
+      navigate("/all-events");
     } catch (error) {
       console.error("Error Publishing Event:", error);
+      toast({
+        title: "An error occurred.",
+        description: "Event was not published.",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+        position: "top-right",
+      });
     }
   };
 
@@ -49,11 +119,22 @@ const CreateEventSecond = () => {
     <CreateEventLayout heading="Event Review" activeStep={4}>
       <Box>
         {/* thumbnail */}
-        {isImageDisplay && (
+        {isImageDisplay ? (
           <ImageDisplayBanner
             thirdPageData={thirdPageData}
             removeImage={removeImage}
           />
+        ) : (
+          <Center>
+            <Heading
+              fontSize={"20px"}
+              fontWeight={"thin"}
+              padding={"40px"}
+              color={"gray.400"}
+            >
+              No File Chosen
+            </Heading>
+          </Center>
         )}
 
         {/* display */}
@@ -76,13 +157,13 @@ const CreateEventSecond = () => {
             justifyContent={"start"}
             alignItems={"center"}
             gap={"4px"}
-            borderBottomWidth={"1px"}
             height={"50px"}
+            borderBottomWidth={"1px"}
           >
             <Heading fontWeight={"800"} fontSize={"sm"} whiteSpace={"nowrap"}>
               Event Description:
             </Heading>
-            <Text fontWeight={"medium"} fontSize={"sm"}>
+            <Text fontWeight={"medium"} fontSize={"small"}>
               {thirdPageData.description}
             </Text>
           </Flex>

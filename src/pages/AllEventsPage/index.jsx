@@ -3,8 +3,11 @@ import { Box, Flex, Button, Tabs, TabList, Tab, TabPanel, TabPanels } from "@cha
 import LiveEvents from "../../components/LiveEvents";
 import DraftedEvents from "../../components/DraftedEvents";
 import CompletedEvents from "../../components/CompletedEvents";
+import { useNavigate } from "react-router-dom";
 
 const AllEventsPage = () => {
+    const navigate = useNavigate();
+    
   return (
     <Box paddingY={"20px"} position={"relative"}>
       <Flex justifyContent={"space-between"} alignItems={"start"}>

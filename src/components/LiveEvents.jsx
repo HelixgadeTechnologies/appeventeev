@@ -8,7 +8,7 @@ const LiveEvents = () => {
     <Box>
         <Grid templateColumns={"repeat(3,1fr)"} gap={"16px"}>
             {allEvents.map((event) => (
-                <GridItem>
+                <GridItem key={event.id}>
                     <AllEventDisplayCard event={event}/>
                 </GridItem>
             ))}
