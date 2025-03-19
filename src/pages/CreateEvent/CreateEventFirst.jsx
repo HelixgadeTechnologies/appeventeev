@@ -52,8 +52,8 @@ const CreateEventFirst = () => {
     if (!firstPageData.description) {
       setDescriptionError("Event description cannot be empty.");
       isValid = false;
-    } else if (firstPageData.description.length > 50) {
-      setDescriptionError("Keep this simple of 50 characters.");
+    } else if (firstPageData.description.length > 100) {
+      setDescriptionError("Keep this simple of 100 characters.");
       isValid = false;
     } else {
       setDescriptionError("");

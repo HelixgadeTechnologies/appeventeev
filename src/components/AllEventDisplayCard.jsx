@@ -55,7 +55,7 @@ const AllEventDisplayCard = ({ event }) => {
               color={"#1A1A1A"}
               paddingY={"4px"}
               paddingX={"5px"}
-              className="space-y-1.5"
+              className="space-y-1.5 z-20 bg-white"
             >
                 <Flex alignItems={"center"} gap={"1"} _hover={{ bg: "gray.100"}} paddingY={"4px"} paddingX={"5px"}>
                     <AiTwotoneDelete className="text-sm"/>
