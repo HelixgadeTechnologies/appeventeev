@@ -18,6 +18,7 @@ import CreateEventThird from "./pages/CreateEvent/CreateEventThird";
 import CreateEventFourth from "./pages/CreateEvent/CreateEventFourth";
 import TicketPage from "./pages/CreateTickets/CreateTicketPage";
 import AddTicket from "./pages/CreateTickets/TicketForms";
+import AllEventsPage from "./pages/AllEventsPage";
 
 
 
@@ -39,6 +40,9 @@ const App = () => {
         <Route path="/create-event-setup-2" element={<CreateEventSecond/>} /> 
         <Route path="/create-event-setup-3" element={<CreateEventThird/>} /> 
         <Route path="/create-event-setup-4" element={<CreateEventFourth/>} /> 
+
+        {/* all events page */}
+        <Route path="/all-events" element={<AllEventsPage/>} />
 
         {/* create ticket routes */}
         <Route path="/tickets" element={<TicketPage />} />

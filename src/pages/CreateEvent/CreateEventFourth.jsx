@@ -3,7 +3,7 @@ import CreateEventLayout from "../../layout/CreateEventLayout";
 import { Box, Flex, Heading, Text, Button } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import ImageDisplayBanner from "../../ui/ImageDisplayBanner";
+import ImageDisplayBanner from "../../components/ui/ImageDisplayBanner";
 
 const CreateEventSecond = () => {
   const location = useLocation();
