@@ -9,16 +9,16 @@ import {
   Center,
   Divider,
 } from "@chakra-ui/react";
-import { sidebarBottomLinks, sidebarTopLinks } from "../utils/sidebarLinks";
-import signOut from "../assets/icons/sign-out.svg";
+import { sidebarBottomLinks, sidebarTopLinks } from "../../utils/sidebarLinks";
+import signOut from "../../assets/icons/sign-out.svg";
 import { useLocation, useNavigate } from "react-router-dom";
-import { UserAuthContext } from "../contexts/UserAuthContext";
+import { UserAuthContext } from "../../contexts/UserAuthContext";
 
 const SideBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { userDetails } = useContext(UserAuthContext)
-  
+  const { userDetails } = useContext(UserAuthContext);
+
   const userData = {
     username: `${userDetails.firstname + " " + userDetails.lastname}`,
     email: `${userDetails.email}`,
@@ -45,8 +45,11 @@ const SideBar = () => {
                 gap={"8px"}
                 alignItems={"center"}
                 borderRadius={"4px"}
-                _hover={{cursor: "pointer", bg: `${location.pathname !== link.route && "#fcf7f5"}`}}
-                bg={ location.pathname === link.route && "#FFECE5" }
+                _hover={{
+                  cursor: "pointer",
+                  bg: `${location.pathname !== link.route && "#fcf7f5"}`,
+                }}
+                bg={location.pathname === link.route && "#FFECE5"}
               >
                 <Image src={link.icon} height={"18px"} />
                 <Text fontWeight={"normal"} fontSize={"xs"} color={"#101928"}>
@@ -54,7 +57,7 @@ const SideBar = () => {
                 </Text>
               </Flex>
             ))}
-            <Divider/>
+            <Divider />
           </Box>
         </Box>
         <Box>
@@ -68,8 +71,11 @@ const SideBar = () => {
                 height={"35px"}
                 alignItems={"center"}
                 borderRadius={"4px"}
-                _hover={{cursor: "pointer", bg: `${location.pathname !== link.route && "#fcf7f5"}`}}
-                bg={ location.pathname === link.route && "#FFECE5" }
+                _hover={{
+                  cursor: "pointer",
+                  bg: `${location.pathname !== link.route && "#fcf7f5"}`,
+                }}
+                bg={location.pathname === link.route && "#FFECE5"}
               >
                 <Image src={link.icon} height={"18px"} />
                 <Text fontWeight={"normal"} fontSize={"xs"} color={"#101928"}>
@@ -99,7 +105,11 @@ const SideBar = () => {
               {userData.email}
             </Text>
           </Box>
-          <Image src={signOut} className="hover:cursor-pointer"  height={"20px"} />
+          <Image
+            src={signOut}
+            className="hover:cursor-pointer"
+            height={"20px"}
+          />
         </Flex>
       </Center>
     </aside>
