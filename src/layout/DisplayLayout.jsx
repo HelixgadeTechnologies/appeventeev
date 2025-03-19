@@ -16,7 +16,7 @@ const DisplayLayout = ({ children }) => {
         <Header />
         <Toaster position="top-center" reverseOrder={false} />
         <main
-          className={`rounded-b-lg h-screen mx-5 ${
+          className={`rounded-b-lg h-full mx-5 ${
             location.pathname === `/dashboard` ? `bg-white` : `bg-transparent`
           }`}
         >
