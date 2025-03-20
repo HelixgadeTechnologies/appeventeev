@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import CreateEventLayout from "../../layout/CreateEventLayout";
 import {
   Box,
@@ -7,7 +6,6 @@ import {
   FormLabel,
   Input,
   Textarea,
-  FormHelperText,
   Grid,
   GridItem,
   Switch,

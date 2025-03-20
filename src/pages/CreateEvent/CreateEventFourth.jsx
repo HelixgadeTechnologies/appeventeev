@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import CreateEventLayout from "../../layout/CreateEventLayout";
 import {
   Box,
@@ -18,6 +18,8 @@ const CreateEventSecond = () => {
   const navigate = useNavigate();
   const toast = useToast();
 
+  const token = localStorage.getItem("token");
+
   const thirdPageData = location.state || {};
   console.log("Data being sent:", thirdPageData);
 
@@ -32,12 +34,11 @@ const CreateEventSecond = () => {
   console.log("Data being sent:", thirdPageData);
 
   const handleDraft = async () => {
-    const token = localStorage.getItem("token");
 
     if (!token) {
-      throw new Error("Authentication token not found. Please login again.");
+      console.error("Authentication token not found. Please login again.");
+      return;
     }
-
     try {
       const response = await axios.post(
         "https://eventeevapi.onrender.com/event/draftevent",
@@ -61,25 +62,25 @@ const CreateEventSecond = () => {
       navigate("/all-events");
       console.log(response.data);
     } catch (error) {
-      console.error("Error Drafting Event:", error);
+      console.error("Error Publishing Event:", error.response ? error.response.data : error.message);
       toast({
         title: "An error occurred.",
-        description: "Event was not drafted.",
+        description: error.response?.data?.message || "Event was not published.",
         status: "error",
         duration: 4000,
         isClosable: true,
         position: "top-right",
       });
     }
+    
   };
 
   const handlePublish = async () => {
-    const token = localStorage.getItem("token");
 
     if (!token) {
-      throw new Error("Authentication token not found. Please login again.");
+      console.error("Authentication token not found. Please login again.");
+      return;
     }
-
     try {
       const response = await axios.post(
         "https://eventeevapi.onrender.com/event/publishevent",
@@ -124,6 +125,7 @@ const CreateEventSecond = () => {
             thirdPageData={thirdPageData}
             removeImage={removeImage}
           />
+          
         ) : (
           <Center>
             <Heading
