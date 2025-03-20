@@ -2,7 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import React from "react";
 import { IoIosSearch } from "react-icons/io";
 
-const SearchBar = () => {
+const SearchBar = ({ bg = "#F0F2F5", width = "629px", borderWidth = "none" }) => {
   return (
     <Box
       display={"flex"}
@@ -11,11 +11,12 @@ const SearchBar = () => {
       paddingY={"10px"}
       paddingX={"12px"}
       height={"40px"}
-      width={"629px"}
-      bg={"#F0F2F5"}
-      borderRadius={"6px"}
+      width={width}
+      bg={bg}
+      borderRadius={"8px"}
+      borderWidth={borderWidth}
     >
-      <IoIosSearch className="text-xl text-[#475367]" />
+      <IoIosSearch className="text-2xl text-[#475367]" />
       <input
         type="text"
         placeholder="Search here..."
