@@ -75,7 +75,7 @@ const ImageUploader = ({ onFileChange, initialPreview = null }) => {
             <Image
               src={preview}
               alt="Uploaded preview"
-              className="w-52 h-auto rounded-lg shadow-md"
+              className="w-40 h-40 object-cover rounded-lg shadow-md"
             />
           )}
           <Text className="text-gray-500 mt-2">{file?.name || "Uploaded Image"}</Text>
