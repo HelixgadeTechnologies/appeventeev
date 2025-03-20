@@ -51,7 +51,11 @@ const SideBar = () => {
                 }}
                 bg={location.pathname === link.route && "#FFECE5"}
               >
-                <Image src={link.icon} height={"18px"} />
+                {location.pathname === link.route ? (
+                  <Image src={ link.active } height={"15px"} />
+                ) : (
+                  <Image src={ link.icon } height={"18px"} />
+                )}
                 <Text fontWeight={"normal"} fontSize={"xs"} color={"#101928"}>
                   {link.text}
                 </Text>
