@@ -1,10 +1,12 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, {  useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserAuthContext } from "../contexts/UserAuthContext";
 import toast from "react-hot-toast";
 const OrgForm = () => {
-  const { userId: contextUserId } = useContext(UserAuthContext);  // ✅ Use useContext at the top
+ 
+
+  const { userId } = useContext(UserAuthContext)
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -23,15 +25,6 @@ const OrgForm = () => {
       e.preventDefault();
       setButton('Loading....');
 
-      // Retrieve user ID from context or localStorage
-      const storedUserId = localStorage.getItem("userId");
-      const userId = contextUserId || storedUserId;  // ✅ Ensure userId is retrieved
-
-      if (!userId) {
-          console.error("User ID is missing!");
-          setButton("Proceed");
-          return;
-      }
 
       try {
           const response = await axios.put(

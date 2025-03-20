@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import CreateEventLayout from "../../layout/CreateEventLayout";
 import {
   Box,
@@ -7,7 +6,6 @@ import {
   FormLabel,
   Input,
   Textarea,
-  FormHelperText,
   Grid,
   GridItem,
   Switch,
@@ -16,6 +14,7 @@ import {
   Button,
   Flex,
   Divider,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
@@ -31,22 +30,88 @@ const CreateEventFirst = () => {
     endTime: "",
   });
 
+  const [nameError, setNameError] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
+  const [startDateError, setStartDateError] = useState("");
+  const [endDateError, setEndDateError] = useState("");
+  const [startTimeError, setStartTimeError] = useState("");
+  const [endTimeError, setEndTimeError] = useState("");
+
+  const validateForm = () => {
+    let isValid = true;
+
+    if (!firstPageData.name) {
+      setNameError("Event name field cannot be empty.");
+      isValid = false;
+    } else {
+      setNameError("");
+    }
+
+    if (!firstPageData.description) {
+      setDescriptionError("Event description cannot be empty.");
+      isValid = false;
+    } else if (firstPageData.description.length > 100) {
+      setDescriptionError("Keep this simple of 100 characters.");
+      isValid = false;
+    } else {
+      setDescriptionError("");
+    }
+
+    if (!firstPageData.startDate) {
+      setStartDateError("Please enter the start date for your event.");
+      isValid = false;
+    } else {
+      setStartDateError("");
+    }
+
+    if (!firstPageData.endDate) {
+      setEndDateError(
+        "Enter the same day if it's a one day event."
+      );
+      isValid = false;
+    } else {
+      setEndDateError("");
+    }
+
+    if (!firstPageData.startTime) {
+      setStartTimeError("Enter the start time of your event.");
+      isValid = false;
+    } else {
+      setStartTimeError("");
+    }
+
+    if (!firstPageData.endTime) {
+      setEndTimeError("Enter the end time of your event.");
+      isValid = false;
+    } else {
+      setEndTimeError("");
+    }
+
+    return isValid;
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFirstPageData((prev) => ({
       ...prev,
       [name]: value,
     }));
+
+    setNameError("");
+    setDescriptionError("");
+    setStartDateError("");
+    setStartTimeError("");
+    setEndDateError("");
+    setEndTimeError("");
   };
 
   const handleSubmit = async () => {
-    try {
-      // setTimeout(() => {
-      // }, 500)
-      navigate("/create-event-setup-2", { state: firstPageData });
-    } catch (error) {
-      console.error("An error occured: ", error);
+    if (validateForm()) {
+      try {
+        navigate("/create-event-setup-2", { state: firstPageData });
+      } catch (error) {
+        console.error("An error occured: ", error);
+      }
     }
   };
 
@@ -65,13 +130,11 @@ const CreateEventFirst = () => {
     return now.toTimeString().slice(0, 5); // Extract HH:MM
   };
 
-  // console.log(firstPageData.startTime, firstPageData.endTime)
-  // console.log(firstPageData.startDate, firstPageData.endDate)
   return (
     <CreateEventLayout>
       <Box>
-        <form action="" className="space-y-3 text-sm">
-          <FormControl>
+        <form action="" className="space-y-6 text-sm">
+          <FormControl isInvalid={nameError !== ""}>
             <FormLabel
               fontWeight={"medium"}
               fontSize={"small"}
@@ -90,8 +153,13 @@ const CreateEventFirst = () => {
               value={firstPageData.name}
               onChange={handleChange}
             />
+            {nameError && (
+              <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
+                {nameError}
+              </FormErrorMessage>
+            )}
           </FormControl>
-          <FormControl>
+          <FormControl isInvalid={descriptionError !== ""}>
             <FormLabel
               fontWeight={"medium"}
               fontSize={"small"}
@@ -110,13 +178,11 @@ const CreateEventFirst = () => {
               value={firstPageData.description}
               onChange={handleChange}
             />
-            <FormHelperText
-              fontSize={"smaller"}
-              color={"#667185"}
-              fontWeight={"normal"}
-            >
-              Keep this simple of 50 characters
-            </FormHelperText>
+            {descriptionError && (
+              <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
+                {descriptionError}
+              </FormErrorMessage>
+            )}
           </FormControl>
 
           <Grid
@@ -126,7 +192,7 @@ const CreateEventFirst = () => {
             paddingBottom={"2"}
           >
             <GridItem>
-              <FormControl>
+              <FormControl isInvalid={startDateError !== ""}>
                 <FormLabel
                   fontWeight={"medium"}
                   fontSize={"small"}
@@ -146,10 +212,15 @@ const CreateEventFirst = () => {
                   value={firstPageData.startDate}
                   onChange={handleChange}
                 />
+                {startDateError && (
+                  <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
+                    {startDateError}
+                  </FormErrorMessage>
+                )}
               </FormControl>
             </GridItem>
             <GridItem>
-              <FormControl>
+              <FormControl isInvalid={endDateError !== ""}>
                 <FormLabel
                   fontWeight={"medium"}
                   fontSize={"small"}
@@ -169,10 +240,15 @@ const CreateEventFirst = () => {
                   value={firstPageData.endDate}
                   onChange={handleChange}
                 />
+                {endDateError && (
+                  <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
+                    {endDateError}
+                  </FormErrorMessage>
+                )}
               </FormControl>
             </GridItem>
             <GridItem>
-              <FormControl>
+              <FormControl isInvalid={startTimeError !== ""}>
                 <FormLabel
                   fontWeight={"medium"}
                   fontSize={"small"}
@@ -183,7 +259,11 @@ const CreateEventFirst = () => {
                 <Input
                   name="startTime"
                   type={"time"}
-                  min={firstPageData.startDate === today ? getCurrentTime() : undefined}
+                  min={
+                    firstPageData.startDate === today
+                      ? getCurrentTime()
+                      : undefined
+                  }
                   placeholder="01:00 AM"
                   _placeholder={{ color: "#98A2B3", fontSize: "small" }}
                   focusBorderColor="#FA9874"
@@ -192,10 +272,15 @@ const CreateEventFirst = () => {
                   value={firstPageData.startTime}
                   onChange={handleChange}
                 />
+                {startTimeError && (
+                  <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
+                    {startTimeError}
+                  </FormErrorMessage>
+                )}
               </FormControl>
             </GridItem>
             <GridItem>
-              <FormControl>
+              <FormControl isInvalid={endTimeError !== ""}>
                 <FormLabel
                   fontWeight={"medium"}
                   fontSize={"small"}
@@ -214,6 +299,11 @@ const CreateEventFirst = () => {
                   value={firstPageData.endTime}
                   onChange={handleChange}
                 />
+                {endTimeError && (
+                  <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
+                    {endTimeError}
+                  </FormErrorMessage>
+                )}
               </FormControl>
             </GridItem>
           </Grid>

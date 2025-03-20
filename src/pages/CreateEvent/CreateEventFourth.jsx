@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import CreateEventLayout from "../../layout/CreateEventLayout";
 import {
   Box,
@@ -6,47 +6,138 @@ import {
   Heading,
   Text,
   Button,
+  useToast,
+  Center,
 } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import ImageDisplayBanner from "../../ui/ImageDisplayBanner";
+import ImageDisplayBanner from "../../components/ui/ImageDisplayBanner";
 
 const CreateEventSecond = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const toast = useToast();
+
+  const token = localStorage.getItem("token");
+
   const thirdPageData = location.state || {};
   console.log("Data being sent:", thirdPageData);
 
+  const [isImageDisplay, setIsImageDisplay] = useState(true);
+
+  const removeImage = () => {
+    setIsImageDisplay(false);
+    thirdPageData.thumbnail = null;
+    thirdPageData.thumbnailPreview = null;
+  };
+
+  console.log("Data being sent:", thirdPageData);
+
   const handleDraft = async () => {
+
+    if (!token) {
+      console.error("Authentication token not found. Please login again.");
+      return;
+    }
     try {
       const response = await axios.post(
         "https://eventeevapi.onrender.com/event/draftevent",
-        thirdPageData
+        thirdPageData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
+
+      toast({
+        title: "Event Drafted Successfully.",
+        description: "Your event has been added to your drafts.",
+        status: "success",
+        duration: 4000,
+        isClosable: true,
+        position: "top-right",
+      });
+      navigate("/all-events");
       console.log(response.data);
     } catch (error) {
-      console.error("Error Drafting Event:", error);
+      console.error("Error Publishing Event:", error.response ? error.response.data : error.message);
+      toast({
+        title: "An error occurred.",
+        description: error.response?.data?.message || "Event was not published.",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+        position: "top-right",
+      });
     }
+    
   };
 
   const handlePublish = async () => {
+
+    if (!token) {
+      console.error("Authentication token not found. Please login again.");
+      return;
+    }
     try {
       const response = await axios.post(
         "https://eventeevapi.onrender.com/event/publishevent",
-        thirdPageData
+        thirdPageData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
       console.log(response.data);
+
+      toast({
+        title: "Event Published Successfully.",
+        description: "Your event has been created successfully!",
+        status: "success",
+        duration: 4000,
+        isClosable: true,
+        position: "top-right",
+      });
+      navigate("/all-events");
     } catch (error) {
       console.error("Error Publishing Event:", error);
+      toast({
+        title: "An error occurred.",
+        description: "Event was not published.",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+        position: "top-right",
+      });
     }
   };
-
 
   return (
     <CreateEventLayout heading="Event Review" activeStep={4}>
       <Box>
         {/* thumbnail */}
-        <ImageDisplayBanner thirdPageData={thirdPageData}/>
+        {isImageDisplay ? (
+          <ImageDisplayBanner
+            thirdPageData={thirdPageData}
+            removeImage={removeImage}
+          />
+          
+        ) : (
+          <Center>
+            <Heading
+              fontSize={"20px"}
+              fontWeight={"thin"}
+              padding={"40px"}
+              color={"gray.400"}
+            >
+              No File Chosen
+            </Heading>
+          </Center>
+        )}
 
         {/* display */}
         <Box>
@@ -68,13 +159,13 @@ const CreateEventSecond = () => {
             justifyContent={"start"}
             alignItems={"center"}
             gap={"4px"}
-            borderBottomWidth={"1px"}
             height={"50px"}
+            borderBottomWidth={"1px"}
           >
             <Heading fontWeight={"800"} fontSize={"sm"} whiteSpace={"nowrap"}>
               Event Description:
             </Heading>
-            <Text fontWeight={"medium"} fontSize={"sm"}>
+            <Text fontWeight={"medium"} fontSize={"small"}>
               {thirdPageData.description}
             </Text>
           </Flex>

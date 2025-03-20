@@ -14,6 +14,7 @@ import {
   Image,
   Divider,
   AbsoluteCenter,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import { eventType, eventCategory } from "../../utils/create-event";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -40,6 +41,42 @@ const CreateEventSecond = () => {
     thumbnailPreview: null,
   });
 
+  const [typeError, setTypeError] = useState("");
+  const [locationError, setLocationError] = useState("");
+  const [categoryError, setCategoryError] = useState("");
+
+  const validateForm = () => {
+    let isValid = true;
+
+    if (!secondPageData.type || secondPageData.type === "Select type") {
+      setTypeError("Please select the type of event you are hosting.");
+      isValid = false;
+    } else {
+      setTypeError("");
+    }
+
+    if (!secondPageData.location) {
+      setLocationError("Please enter the location for your event.");
+      isValid = false;
+    } else {
+      setLocationError("");
+    }
+
+    if (
+      !secondPageData.category ||
+      secondPageData.category === "Select category"
+    ) {
+      setCategoryError(
+        "Please select a category."
+      );
+      isValid = false;
+    } else {
+      setCategoryError("");
+    }
+
+    return isValid;
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -47,28 +84,34 @@ const CreateEventSecond = () => {
       ...prev,
       [name]: value,
     }));
+
+    setTypeError("");
+    setLocationError("");
+    setCategoryError("");
   };
 
   const handleSubmit = () => {
-    try {
-      // Create a new object with the file details before navigating
-      const dataToSubmit = {
-        ...secondPageData,
-        // If you need specific file details:
-        thumbnailName: secondPageData.thumbnail
-          ? secondPageData.thumbnail.name
-          : null,
-        thumbnailSize: secondPageData.thumbnail
-          ? secondPageData.thumbnail.size
-          : null,
-        thumbnailType: secondPageData.thumbnail
-          ? secondPageData.thumbnail.type
-          : null,
-      };
+    if (validateForm()) {
+      try {
+        // Create a new object with the file details before navigating
+        const dataToSubmit = {
+          ...secondPageData,
+          // If you need specific file details:
+          thumbnailName: secondPageData.thumbnail
+            ? secondPageData.thumbnail.name
+            : null,
+          thumbnailSize: secondPageData.thumbnail
+            ? secondPageData.thumbnail.size
+            : null,
+          thumbnailType: secondPageData.thumbnail
+            ? secondPageData.thumbnail.type
+            : null,
+        };
 
-      navigate("/create-event-setup-3", { state: dataToSubmit });
-    } catch (error) {
-      console.error("Error sending second page data", error);
+        navigate("/create-event-setup-3", { state: dataToSubmit });
+      } catch (error) {
+        console.error("Error sending second page data", error);
+      }
     }
   };
 
@@ -189,7 +232,7 @@ const CreateEventSecond = () => {
               </Button>
             )}
           </Box>
-          <FormControl>
+          <FormControl isInvalid={typeError !== ""}>
             <FormLabel
               fontWeight={"medium"}
               fontSize={"small"}
@@ -215,8 +258,13 @@ const CreateEventSecond = () => {
                 </option>
               ))}
             </Select>
+            {typeError && (
+              <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
+                {typeError}
+              </FormErrorMessage>
+            )}
           </FormControl>
-          <FormControl>
+          <FormControl isInvalid={locationError !== ""}>
             <FormLabel
               fontWeight={"medium"}
               fontSize={"small"}
@@ -235,8 +283,13 @@ const CreateEventSecond = () => {
               value={secondPageData.location}
               onChange={handleChange}
             />
+            {locationError && (
+              <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
+                {locationError}
+              </FormErrorMessage>
+            )}
           </FormControl>
-          <FormControl>
+          <FormControl isInvalid={categoryError !== ""}>
             <FormLabel
               fontWeight={"medium"}
               fontSize={"small"}
@@ -262,6 +315,11 @@ const CreateEventSecond = () => {
                 </option>
               ))}
             </Select>
+            {categoryError && (
+              <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
+                {categoryError}
+              </FormErrorMessage>
+            )}
           </FormControl>
           <Text color={"#667185"} fontSize={"xs"}>
             You can set up a{" "}
