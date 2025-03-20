@@ -1,5 +1,4 @@
 import { createContext, useState, useEffect } from "react";
-
 // eslint-disable-next-line react-refresh/only-export-components
 export const UserAuthContext = createContext();
 
@@ -27,12 +26,25 @@ const UserAuthProvider = ({ children }) => {
     }
   }, [userId, token, userDetails]);
 
+  const logout = () => {
+    setUserId("");
+    setToken("");
+    setUserDetails({});
+    setIsVerified(false);
+  
+    localStorage.removeItem("userId");
+    localStorage.removeItem("token");
+    localStorage.removeItem("userDetails");
+  };
+  
+
   return (
     <UserAuthContext.Provider value={{ 
       userDetails, setUserDetails, 
       isVerified, setIsVerified, 
       userId, setUserId, 
-      token, setToken 
+      token, setToken,
+      logout 
     }}>
       {children}
     </UserAuthContext.Provider>
