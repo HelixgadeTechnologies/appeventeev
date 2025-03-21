@@ -18,8 +18,13 @@ import CreateEventThird from "./pages/CreateEvent/CreateEventThird";
 import CreateEventFourth from "./pages/CreateEvent/CreateEventFourth";
 import TicketPage from "./pages/CreateTickets/CreateTicketPage";
 import AddTicket from "./pages/CreateTickets/TicketForms";
+<<<<<<< HEAD
 import ResetPassword from "./pages/SignIn/ResetPassword";
 
+=======
+import AllEventsPage from "./pages/AllEventsPage";
+import Attendees from "./pages/Attendees"
+>>>>>>> 1dccd2ed428cc4b990a04a6008e8538f54240759
 
 
 const App = () => {
@@ -43,9 +48,15 @@ const App = () => {
         <Route path="/create-event-setup-3" element={<CreateEventThird/>} /> 
         <Route path="/create-event-setup-4" element={<CreateEventFourth/>} /> 
 
+        {/* all events route */}
+        <Route path="/all-events" element={<AllEventsPage/>} />
+
         {/* create ticket routes */}
         <Route path="/tickets" element={<TicketPage />} />
         <Route path="/create-ticket" element={<AddTicket/>} />
+
+        {/* check-in routes */}
+        <Route path="/attendees" element={<Attendees/>} />
         
       </Route>
     )
