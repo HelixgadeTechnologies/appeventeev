@@ -4,20 +4,30 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import AddTicket from "./TicketForms";
+import ticketData from "../../utils/dummyData";
+import Table from "../../components/ui/Table";
+import { TiTicket } from "react-icons/ti";
 
 const TicketPage = () => {
   const { onOpen } = useDisclosure();
 
+
   return (
-    <Box p={5} w="full" maxW="95%" mx="auto" bg="white" borderRadius="lg" boxShadow="md">
+    <Box p={5} w="full" maxW="95%" mx="auto" bg="#F9FAFB" borderRadius="lg" >
       <Text fontSize="xl" fontWeight="bold">My Tickets</Text>
-      <Text fontSize="sm" color="gray.500">
+     <Box className="flex justify-between items-center">
+     <Text fontSize="sm" color="gray.500 ">
         Choose a ticket type or use multiple types.
       </Text>
+      <Box>
+        <AddTicket />
+      </Box>
 
+     </Box>
       <Tabs variant="unstyled" mt={4}>
         <TabList borderBottom="1px solid #E2E8F0" display="grid" gridTemplateColumns="repeat(3, 1fr)">
           <Tab _selected={{ borderBottom: "2px solid #F56630", fontWeight: "bold", color: "#F56630" }} px={4}>
+           <TiTicket />
             Paid Ticket
             <Box as="span" px="8px" py="2px" ml="6px" borderRadius="full" bg="#E53E3E" color="white" fontSize="sm" fontWeight="bold">
               {0}
@@ -30,6 +40,7 @@ const TicketPage = () => {
             </Box>
           </Tab>
           <Tab _selected={{ borderBottom: "2px solid #718096", fontWeight: "bold", color: "#718096" }} px={4}>
+          
             Donation
             <Box as="span" px="8px" py="2px" ml="6px" borderRadius="full" bg="#F56630" color="white" fontSize="sm" fontWeight="bold">
               {0}
@@ -38,23 +49,25 @@ const TicketPage = () => {
         </TabList>
 
         <TabPanels>
-         <TabPanel><EmptyState onAddTicket={onOpen} /></TabPanel>
-          <TabPanel><EmptyState onAddTicket={onOpen} /></TabPanel>
-          <TabPanel><EmptyState onAddTicket={onOpen} /></TabPanel>
+         <TabPanel>
+          {ticketData.length < 1 ?
+           <EmptyState onAddTicket={onOpen} /> 
+           : <Table type={'paid'} /> }
+           </TabPanel>
+          <TabPanel>
+          {ticketData.length < 1 ?
+           <EmptyState onAddTicket={onOpen} /> 
+           : <Table type={'free'} /> }
+          </TabPanel>
+          <TabPanel>
+          {ticketData.length < 1 ?
+           <EmptyState onAddTicket={onOpen} /> 
+           : <Table type={'donation'} /> }
+          </TabPanel>
         </TabPanels>
       </Tabs>
 
-      {/* Modal for Ticket Form
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
-        <ModalOverlay />
-        <ModalContent maxW="500px">
-          <ModalHeader>Add Ticket</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <AddTicket onClose={onClose} />
-          </ModalBody>
-        </ModalContent>
-      </Modal> */}
+    
     </Box>
   );
 };

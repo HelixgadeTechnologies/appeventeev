@@ -12,6 +12,7 @@ const RootLayout = () => {
     "/forgot-password",
     "/verify",
     "/OrganizationDetails",
+    "/create-new-password"
   ];
 
   const isNoLayoutRoute = noLayoutRoutes.includes(location.pathname);
