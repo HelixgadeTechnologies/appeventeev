@@ -40,7 +40,7 @@ const DashboardPopulated = () => {
             <Flex
               key={index}
               width={"full"}
-              height={"110px"}
+              height={"100px"}
               borderRadius={"12px"}
               borderColor={"#E4E7EC"}
               borderWidth={"thin"}
@@ -50,13 +50,13 @@ const DashboardPopulated = () => {
               alignItems={"center"}
             >
               <Box width={"143px"} className="space-y-2">
-                <Text fontWeight={"normal"} fontSize={"sm"} color={"#475367"}>
+                <Text fontWeight={"normal"} fontSize={"small"} color={"#475367"}>
                   {box.heading}
                 </Text>
                 <Heading
                   color={"#344054"}
                   fontWeight={"semibold"}
-                  fontSize={"20px"}
+                  fontSize={"18px"}
                 >
                   {box.amount}
                 </Heading>
@@ -91,7 +91,7 @@ const DashboardPopulated = () => {
             <Heading
               color={"#101928"}
               fontWeight={"semibold"}
-              fontSize={"18px"}
+              fontSize={"16px"}
             >
               Newest peeps
             </Heading>
@@ -104,7 +104,7 @@ const DashboardPopulated = () => {
               _hover={{ textDecoration: "underline", cursor: "pointer" }}
             >
               See all attendees
-              <FaChevronRight className="text-xl" />
+              <FaChevronRight className="text-base" />
             </Flex>
           </Flex>
           <Box
@@ -115,7 +115,7 @@ const DashboardPopulated = () => {
             borderColor={"#F0F2F5"}
             bg={"white"}
           >
-            <Center color={"#475367"} height={"full"}>
+            <Center color={"#475367"} height={"full"} fontSize={"sm"}>
               New attendees would appear here! 😊
             </Center>
           </Box>
@@ -123,7 +123,7 @@ const DashboardPopulated = () => {
 
         {/* services */}
         <Box width={"695px"}>
-          <Heading color={"#101928"} fontWeight={"semibold"} fontSize={"18px"}>
+          <Heading color={"#101928"} fontWeight={"semibold"} fontSize={"16px"}>
             Services
           </Heading>
           <Grid
@@ -139,7 +139,9 @@ const DashboardPopulated = () => {
                 height={"150px"}
                 borderRadius={"10px"}
                 bg={service.bg}
-                _hover={{cursor: "pointer"}}
+                transitionDuration={"500ms"}
+                transitionProperty={"colors"}
+                _hover={{cursor: "pointer", borderWidth: "thin", borderColor: service.borderColor}}
               >
                 <Flex
                   gap={"30px"}
@@ -169,7 +171,7 @@ const DashboardPopulated = () => {
         {/* right event tab */}
         <Box
           width={"full"}
-          height={"350px"}
+          height={"fitcontent"}
           bg={"white"}
           borderRadius={"12px"}
           borderWidth={"thin"}
@@ -178,38 +180,38 @@ const DashboardPopulated = () => {
           <Heading
           color={"#101928"}
           fontWeight={"semibold"}
-          fontSize={"18px"}
+          fontSize={"16px"}
           margin={"5"}
           >
             Event day
           </Heading>
           <Divider/>
-          <Box padding={"5"} className="space-y-[18px]">
+          <Box padding={"5"} className="space-y-[14px]">
             <Heading
             color={"#101928"}
             fontWeight={"semibold"}
-            fontSize={"18px"}
+            fontSize={"small"}
             >
               Friday 6, July
             </Heading>
             <Flex gap={"2.5"} alignItems={"center"}>
-              <LuClock3 className="text-lg text-[#475367]"/>
-              <Text color={"#475367"} fontWeight={"normal"} fontSize={"small"}>11.30 - 3.00 (4:30 min)</Text>
+              <LuClock3 className="text-base text-[#475367]"/>
+              <Text color={"#475367"} fontWeight={"normal"} fontSize={"11px"}>11.30 - 3.00 (4:30 min)</Text>
             </Flex>
             <Flex gap={"2.5"} alignItems={"start"}>
-              <IoCalendarClearOutline className="text-3xl text-[#475367]"/>
-              <Text color={"#475367"} fontWeight={"normal"} fontSize={"small"}>Cottage Medicare Hospital, 18 Iwaya Rd, Yaba 101245, Lagos</Text>
+              <IoCalendarClearOutline className="text-xl text-[#475367]"/>
+              <Text color={"#475367"} fontWeight={"normal"} fontSize={"11px"}>Cottage Medicare Hospital, 18 Iwaya Rd, Yaba 101245, Lagos</Text>
             </Flex>
             <Flex gap={"2.5"} alignItems={"center"}>
-              <Avatar name={userData.username} size={"md"}/>
+              <Avatar name={userData.username} size={"sm"}/>
               <Box>
-                <Heading fontWeight={"medium"} fontSize={"sm"} color={"#101928"}>Dr. Richard Edem</Heading>
-                <Text fontWeight={"normal"} fontSize={"small"} color={"#475367"}>Event organiser</Text>
+                <Heading fontWeight={"medium"} fontSize={"small"} color={"#101928"}>{userData.username}</Heading>
+                <Text fontWeight={"normal"} fontSize={"x-small"} color={"#475367"}>Event organiser</Text>
               </Box>
             </Flex>
           </Box>
           <Divider></Divider>
-          <Flex gap={"10px"} marginX={"2.5"} marginTop={"2.5"}>
+          <Flex gap={"10px"} marginX={"2.5"} marginY={"2.5"}>
             <Button
             variant={"outline"}
             color={"#344054"}
@@ -220,7 +222,6 @@ const DashboardPopulated = () => {
             >Edit Event Details</Button>
             <Button
             bg={"#EB5017"}
-            size={"md"}
             _hover={{ bg: "#e84a11" }}
             fontSize={"small"}
             variant={"solid"}

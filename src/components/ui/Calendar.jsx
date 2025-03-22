@@ -21,7 +21,7 @@ const Calendar = () => {
   }
 
   return (
-    <div className="max-w-sm mx-auto p-4">
+    <div className="w-full mx-auto p-4">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <button onClick={() => setCurrentDate(add(currentDate, { months: -1 }))}>
