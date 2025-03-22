@@ -17,6 +17,7 @@ import { UserAuthContext } from "../../contexts/UserAuthContext";
 // import icons
 import { RxDownload } from "react-icons/rx";
 import { IoAddCircleOutline } from "react-icons/io5";
+import { FiCalendar } from "react-icons/fi";
 
 const Header = () => {
   const location = useLocation();
@@ -33,7 +34,7 @@ const Header = () => {
     "/dashboard": {
       title: `Hello, ${userDetails.firstname}`,
       subtitle:
-        "It’s a sunny day today, we hope you’re preparing for the big day! 😊",
+        "It’s a sunny day today, we hope you’re taking good care of your health 😊",
     },
     "/attendees": {
       title: `Attendees`,
@@ -45,6 +46,34 @@ const Header = () => {
     title: `Welcome GDG Port Harcourt`,
     subtitle: "Control your profile and setup integrations",
   };
+
+  function todaysDate() {
+    const date = new Date();
+
+    // Get day, month, and year
+    const day = date.getDate();
+    const month = date.toLocaleString("en-US", { month: "long" });
+    const year = date.getFullYear();
+
+    // Function to get the ordinal suffix (st, nd, rd, th)
+    function getOrdinalSuffix(day) {
+      if (day > 3 && day < 21) return "th"; // Covers 11th-13th
+      switch (day % 10) {
+        case 1:
+          return "st";
+        case 2:
+          return "nd";
+        case 3:
+          return "rd";
+        default:
+          return "th";
+      }
+    }
+
+    return `${day}${getOrdinalSuffix(day)} ${month}, ${year}`;
+  }
+
+  console.log(todaysDate()); // Output: "20th March, 2025"
 
   return (
     <Box>
@@ -72,7 +101,7 @@ const Header = () => {
       <Flex justifyContent={"space-between"} alignItems={"end"}>
         {excludedPaths.includes(location.pathname) ? null : (
           <Box
-            bg={location.pathname === `/dashboard` ? `white` : `#F9FAFB`}
+            // bg={location.pathname === `/dashboard` ? `white` : `#F9FAFB`}
             width={"full"}
             marginX={"5"}
             marginTop={"3.5"}
@@ -86,6 +115,35 @@ const Header = () => {
               {subtitle}
             </Text>
           </Box>
+        )}
+
+        {/* buttons to show on dashboard page */}
+        {location.pathname === "/dashboard" && (
+          <Center
+            width={"320px"}
+            height={"74px"}
+            borderRadius={"12px"}
+            gap={"12px"}
+            bg={"white"}
+            marginRight={"10"}
+            marginBottom={"2.5"}
+            paddingY={"16px"}
+            paddingX={"20px"}
+            borderWidth={"thin"}
+          >
+            <Center
+              borderRadius={"full"}
+              height={"40px"}
+              width={"40px"}
+              bg={"#F0F2F5"}
+            >
+              <FiCalendar className="text-[#344054] text-xl" />
+            </Center>
+            <Box>
+              <Text>Today's Date</Text>
+              <Heading fontSize={"16px"}>{todaysDate()}</Heading>
+            </Box>
+          </Center>
         )}
 
         {/* buttons to show on attendee page */}

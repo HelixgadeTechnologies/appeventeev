@@ -19,7 +19,7 @@ const NoStatePage = ({
 }) => {
   const navigate = useNavigate();
   return (
-    <Center>
+    <Center bg={"white"}>
       <Flex justifyContent={"center"} alignItems={"center"}>
         <Center flexDir={"column"} gap={"5"} marginY={"16"}>
           <Image
