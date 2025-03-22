@@ -117,10 +117,10 @@ const Header = () => {
           </Box>
         )}
 
-        {/* buttons to show on dashboard page */}
+        {/* tab to show on dashboard page */}
         {location.pathname === "/dashboard" && (
           <Center
-            width={"320px"}
+            width={"280px"}
             height={"74px"}
             borderRadius={"12px"}
             gap={"12px"}
@@ -140,8 +140,8 @@ const Header = () => {
               <FiCalendar className="text-[#344054] text-xl" />
             </Center>
             <Box>
-              <Text>Today's Date</Text>
-              <Heading fontSize={"16px"}>{todaysDate()}</Heading>
+              <Text fontSize={"small"}>Today's Date</Text>
+              <Heading fontSize={"sm"}>{todaysDate()}</Heading>
             </Box>
           </Center>
         )}
