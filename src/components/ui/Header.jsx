@@ -21,7 +21,7 @@ import { IoAddCircleOutline } from "react-icons/io5";
 import { FiCalendar } from "react-icons/fi";
 
 const Header = () => {
-  const {publishedEvents} = useContext(EventContext)
+  const { publishedEvents } = useContext(EventContext);
   const location = useLocation();
 
   const excludedPaths = ["/tickets", "/another-path", "/create-ticket"];
@@ -43,13 +43,11 @@ const Header = () => {
       subtitle: "Showing data over the last 30 days",
     },
   };
-  
 
   let { title, subtitle } = pageData[location.pathname] || {
     title: `Welcome GDG Port Harcourt`, //need to take org name to display here for when user isn't on dashboard or hasn't added event
     subtitle: "Control your profile and setup integrations",
   };
-
 
   function todaysDate() {
     const date = new Date();
@@ -103,7 +101,14 @@ const Header = () => {
       <Flex justifyContent={"space-between"} alignItems={"end"}>
         {excludedPaths.includes(location.pathname) ? null : (
           <Box
-            bg={location.pathname === `/dashboard` && publishedEvents.length > 0 || publishedEvents.length > 0 ? `#F9FAFB` : `white`}
+            bg={
+              (location.pathname === `/dashboard` &&
+                publishedEvents.length > 0) ||
+              publishedEvents.length > 0 ||
+              location.pathname !== "/dashboard"
+                ? `#F9FAFB`
+                : `white`
+            }
             width={"full"}
             marginX={"5"}
             marginTop={"3.5"}
@@ -154,6 +159,7 @@ const Header = () => {
             <Button
               variant={"outline"}
               color={"#344054"}
+              bg={"white"}
               fontWeight={"medium"}
               borderRadius={"lg"}
               fontSize={"sm"}
