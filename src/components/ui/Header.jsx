@@ -13,6 +13,7 @@ import {
 import { useLocation } from "react-router-dom";
 import Notifications from "./Notifications";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
+import { EventContext } from "../../contexts/EventContext";
 
 // import icons
 import { RxDownload } from "react-icons/rx";
@@ -20,6 +21,7 @@ import { IoAddCircleOutline } from "react-icons/io5";
 import { FiCalendar } from "react-icons/fi";
 
 const Header = () => {
+  const {publishedEvents} = useContext(EventContext)
   const location = useLocation();
 
   const excludedPaths = ["/tickets", "/another-path", "/create-ticket"];
@@ -41,11 +43,13 @@ const Header = () => {
       subtitle: "Showing data over the last 30 days",
     },
   };
+  
 
   let { title, subtitle } = pageData[location.pathname] || {
-    title: `Welcome GDG Port Harcourt`,
+    title: `Welcome GDG Port Harcourt`, //need to take org name to display here for when user isn't on dashboard or hasn't added event
     subtitle: "Control your profile and setup integrations",
   };
+
 
   function todaysDate() {
     const date = new Date();
@@ -73,8 +77,6 @@ const Header = () => {
     return `${day}${getOrdinalSuffix(day)} ${month}, ${year}`;
   }
 
-  console.log(todaysDate()); // Output: "20th March, 2025"
-
   return (
     <Box>
       <Flex
@@ -101,7 +103,7 @@ const Header = () => {
       <Flex justifyContent={"space-between"} alignItems={"end"}>
         {excludedPaths.includes(location.pathname) ? null : (
           <Box
-            // bg={location.pathname === `/dashboard` ? `white` : `#F9FAFB`}
+            bg={location.pathname === `/dashboard` && publishedEvents.length > 0 || publishedEvents.length > 0 ? `#F9FAFB` : `white`}
             width={"full"}
             marginX={"5"}
             marginTop={"3.5"}
@@ -118,7 +120,7 @@ const Header = () => {
         )}
 
         {/* tab to show on dashboard page */}
-        {location.pathname === "/dashboard" && (
+        {location.pathname === "/dashboard" && publishedEvents.length > 0 && (
           <Center
             width={"280px"}
             height={"74px"}

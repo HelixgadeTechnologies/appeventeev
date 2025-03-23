@@ -7,6 +7,7 @@ import receipt from "../assets/icons/receipt.svg";
 import settings from "../assets/icons/settings.svg";
 import headset from "../assets/icons/headset.svg";
 import gift from "../assets/icons/gift.svg";
+import monetization from "../assets/icons/monetization.svg";
 
 // active icons
 import homeActive from "../assets/icons/dashboard-active.svg";
@@ -17,7 +18,12 @@ import ticketsActive from "../assets/icons/tickets-active.svg";
 import analyticsActive from "../assets/icons/analytics-active.svg";
 
 export const sidebarTopLinks = [
-  { route: "/dashboard", icon: home, text: "Dashboard", active: homeActive },
+  { 
+    route: "/dashboard", 
+    icon: home, 
+    text: "Dashboard", 
+    active: homeActive 
+  },
   {
     route: "/attendees",
     icon: attendees,
@@ -55,3 +61,10 @@ export const sidebarBottomLinks = [
   { route: "/help", icon: headset, text: "Help Center" },
   { route: "/refer", icon: gift, text: "Refer family & friends" },
 ];
+
+
+export const sidebarFirstLinks = [
+  {route: "/dashboard", text: "Home", icon: home, active: homeActive },
+  {route: "/profile", text: "Profile", icon: attendees, active: attendeesActive },
+  {route: "/monetization", text: "Monetization", icon: monetization, active: monetization },
+]

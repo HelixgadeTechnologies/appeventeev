@@ -1,11 +1,17 @@
-import React, { useState } from "react";
-import { Box, Center, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import React, { useContext, useState } from "react";
+import { Avatar, Box, Center, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { IoIosMore } from "react-icons/io";
 import "typeface-open-sans";
 import { AiTwotoneCreditCard, AiTwotoneDelete } from "react-icons/ai";
+import { UserAuthContext } from "../contexts/UserAuthContext";
 
 const AllEventDisplayCard = ({ event }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { userDetails } = useContext(UserAuthContext);
+  
+    const userData = {
+      username: `${userDetails.firstname + " " + userDetails.lastname}`,
+    };
 
   const handleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -24,13 +30,17 @@ const AllEventDisplayCard = ({ event }) => {
       style={{ fontFamily: "Open Sans, sans-serif" }}
     >
       <Flex justifyContent={"space-between"} alignItems={"start"}>
-        <Image
-          src={event.thumbnail}
-          height={"60px"}
-          width={"60px"}
-          objectFit={"cover"}
-          rounded={"full"}
-        />
+        {event.thumbnail === "" ? (
+          <Avatar name={userData.username} />
+        ) : (
+          <Image
+            src={event.thumbnail || null}
+            height={"60px"}
+            width={"60px"}
+            objectFit={"cover"}
+            rounded={"full"}
+          />
+        )}
         <Center
           borderWidth={"1px"}
           borderColor={"gray.400"}
@@ -76,7 +86,7 @@ const AllEventDisplayCard = ({ event }) => {
           fontSize={"16px"}
           lineHeight={"24px"}
         >
-          {event.eventName}
+          {event.name}
         </Heading>
         <Flex
           fontWeight={"normal"}
@@ -85,8 +95,8 @@ const AllEventDisplayCard = ({ event }) => {
           color={"#1A1A1A"}
           gap={"4px"}
         >
-          <Text>{event.eventStartTime},</Text>
-          <Text>{event.eventStartDate}</Text>
+          <Text>{event.startTime},</Text>
+          <Text>{event.startDate}</Text>
         </Flex>
       </Box>
       <Flex

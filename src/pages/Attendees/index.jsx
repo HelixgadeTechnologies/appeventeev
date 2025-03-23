@@ -29,6 +29,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
+import NoStatePage from "../../components/NoStatePage";
 
 const Attendees = () => {
   const sortOptions = ["A-Z", "Z-A", "Latest", "Oldest"];
@@ -181,24 +182,25 @@ const Attendees = () => {
         </Box>
       </Flex>
 
-      {/* table */}
-      <Table size={"sm"} marginTop={"20px"}>
+      {attendees.length > 0 ? (
+        // table
+        <Table size={"sm"} marginTop={"20px"}>
         <Thead bg={"gray.50"} height={"45px"}>
-          <Tr>
-            <Th>
-              <Checkbox
-                colorScheme="orange"
-                marginRight={"10px"}
-                size={"lg"}
-                onChange={handleSelectAll}
-              />
-              Name
-            </Th>
-            <Th>Email</Th>
-            <Th>Date Registered</Th>
-            <Th>Check-in</Th>
-            <Th></Th>
-          </Tr>
+        <Tr>
+          <Th>
+            <Checkbox
+              colorScheme="orange"
+              marginRight={"10px"}
+              size={"lg"}
+              onChange={handleSelectAll}
+            />
+            Name
+          </Th>
+          <Th>Email</Th>
+          <Th>Date Registered</Th>
+          <Th>Check-in</Th>
+          <Th></Th>
+        </Tr>
         </Thead>
         {query !== "" && filteredQuery.length === 0 ? (
           // for when there are no results
@@ -360,7 +362,16 @@ const Attendees = () => {
             ))}
           </Tbody>
         )}
-      </Table>
+    </Table>
+      ) : (
+        <NoStatePage
+        img={"https://res.cloudinary.com/dnou1zvji/image/upload/v1742481874/emptystate_bmtwlz.png"}
+        heading={"Seems you don't have any attendees yet."}
+        content={"Create an event or click the button to send invites to your audience."}
+        isButtonShow={true}
+        />
+      )}
+      
     </Box>
   );
 };
