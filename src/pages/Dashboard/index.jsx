@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import NoStatePage from "../../components/NoStatePage";
 import DashboardPopulated from "./DashboardPopulated";
+import { EventContext } from "../../contexts/EventContext";
 
 const Dashboard = () => {
-  const isDashboardActive = true;
+  const {publishedEvents} = useContext(EventContext);
 
   return (
     <>
-    {isDashboardActive ? (
+    {publishedEvents.length > 0 ? (
       <DashboardPopulated/>
     ) : (
       <NoStatePage

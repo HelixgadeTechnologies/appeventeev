@@ -37,8 +37,8 @@ const CreateEventSecond = () => {
     type: "",
     location: "",
     category: "",
-    thumbnail: null,
-    thumbnailPreview: null,
+    thumbnail: "",
+    thumbnailPreview: "",
   });
 
   const [typeError, setTypeError] = useState("");
@@ -253,8 +253,8 @@ const CreateEventSecond = () => {
               onChange={handleChange}
             >
               {eventType.map((type, index) => (
-                <option value={type} key={index}>
-                  {type}
+                <option value={type.enum} key={index}>
+                  {type.text}
                 </option>
               ))}
             </Select>
@@ -310,8 +310,8 @@ const CreateEventSecond = () => {
               onChange={handleChange}
             >
               {eventCategory.map((type, index) => (
-                <option value={type} key={index}>
-                  {type}
+                <option value={type.enum} key={index}>
+                  {type.text}
                 </option>
               ))}
             </Select>

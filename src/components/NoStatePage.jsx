@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Box,
   Center,
@@ -9,6 +9,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { EventContext } from "../contexts/EventContext";
 
 const NoStatePage = ({
     img,
@@ -18,6 +19,7 @@ const NoStatePage = ({
     route
 }) => {
   const navigate = useNavigate();
+  const {publishedEvents} = useContext(EventContext);
   return (
     <Center bg={"white"}>
       <Flex justifyContent={"center"} alignItems={"center"}>
@@ -55,7 +57,7 @@ const NoStatePage = ({
                 color={"white"}
                 fontWeight={"medium"}
             >
-                Create your first event
+                {publishedEvents.length > 0 ? "Add an Event" : "Create your first event"}
             </Button>
           )}
         </Center>
