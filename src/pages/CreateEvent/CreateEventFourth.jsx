@@ -18,8 +18,6 @@ const CreateEventSecond = () => {
   const navigate = useNavigate();
   const toast = useToast();
 
-  const token = localStorage.getItem("token");
-
   const thirdPageData = location.state || {};
   console.log("Data being sent:", thirdPageData);
 
@@ -34,12 +32,8 @@ const CreateEventSecond = () => {
   console.log("Data being sent:", thirdPageData);
 
   const handleDraft = async () => {
-
-    if (!token) {
-      console.error("Authentication token not found. Please login again.");
-      return;
-    }
     try {
+      const token = localStorage.getItem("token");
       const response = await axios.post(
         "https://eventeevapi.onrender.com/event/draftevent",
         thirdPageData,
@@ -76,12 +70,8 @@ const CreateEventSecond = () => {
   };
 
   const handlePublish = async () => {
-
-    if (!token) {
-      console.error("Authentication token not found. Please login again.");
-      return;
-    }
     try {
+      const token = localStorage.getItem("token");
       const response = await axios.post(
         "https://eventeevapi.onrender.com/event/publishevent",
         thirdPageData,
