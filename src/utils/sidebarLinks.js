@@ -54,6 +54,12 @@ export const sidebarTopLinks = [
     text: "Analytics",
     active: analyticsActive,
   },
+  {
+    route: "/all-events",
+    icon: tickets,
+    text: "My Events",
+    active: ticketsActive,
+  }
 ];
 
 export const sidebarBottomLinks = [
