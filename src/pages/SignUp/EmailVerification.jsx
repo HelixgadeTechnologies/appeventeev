@@ -7,14 +7,21 @@ import { UserAuthContext } from "../../contexts/UserAuthContext";
 
 const EmailVerification = () => {
 
-    const {token } = useContext(UserAuthContext);
+    const {token, setUserId } = useContext(UserAuthContext);
 
   const verify = async (e)=>{
      e.preventDefault();
 
-  const response = await axios.get(`https://eventeevapi.onrender.com/${token}`)
+  const response = await axios.get(`https://eventeevapi.onrender.com/auth/verify/${token}`)
     if (response.status === 200) {
       console.log(response);
+
+      const userId = response.data.userId
+      console.log(userId);
+      setUserId(userId)
+
+      localStorage.setItem("userId", userId);
+      
       
     }
      
