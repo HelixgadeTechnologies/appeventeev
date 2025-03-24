@@ -34,6 +34,9 @@ const OrgForm = () => {
 
           if (response.status === 201 || response.status === 200) {
               console.log("Organization registration successful:", response.data);
+             
+
+
               navigate("/dashboard");
           }
           toast.success('registration successful')

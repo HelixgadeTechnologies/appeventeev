@@ -51,7 +51,8 @@ export const sidebarTopLinks = [
 ];
 
 export const sidebarBottomLinks = [
-  { route: "/settings", icon: settings, text: "Settings" },
+  { route: "/Profile-settings", icon: settings, text: "Settings" },
   { route: "/help", icon: headset, text: "Help Center" },
   { route: "/refer", icon: gift, text: "Refer family & friends" },
+  
 ];

@@ -18,13 +18,11 @@ import CreateEventThird from "./pages/CreateEvent/CreateEventThird";
 import CreateEventFourth from "./pages/CreateEvent/CreateEventFourth";
 import TicketPage from "./pages/CreateTickets/CreateTicketPage";
 import AddTicket from "./pages/CreateTickets/TicketForms";
-<<<<<<< HEAD
-import ResetPassword from "./pages/SignIn/ResetPassword";
 
-=======
+import ResetPassword from "./pages/SignIn/ResetPassword";
 import AllEventsPage from "./pages/AllEventsPage";
 import Attendees from "./pages/Attendees"
->>>>>>> 1dccd2ed428cc4b990a04a6008e8538f54240759
+import ProfileSettings from "./pages/settings/SettingsPage";
 
 
 const App = () => {
@@ -57,6 +55,11 @@ const App = () => {
 
         {/* check-in routes */}
         <Route path="/attendees" element={<Attendees/>} />
+
+        {/* settings route  */}
+        <Route path="/Profile-settings" element={<ProfileSettings /> } />
+
+
         
       </Route>
     )

@@ -25,7 +25,7 @@ const TicketProvider = ({ children }) => {
   }, []);
 
   return (
-    <TicketContext.Provider value={{ ticketData, setTicketData }}>
+    <TicketContext.Provider value={{ ticketData, setTicketData, }}>
       {children}
     </TicketContext.Provider>
   );

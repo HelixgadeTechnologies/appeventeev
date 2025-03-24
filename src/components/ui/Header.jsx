@@ -10,20 +10,21 @@ import {
   Heading,
   Text,
 } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
 import Notifications from "./Notifications";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
 
 // import icons
 import { RxDownload } from "react-icons/rx";
 import { IoAddCircleOutline } from "react-icons/io5";
+import { useLocation } from "react-router-dom";
+import AddTicket from "../../pages/CreateTickets/TicketForms";
+import { div } from "framer-motion/client";
 
 const Header = () => {
-  const location = useLocation();
-
-  const excludedPaths = ["/tickets", "/another-path", "/create-ticket"];
+  
 
   const { userDetails } = useContext(UserAuthContext);
+  const location = useLocation()
 
   const userData = {
     username: `${userDetails.firstname + " " + userDetails.lastname}`,
@@ -39,6 +40,15 @@ const Header = () => {
       title: `Attendees`,
       subtitle: "Showing data over the last 30 days",
     },
+    "/tickets":{
+      title: 'My tickets',
+      subtitle: 'choose a ticket type or use multiple types'
+    },
+    "/Profile-settings":{
+      title: 'Settings',
+      subtitle: 'Take a look at your policies and the new policy to see what is covered.'
+    }
+    
   };
 
   let { title, subtitle } = pageData[location.pathname] || {
@@ -69,25 +79,27 @@ const Header = () => {
           />
         </Flex>
       </Flex>
-      <Flex justifyContent={"space-between"} alignItems={"end"}>
-        {excludedPaths.includes(location.pathname) ? null : (
-          <Box
-            bg={location.pathname === `/dashboard` ? `white` : `#F9FAFB`}
-            width={"full"}
-            marginX={"5"}
-            marginTop={"3.5"}
-            padding={location.pathname === `/dashboard` ? `5` : `2`}
-            borderTopRadius={"lg"}
-          >
-            <Heading fontWeight={"bold"} fontSize={"24px"} color="#000">
+      <Flex justifyContent={"space-between"} alignItems={"end"} >
+      
+           <Box className="flex flex-col pl-10 mt-5">
+           <Heading fontWeight={"bold"} fontSize={"24px"} color="#000">
               {title}
             </Heading>
             <Text color={"#667185"} fontSize={"small"} fontWeight={"normal"}>
               {subtitle}
             </Text>
-          </Box>
-        )}
+           </Box>
 
+
+          {/* add button to tickets */}
+          {
+            location.pathname === "/tickets" && (
+            <div className="mr-20">
+              <AddTicket />
+            </div>
+            )
+          }
+       
         {/* buttons to show on attendee page */}
         {location.pathname === "/attendees" && (
           <Flex gap={"12px"} alignItems={"center"} marginX={"5"}>

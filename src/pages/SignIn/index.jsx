@@ -46,45 +46,74 @@ const SignIn = () => {
     }
   };
 
+  const windowHeight = window.innerHeight
+
+
   return (
     <div className="screen overflow-hidden relative flex items-center justify-center bg-contain bg-center flex-col">
       <img 
         src="https://res.cloudinary.com/dnou1zvji/image/upload/v1741467043/Log-In_jwspvw_tvgirp.png" 
         className="absolute z-0 top-0 left-0 object-cover w-full h-full"  
-        alt="" 
+        alt="background-image" 
       />
-      <div className="absolute top-5 left-1/2 transform -translate-x-1/2">
+
+      <div className={ windowHeight > 600 ? 'top-3 absolute left-1/2 transform -translate-x-1/2  z-20' :
+         'absolute left-1/2 transform -translate-x-1/2  z-20 -top-16 '}>
         <img 
           src="https://res.cloudinary.com/dnou1zvji/image/upload/v1741567378/7da8bbfcdabdcf31233ff8e8a1e2135a_oclnkb.png" 
           alt="Eventeev Logo"
-          className="w-48 h-auto"
+          className="w-48 h-auto "
         />
       </div>
-      <div className="bg-white relative p-8 rounded-2xl shadow-lg w-96 z-10">
-        <h2 className="text-2xl font-semibold text-center">Sign in</h2>
-        <p className="text-gray-500 text-center mb-4">Enter your credentials to access your account</p>
-        <form onSubmit={handleSubmit}>
+
+      <div className="bg-white translate-y-5 relative p-8 rounded-2xl shadow-lg  w-[380px] z-10">
+        <h2 className="text-xl font-semibold text-center">Sign in</h2>
+        <p className="text-gray-500 text-center mb-4 text-sm">Enter your credentials to access your account</p>
+
+     
+
+      {/* Google Sign-In */}
+      <button className="w-full border py-2 mt-4 flex items-center justify-center space-x-2 rounded-md">
+        <img
+          src="https://res.cloudinary.com/dnou1zvji/image/upload/v1741679396/google-removebg-preview_uc9m89.png"
+          alt="Google"
+          className="w-5 h-5"
+        />
+        <span className='text-sm font-medium'>Continue with Google</span>
+      </button>
+
+      <div className="mt-2 mb-0 text-center text-gray-500 text-sm">Or</div>
+
+
+        <form onSubmit={handleSubmit} className='mt-2'>
+
+          <div>
+          <label htmlFor="email" className='text-sm mb-1 font-medium'>Email Address </label>
           <input
             type="email"
             placeholder="Email Address"
-            className="w-full p-2 border rounded-lg mb-3 focus:ring-2 focus:ring-orange-500"
+            className="w-full p-2 border rounded-lg mb-3 focus:border-[#f56630] focus:ring-2 focus:ring-[#f56630] "
             value={formData.email}
             name="email"
             onChange={handleChange}
             required
           />
+          </div>
+
+
           <div className="relative">
+            <label htmlFor="password" className='mb-1 text-sm font-medium'>Password</label>
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Enter Password"
-              className="w-full p-2 border rounded-lg pr-10 focus:ring-2 focus:ring-orange-500"
+              className="w-full p-2 border rounded-lg pr-10 focus:border-[#f56630] focus:ring-2 focus:ring-[#f56630]"
               value={formData.password}
               name="password"
               onChange={handleChange}
               required
             />
             <span 
-              className="absolute top-3 right-3 cursor-pointer text-gray-600" 
+              className="absolute bottom-3 right-3 cursor-pointer text-gray-600" 
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? <FiEyeOff /> : <FiEye />}
@@ -94,7 +123,7 @@ const SignIn = () => {
             <label className="flex items-center">
               <input type="checkbox" className="mr-2" /> Remember me for 30 days
             </label>
-            <Link to="/forgot-password" className="text-orange-500 hover:underline">
+            <Link to="/forgot-password" className="text-orange-500 hover:underline m-2 text-sm">
               Forgot Password?
             </Link>
           </div>
@@ -107,7 +136,8 @@ const SignIn = () => {
           </button>
         </form>
       </div>
-      <div className="relative z-10 text-center text-sm mt-4 flex gap-1 bg-white px-4 py-4 rounded-3xl">
+
+      <div className="relative translate-y-5 z-10 text-center text-sm mt-4 flex gap-1 bg-white px-4 py-3 rounded-3xl">
         <p>Don't have an account?</p>
         <Link to="/signUp" className="text-orange-500 hover:underline">
           Sign up!

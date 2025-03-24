@@ -1,14 +1,22 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 //import { useNavigate } from "react-router-dom";
 import VerifiedPage from "./Verified";
+import axios from "axios";
+import { UserAuthContext } from "../../contexts/UserAuthContext";
 
 
 const EmailVerification = () => {
 
- // const navigate = useNavigate()
+    const {token } = useContext(UserAuthContext);
 
   const verify = async (e)=>{
      e.preventDefault();
+
+  const response = await axios.get(`https://eventeevapi.onrender.com/${token}`)
+    if (response.status === 200) {
+      console.log(response);
+      
+    }
      
     // open gmail
     const gmailURL = "https://mail.google.com/mail/u/0/#inbox";
