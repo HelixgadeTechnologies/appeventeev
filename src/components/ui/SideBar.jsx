@@ -109,6 +109,7 @@ const SideBar = () => {
           <Box padding={"2"}>
             {sidebarBottomLinks.map((link, index) => (
               <Flex
+              onClick={() => navigate(link.route)}
                 key={index}
                 paddingY={"12px"}
                 paddingX={"16px"}

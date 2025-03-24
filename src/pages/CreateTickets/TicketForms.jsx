@@ -43,7 +43,7 @@ const AddTicket = () => {
               </TabList>
 
               <TabPanels>
-                {["Paid", "Free", "Donation"].map((type, index) => (
+                {["paid", "free", "donation"].map((type, index) => (
                   <TabPanel key={index}>
                     <TicketForm onClose={onClose} ticketType={type} />
                   </TabPanel>
@@ -59,10 +59,10 @@ const AddTicket = () => {
 
 const TicketForm = ({ onClose, ticketType }) => {
 
-  const { token, userId } = useContext(UserAuthContext)
+  const { token } = useContext(UserAuthContext)
 
   const [formData, setFormData] = useState({
-    eventId: `${ userId }`,
+    eventId: '67d00263d645bddd43326d35',
     name: "",
     type: ticketType,
     quantity: "",
@@ -96,12 +96,12 @@ const TicketForm = ({ onClose, ticketType }) => {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Correct format
+            Authorization: `Bearer ${token}`, 
           },
         }
       );
   
-      console.log("Ticket added successfully:", response.data);
+      console.log("Ticket added successfully:", response);
       onClose();
     } catch (error) {
       console.error("Error adding ticket:", error.response?.data?.message || error.message);

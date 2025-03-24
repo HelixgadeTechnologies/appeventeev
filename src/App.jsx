@@ -18,8 +18,11 @@ import CreateEventThird from "./pages/CreateEvent/CreateEventThird";
 import CreateEventFourth from "./pages/CreateEvent/CreateEventFourth";
 import TicketPage from "./pages/CreateTickets/CreateTicketPage";
 import AddTicket from "./pages/CreateTickets/TicketForms";
+
+import ResetPassword from "./pages/SignIn/ResetPassword";
 import AllEventsPage from "./pages/AllEventsPage";
 import Attendees from "./pages/Attendees"
+import ProfileSettings from "./pages/settings/SettingsPage";
 
 
 const App = () => {
@@ -30,10 +33,12 @@ const App = () => {
         {/* auth routes for signup  and signIn process */}
         <Route index element={<SignIn/> } /> 
         <Route path="/signUp" element={<SignUp />}/>
-        <Route path="/forgot-password" element={<ForgotPassword/>} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/verify" element={<EmailVerification />} />
         <Route path="/OrganizationDetails" element={<OrgForm />} />
+        <Route path="/create-new-password" element={<ResetPassword />} />
         <Route path="/dashboard" element={<Dashboard/> } />
+       
 
         {/* create event routes */}
         <Route path="/create-event-setup-1" element={<CreateEventFirst/>} />
@@ -50,6 +55,11 @@ const App = () => {
 
         {/* check-in routes */}
         <Route path="/attendees" element={<Attendees/>} />
+
+        {/* settings route  */}
+        <Route path="/Profile-settings" element={<ProfileSettings /> } />
+
+
         
       </Route>
     )
