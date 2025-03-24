@@ -62,7 +62,7 @@ const SignIn = () => {
         <img 
           src="https://res.cloudinary.com/dnou1zvji/image/upload/v1741567378/7da8bbfcdabdcf31233ff8e8a1e2135a_oclnkb.png" 
           alt="Eventeev Logo"
-          className="w-48 h-auto "
+          className="w-44 h-auto "
         />
       </div>
 
@@ -89,10 +89,10 @@ const SignIn = () => {
 
           <div>
           <label htmlFor="email" className='text-sm mb-1 font-medium'>Email Address </label>
-          <input
+            <input
             type="email"
             placeholder="Email Address"
-            className="w-full p-2 border rounded-lg mb-3 focus:border-[#f56630] focus:ring-2 focus:ring-[#f56630] "
+            className="w-full p-2 border rounded-lg mb-3 outline-none focus:border-[#f56630] focus:ring-0 transition duration-300 border-opacity-65"
             value={formData.email}
             name="email"
             onChange={handleChange}
@@ -106,17 +106,17 @@ const SignIn = () => {
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Enter Password"
-              className="w-full p-2 border rounded-lg pr-10 focus:border-[#f56630] focus:ring-2 focus:ring-[#f56630]"
+              className="w-full p-2 border rounded-lg mb-3 outline-none focus:border-[#f56630] focus:ring-0 transition duration-300"
               value={formData.password}
               name="password"
               onChange={handleChange}
               required
             />
             <span 
-              className="absolute bottom-3 right-3 cursor-pointer text-gray-600" 
+              className="absolute bottom-6 right-3 cursor-pointer text-gray-600" 
               onClick={() => setShowPassword(!showPassword)}
             >
-              {showPassword ? <FiEyeOff /> : <FiEye />}
+              {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
             </span>
           </div>
           <div className="flex justify-between text-sm mb-4">
@@ -137,7 +137,7 @@ const SignIn = () => {
         </form>
       </div>
 
-      <div className="relative translate-y-5 z-10 text-center text-sm mt-4 flex gap-1 bg-white px-4 py-3 rounded-3xl">
+      <div className="relative translate-y-3 z-10 text-center text-sm mt-4 flex gap-1 bg-white px-4 py-3 rounded-3xl">
         <p>Don't have an account?</p>
         <Link to="/signUp" className="text-orange-500 hover:underline">
           Sign up!

@@ -81,7 +81,7 @@ const SignUp = () => {
       {/* Right Section - Signup Form */}
       <div className="flex justify-center p-6 md:p-10 h-screen overflow-hidden ">
         <div className="max-w-md w-full">
-          <h2 className="text-2xl font-bold mb-10">Sign up</h2>
+          <h2 className="text-2xl font-bold mb-7">Sign up</h2>
           <form className="space-y-4" onSubmit={handleSubmit}>
             {/* Name Fields */}
             <div className="grid grid-cols-2 space-x-2">
@@ -90,7 +90,7 @@ const SignUp = () => {
              <label htmlFor="">first name</label>
               <input
                 type="text"
-                className="w- p-2 border rounded-md"
+                className="w-full p-2 border-2 rounded-lg mb-2 outline-none focus:border-[#f56630] focus:ring-0 transition duration-300"
                 name="firstname"
                 value={formData.firstname}
                 onChange={handleChange}
@@ -101,7 +101,7 @@ const SignUp = () => {
             <label htmlFor="">Last name</label>
            <input
                 type="text"
-                className=" p-2 border rounded-md "
+                className=" w-full p-2 border-2 rounded-lg mb-2 outline-none focus:border-[#f56630] focus:ring-0 transition duration-300"
                 name="lastname"
                 value={formData.lastname}
                 onChange={handleChange}
@@ -115,7 +115,7 @@ const SignUp = () => {
          <label htmlFor="">Email Address</label>
             <input
               type="email"
-              className="w-full p-2 border rounded-md "
+              className="w-full p-2 border-2 rounded-lg mb-2 outline-none focus:border-[#f56630] focus:ring-0 transition duration-300 "
               name="email"
               value={formData.email}
               onChange={handleChange}
@@ -127,7 +127,7 @@ const SignUp = () => {
             <label htmlFor="">Password</label>
           <input
               type="password"
-              className="w-full p-2 border rounded-md "
+              className="w-full p-2 border-2 rounded-lg mb-2 outline-none focus:border-[#f56630] focus:ring-0 transition duration-300"
               name="password"
               value={formData.password}
               onChange={handleChange}
@@ -145,7 +145,7 @@ const SignUp = () => {
           </form>
 
           {/* Login Link */}
-          <p className="text-sm mt-4">
+          <p className="text-sm mt-2">
             Already have an account?{" "}
             <Link to={"/"} className="text-orange-500 font-bold hover:underline">
               Log in
