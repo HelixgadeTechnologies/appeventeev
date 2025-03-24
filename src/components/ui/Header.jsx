@@ -10,10 +10,12 @@ import {
   Heading,
   Text,
 } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
 import Notifications from "./Notifications";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
 import { EventContext } from "../../contexts/EventContext";
+import { useLocation } from "react-router-dom";
+import AddTicket from "../../pages/CreateTickets/TicketForms";
+import { div } from "framer-motion/client";
 
 // import icons
 import { RxDownload } from "react-icons/rx";
@@ -22,11 +24,9 @@ import { FiCalendar } from "react-icons/fi";
 
 const Header = () => {
   const { publishedEvents } = useContext(EventContext);
-  const location = useLocation();
-
-  const excludedPaths = ["/tickets", "/another-path", "/create-ticket"];
-
+  
   const { userDetails } = useContext(UserAuthContext);
+  const location = useLocation()
 
   const userData = {
     username: `${userDetails.firstname + " " + userDetails.lastname}`,
@@ -42,6 +42,15 @@ const Header = () => {
       title: `Attendees`,
       subtitle: "Showing data over the last 30 days",
     },
+    "/tickets":{
+      title: 'My tickets',
+      subtitle: 'choose a ticket type or use multiple types'
+    },
+    "/Profile-settings":{
+      title: 'Settings',
+      subtitle: 'Take a look at your policies and the new policy to see what is covered.'
+    }
+    
   };
 
   let { title, subtitle } = pageData[location.pathname] || {
@@ -98,10 +107,9 @@ const Header = () => {
           />
         </Flex>
       </Flex>
-      <Flex justifyContent={"space-between"} alignItems={"end"}>
-        {excludedPaths.includes(location.pathname) ? null : (
-          <Box
-            bg={
+      <Flex justifyContent={"space-between"} alignItems={"end"} >
+      
+           <Box bg={
               (location.pathname === `/dashboard` &&
                 publishedEvents.length > 0) ||
               publishedEvents.length > 0 ||
@@ -113,16 +121,14 @@ const Header = () => {
             marginX={"5"}
             marginTop={"3.5"}
             padding={location.pathname === `/dashboard` ? `5` : `2`}
-            borderTopRadius={"lg"}
-          >
-            <Heading fontWeight={"bold"} fontSize={"24px"} color="#000">
+            borderTopRadius={"lg"}>
+           <Heading fontWeight={"bold"} fontSize={"24px"} color="#000">
               {title}
             </Heading>
             <Text color={"#667185"} fontSize={"small"} fontWeight={"normal"}>
               {subtitle}
             </Text>
-          </Box>
-        )}
+           </Box>
 
         {/* tab to show on dashboard page */}
         {location.pathname === "/dashboard" && publishedEvents.length > 0 && (
@@ -153,6 +159,15 @@ const Header = () => {
           </Center>
         )}
 
+          {/* add button to tickets */}
+          {
+            location.pathname === "/tickets" && (
+            <div className="mr-20">
+              <AddTicket />
+            </div>
+            )
+          }
+      
         {/* buttons to show on attendee page */}
         {location.pathname === "/attendees" && (
           <Flex gap={"12px"} alignItems={"center"} marginX={"5"}>

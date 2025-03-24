@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 const OrgForm = () => {
  
 
-  const { userId } = useContext(UserAuthContext)
+  const { userId, setUserDetails } = useContext(UserAuthContext)
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -34,6 +34,12 @@ const OrgForm = () => {
 
           if (response.status === 201 || response.status === 200) {
               console.log("Organization registration successful:", response.data);
+             
+              const userData = response.data.user
+
+              setUserDetails(userData);
+              localStorage.setItem("userDetails", JSON.stringify(userData));
+
               navigate("/dashboard");
           }
           toast.success('registration successful')
@@ -74,7 +80,7 @@ const OrgForm = () => {
           <label className=" text-gray-700 mb-1">Organisation Name</label>
           <input
             type="text"
-            className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full p-2 border-2 rounded-lg mb-3 outline-none focus:border-[#f56630] focus:ring-0 transition duration-300"
             placeholder="Enter organisation name"
             onChange={handleChange}
             name="organisationName"
@@ -87,7 +93,7 @@ const OrgForm = () => {
           <label className="block text-gray-700 mb-1">Organisation Website</label>
           <input
             type="text"
-            className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full p-2 border-2 rounded-lg mb-3 outline-none focus:border-[#f56630] focus:ring-0 transition duration-300"
             placeholder="Enter website URL"
             onChange={handleChange}
             name="organisationWebsite"
@@ -101,7 +107,7 @@ const OrgForm = () => {
         <div className="mb-4">
           <label className="block text-gray-700 mb-1">Organisation Industry</label>
           <select
-            className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition duration-300"
             onChange={handleChange}
             name="organisationIndustry"
             required
