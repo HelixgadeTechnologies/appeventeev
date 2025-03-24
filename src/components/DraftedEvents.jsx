@@ -8,9 +8,9 @@ import { RiSignalWifiErrorFill } from "react-icons/ri";
 const DraftedEvents = () => {
   const { draftedEvents, draftedEventsLoading, draftedEventsError, } = useContext(EventContext)
   return (
-    <div className='h-[60vh]'>
+    <div >
     {draftedEventsLoading ? (
-      <Center height={"full"}>
+      <Center height={"60vh"}>
         <Box className='loader'></Box>
       </Center>
     ) : draftedEventsError ? (

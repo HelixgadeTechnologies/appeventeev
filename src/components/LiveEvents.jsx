@@ -8,9 +8,9 @@ import { RiSignalWifiErrorFill } from "react-icons/ri";
 const LiveEvents = () => {
     const { publishedEvents, publishedEventsLoading, publishedEventsError } = useContext(EventContext)
   return (
-    <div className='h-[60vh]'>
+    <div>
       {publishedEventsLoading ? (
-        <Center height={"full"}>
+        <Center height={"60vh"}>
           <Box className='loader'></Box>
         </Center>
       ) : publishedEventsError ? (
