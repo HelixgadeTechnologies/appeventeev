@@ -21,7 +21,7 @@ const CreateEventSecond = () => {
   const thirdPageData = location.state || {};
   console.log("Data being sent:", thirdPageData);
 
-  const [isImageDisplay, setIsImageDisplay] = useState(true);
+  const [isImageDisplay, setIsImageDisplay] = useState(false);
 
   const removeImage = () => {
     setIsImageDisplay(false);
@@ -106,6 +106,11 @@ const CreateEventSecond = () => {
     }
   };
 
+  const countWords = (text) => {
+    if (!text) return 0;
+    return text.trim().split(/\s+/).length;
+  };
+
   return (
     <CreateEventLayout heading="Event Review" activeStep={4}>
       <Box>
@@ -156,7 +161,7 @@ const CreateEventSecond = () => {
               Event Description:
             </Heading>
             <Text fontWeight={"medium"} fontSize={"small"}>
-              {thirdPageData.description}
+              {countWords(thirdPageData.description) < 60 ? thirdPageData.description : thirdPageData.description.substring(0,60) + "..."}
             </Text>
           </Flex>
           <Flex

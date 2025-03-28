@@ -8,13 +8,15 @@ const EventProvider = ({ children }) => {
   const [draftedEvents, setDraftedEvents] = useState([]);
 
   const [publishedEventsLoading, setPublishedEventsLoading] = useState(true);
-  const [publishedEventsError, setPublishedEventsError] = useState(null);
+  const [publishedEventsError, setPublishedEventsError] = useState(false);
 
   const [draftedEventsLoading, setDraftedEventsLoading] = useState(true);
-  const [draftedEventsError, setDraftedEventsError] = useState(null);
+  const [draftedEventsError, setDraftedEventsError] = useState(false);
 
   useEffect(() => {
     const getPublishedEvents = async () => {
+      setPublishedEventsError(false);
+      setPublishedEventsLoading(true);
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
@@ -26,10 +28,11 @@ const EventProvider = ({ children }) => {
             },
           }
         );
-        setPublishedEvents(response.data.events);
+        setPublishedEvents(response.data.events || []);
+        // console.log(response.data)
       } catch (error) {
         console.error("Error getting published events", error);
-        setPublishedEventsError(error.message);
+        setPublishedEventsError(true);
       } finally {
         setPublishedEventsLoading(false);
       }
@@ -39,6 +42,8 @@ const EventProvider = ({ children }) => {
 
   useEffect(() => {
     const getDraftedEvents = async () => {
+      setDraftedEventsError(false);
+      setDraftedEventsLoading(true);
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
@@ -50,10 +55,11 @@ const EventProvider = ({ children }) => {
             },
           }
         );
-        setDraftedEvents(response.data.events);
+        setDraftedEvents(response.data.events || []);
+        // console.log(response.data)
       } catch (error) {
-        console.error("Error getting published events", error);
-        setDraftedEventsError(error.message);
+        console.error("Error getting drafted events", error);
+        setDraftedEventsError(true);
       } finally {
         setDraftedEventsLoading(false);
       }

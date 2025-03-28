@@ -39,6 +39,7 @@ const CreateEventFirst = () => {
 
   const validateForm = () => {
     let isValid = true;
+    const wordCount = firstPageData.description.trim().split(/\s+/).length;
 
     if (!firstPageData.name) {
       setNameError("Event name field cannot be empty.");
@@ -50,8 +51,8 @@ const CreateEventFirst = () => {
     if (!firstPageData.description) {
       setDescriptionError("Event description cannot be empty.");
       isValid = false;
-    } else if (firstPageData.description.length > 100) {
-      setDescriptionError("Keep this simple of 100 characters.");
+    } else if (wordCount > 1000) {
+      setDescriptionError("Keep this simple of 500 characters or less.");
       isValid = false;
     } else {
       setDescriptionError("");
@@ -65,9 +66,7 @@ const CreateEventFirst = () => {
     }
 
     if (!firstPageData.endDate) {
-      setEndDateError(
-        "Enter the same day if it's a one day event."
-      );
+      setEndDateError("Enter the same day if it's a one day event.");
       isValid = false;
     } else {
       setEndDateError("");
@@ -105,29 +104,53 @@ const CreateEventFirst = () => {
     setEndTimeError("");
   };
 
-  const handleSubmit = async () => {
-    if (validateForm()) {
-      try {
-        navigate("/create-event-setup-2", { state: firstPageData });
-      } catch (error) {
-        console.error("An error occured: ", error);
-      }
-    }
+  // Function to format date as "YYYY-MM-DD"
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "";
+  
+    // Ensure the date is in "YYYY-MM-DD" format
+    const date = new Date(dateStr);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Ensure two digits
+    const day = String(date.getDate()).padStart(2, "0"); // Ensure two digits
+  
+    return `${year}-${month}-${day}`;
+  };
+
+  // Function to convert time from "HH:MM" (24-hour format) to "HH:MM AM/PM"
+  const formatTime = (timeStr) => {
+    if (!timeStr) return "";
+
+    const [hour, minute] = timeStr.split(":").map(Number);
+    const period = hour >= 12 ? "PM" : "AM";
+    const formattedHour = hour % 12 || 12; // Convert 0 to 12 for 12 AM
+
+    return `${formattedHour}:${minute.toString().padStart(2, "0")} ${period}`;
   };
 
   const today = new Date().toISOString().split("T")[0];
 
-  const formatDate = (dateStr) => {
-    if (!dateStr) return "";
-
-    const date = new Date(dateStr);
-    const options = { day: "2-digit", month: "long", year: "numeric" };
-    return date.toLocaleDateString("en-US", options); // Example: "01 September 2024"
-  };
-
   const getCurrentTime = () => {
     const now = new Date();
-    return now.toTimeString().slice(0, 5); // Extract HH:MM
+    return now.toTimeString().slice(0, 5);
+  };
+
+  const handleSubmit = async () => {
+    if (validateForm()) {
+      try {
+        // Format date and time before sending
+        const formattedData = {
+          ...firstPageData,
+          startDate: formatDate(firstPageData.startDate),
+          endDate: formatDate(firstPageData.endDate),
+          startTime: formatTime(firstPageData.startTime),
+          endTime: formatTime(firstPageData.endTime),
+        };
+        navigate("/create-event-setup-2", { state: formattedData });
+      } catch (error) {
+        console.error("An error occured: ", error);
+      }
+    }
   };
 
   return (
@@ -327,7 +350,7 @@ const CreateEventFirst = () => {
               <Switch id="recurrent-event" colorScheme="orange" />
             </FormControl>
             <Text color={"#667185"} fontSize={"xs"}>
-              You can set up a{" "}
+              You can set up a {""}
               <Link color={"#8F2802"}>
                 custom domain or connect your email service provider
               </Link>{" "}
