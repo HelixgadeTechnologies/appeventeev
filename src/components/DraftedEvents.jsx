@@ -6,7 +6,9 @@ import NoStatePage from './NoStatePage'
 import { RiSignalWifiErrorFill } from "react-icons/ri";
 
 const DraftedEvents = () => {
-  const { draftedEvents, draftedEventsLoading, draftedEventsError, } = useContext(EventContext)
+  const { draftedEvents, draftedEventsLoading, draftedEventsError, } = useContext(EventContext);
+
+  // console.log(draftedEvents);
   return (
     <div >
     {draftedEventsLoading ? (
