@@ -43,58 +43,58 @@ const CreateEventSecond = () => {
   const [instagramError, setInstagramError] = useState("");
   const [XError, setXError] = useState("");
 
-  const validateForm = () => {
-    let isValid = true;
+  // const validateForm = () => {
+  //   let isValid = true;
   
-    // Regex to check if a URL contains ".com" or starts with "https:"
-    const urlRegex = /^(https:.*|.*\.com)$/i;
+  //   // Regex to check if a URL contains ".com" or starts with "https:"
+  //   const urlRegex = /^(https:.*|.*\.com)$/i;
   
-    // Validate Website URL
-    if (!thirdPageData.website) {
-      setWebsiteError("Please enter 'N/A' if event website is not available.");
-      isValid = false;
-    } else if (!urlRegex.test(thirdPageData.website) && thirdPageData.website !== "N/A") {
-      setWebsiteError("Enter a valid website URL with '.com' or 'https:'.");
-      isValid = false;
-    } else {
-      setWebsiteError("");
-    }
+  //   // Validate Website URL
+  //   if (!thirdPageData.website) {
+  //     setWebsiteError("Please enter 'N/A' if event website is not available.");
+  //     isValid = false;
+  //   } else if (!urlRegex.test(thirdPageData.website) && thirdPageData.website !== "N/A") {
+  //     setWebsiteError("Enter a valid website URL with '.com' or 'https:'.");
+  //     isValid = false;
+  //   } else {
+  //     setWebsiteError("");
+  //   }
   
-    // Validate Facebook URL
-    if (!thirdPageData.facebook) {
-      setFacebookError("Please enter 'N/A' if event Facebook account is not available.");
-      isValid = false;
-    } else if (!thirdPageData.facebook.toLowerCase().includes("facebook.com") && thirdPageData.facebook !== "N/A") {
-      setFacebookError("Enter a valid Facebook URL containing 'facebook.com'.");
-      isValid = false;
-    } else {
-      setFacebookError("");
-    }
+  //   // Validate Facebook URL
+  //   if (!thirdPageData.facebook) {
+  //     setFacebookError("Please enter 'N/A' if event Facebook account is not available.");
+  //     isValid = false;
+  //   } else if (!thirdPageData.facebook.toLowerCase().includes("facebook.com") && thirdPageData.facebook !== "N/A") {
+  //     setFacebookError("Enter a valid Facebook URL containing 'facebook.com'.");
+  //     isValid = false;
+  //   } else {
+  //     setFacebookError("");
+  //   }
   
-    // Validate Instagram URL
-    if (!thirdPageData.instagram) {
-      setInstagramError("Please enter 'N/A' if event Instagram account is not available.");
-      isValid = false;
-    } else if (!thirdPageData.instagram.toLowerCase().includes("instagram.com") && thirdPageData.instagram !== "N/A") {
-      setInstagramError("Enter a valid Instagram URL containing 'instagram.com'.");
-      isValid = false;
-    } else {
-      setInstagramError("");
-    }
+  //   // Validate Instagram URL
+  //   if (!thirdPageData.instagram) {
+  //     setInstagramError("Please enter 'N/A' if event Instagram account is not available.");
+  //     isValid = false;
+  //   } else if (!thirdPageData.instagram.toLowerCase().includes("instagram.com") && thirdPageData.instagram !== "N/A") {
+  //     setInstagramError("Enter a valid Instagram URL containing 'instagram.com'.");
+  //     isValid = false;
+  //   } else {
+  //     setInstagramError("");
+  //   }
   
-    // Validate X (Twitter) URL
-    if (!thirdPageData.twitter) {
-      setXError("Please enter 'N/A' if event X (Twitter) account is not available.");
-      isValid = false;
-    } else if (!thirdPageData.twitter.toLowerCase().includes("x.com") && thirdPageData.twitter !== "N/A") {
-      setXError("Enter a valid X (Twitter) URL containing 'x.com'.");
-      isValid = false;
-    } else {
-      setXError("");
-    }
+  //   // Validate X (Twitter) URL
+  //   if (!thirdPageData.twitter) {
+  //     setXError("Please enter 'N/A' if event X (Twitter) account is not available.");
+  //     isValid = false;
+  //   } else if (!thirdPageData.twitter.toLowerCase().includes("x.com") && thirdPageData.twitter !== "N/A") {
+  //     setXError("Enter a valid X (Twitter) URL containing 'x.com'.");
+  //     isValid = false;
+  //   } else {
+  //     setXError("");
+  //   }
   
-    return isValid;
-  };
+  //   return isValid;
+  // };
   
 
   const handleChange = (e) => {
@@ -112,12 +112,10 @@ const CreateEventSecond = () => {
   };
 
   const handleSubmit = () => {
-    if (validateForm()) {
-      try {
-        navigate("/create-event-setup-4", { state: thirdPageData });
-      } catch (error) {
-        console.error("Error sending third page data:", error);
-      }
+    try {
+      navigate("/create-event-setup-4", { state: thirdPageData });
+    } catch (error) {
+      console.error("Error sending third page data:", error);
     }
   };
   return (

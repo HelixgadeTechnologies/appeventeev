@@ -6,7 +6,9 @@ import NoStatePage from './NoStatePage'
 import { RiSignalWifiErrorFill } from "react-icons/ri";
 
 const LiveEvents = () => {
-    const { publishedEvents, publishedEventsLoading, publishedEventsError } = useContext(EventContext)
+    const { publishedEvents, publishedEventsLoading, publishedEventsError } = useContext(EventContext);
+
+    console.log(publishedEvents);
   return (
     <div>
       {publishedEventsLoading ? (
@@ -20,7 +22,7 @@ const LiveEvents = () => {
             <Text fontSize={"sm"}>Uh oh! An error occurred. Please try again later.</Text>
           </Center>
         </Center>
-      ): publishedEvents.length > 0 ? (
+      ): publishedEvents ? (
         <Box>
           <Grid templateColumns={"repeat(3,1fr)"} gap={"16px"}>
             {publishedEvents.map((event) => (

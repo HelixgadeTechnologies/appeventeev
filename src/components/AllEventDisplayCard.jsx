@@ -17,6 +17,40 @@ const AllEventDisplayCard = ({ event }) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // const formatDate = (dateStr) => {
+  //   if (!dateStr) return "";
+  
+  //   const date = new Date(dateStr);
+  //   const day = date.getDate();
+  //   const month = date.toLocaleString("en-US", { month: "long" });
+  //   const year = date.getFullYear();
+  
+  //   // Function to add ordinal suffix (st, nd, rd, th)
+  //   const getOrdinalSuffix = (day) => {
+  //     if (day > 3 && day < 21) return "th"; // Covers 4th-20th
+  //     switch (day % 10) {
+  //       case 1: return "st";
+  //       case 2: return "nd";
+  //       case 3: return "rd";
+  //       default: return "th";
+  //     }
+  //   };
+  
+  //   return `${day}${getOrdinalSuffix(day)} ${month}, ${year}`;
+  // };
+
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "";
+  
+    const date = new Date(dateStr);
+    const dayOfWeek = date.toLocaleString("en-US", { weekday: "long" });
+    const month = date.toLocaleString("en-US", { month: "long" });
+    const year = date.getFullYear();
+  
+    return `${dayOfWeek}, ${month} ${year}`;
+  };  
+  
+
   return (
     <Box
       borderWidth={"1px"}
@@ -96,7 +130,7 @@ const AllEventDisplayCard = ({ event }) => {
           gap={"4px"}
         >
           <Text>{event.startTime},</Text>
-          <Text>{event.startDate}</Text>
+          <Text>{formatDate(event.startDate)}</Text>
         </Flex>
       </Box>
       <Flex
