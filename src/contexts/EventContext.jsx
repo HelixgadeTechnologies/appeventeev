@@ -68,6 +68,19 @@ const EventProvider = ({ children }) => {
     getDraftedEvents();
   }, []);
 
+  // for formatting date
+  const formatDate = (dateStr) => {
+      if (!dateStr) return "";
+    
+      const date = new Date(dateStr);
+      const dayOfWeek = date.toLocaleString("en-US", { weekday: "long" });
+      const month = date.toLocaleString("en-US", { month: "long" });
+      const year = date.getFullYear();
+    
+      return `${dayOfWeek}, ${month} ${year}`;
+    };  
+    
+
   return (
     <EventContext.Provider
       value={{
@@ -77,6 +90,7 @@ const EventProvider = ({ children }) => {
         draftedEvents,
         draftedEventsLoading,
         draftedEventsError,
+        formatDate,
       }}
     >
       {children}

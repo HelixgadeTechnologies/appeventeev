@@ -23,6 +23,7 @@ import ResetPassword from "./pages/SignIn/ResetPassword";
 import AllEventsPage from "./pages/AllEventsPage";
 import Attendees from "./pages/Attendees"
 import ProfileSettings from "./pages/settings/SettingsPage";
+import EventDetails from "./pages/AllEventsPage/EventDetails";
 
 
 const App = () => {
@@ -48,6 +49,7 @@ const App = () => {
 
         {/* all events route */}
         <Route path="/all-events" element={<AllEventsPage/>} />
+        <Route path="/all-events/:id" element={<EventDetails/>} />
 
         {/* create ticket routes */}
         <Route path="/tickets" element={<TicketPage />} />

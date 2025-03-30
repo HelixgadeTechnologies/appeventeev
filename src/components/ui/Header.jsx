@@ -23,14 +23,13 @@ import { IoAddCircleOutline } from "react-icons/io5";
 import { FiCalendar } from "react-icons/fi";
 
 const Header = () => {
-  const { publishedEvents } = useContext(EventContext);
-  
-  const { userDetails } = useContext(UserAuthContext);
-  const location = useLocation()
-
-  const userData = {
-    username: `${userDetails.firstname + " " + userDetails.lastname}`,
-  };
+  const location = useLocation();
+    const { publishedEvents } = useContext(EventContext);
+    const { userDetails } = useContext(UserAuthContext);
+    
+    const userData = {
+      username: `${userDetails.firstname + " " + userDetails.lastname}`,
+    };
 
   const pageData = {
     "/dashboard": {
@@ -53,8 +52,12 @@ const Header = () => {
     
   };
 
+  if (/^\/all-events\/[^/]+$/.test(location.pathname)) {
+    return null;
+  }
+  
   let { title, subtitle } = pageData[location.pathname] || {
-    title: `Welcome GDG Port Harcourt`, //need to take org name to display here for when user isn't on dashboard or hasn't added event
+    title: `Welcome ${userDetails.firstname}`,
     subtitle: "Control your profile and setup integrations",
   };
 
@@ -108,7 +111,6 @@ const Header = () => {
         </Flex>
       </Flex>
       <Flex justifyContent={"space-between"} alignItems={"end"} >
-      
            <Box bg={
               (location.pathname === `/dashboard` &&
                 publishedEvents.length > 0) ||
