@@ -13,7 +13,6 @@ import {
   Divider,
   Button,
   Avatar,
-  AvatarBadge,
 } from "@chakra-ui/react";
 import statsIcon from "../../assets/icons/stats.svg";
 import { FaChevronRight } from "react-icons/fa6";
@@ -21,14 +20,19 @@ import { LuClock3 } from "react-icons/lu";
 import { IoCalendarClearOutline } from "react-icons/io5";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
 import Calendar from "../../components/ui/Calendar";
+import { EventContext } from "../../contexts/EventContext";
 
 const DashboardPopulated = () => {
   const { userDetails } = useContext(UserAuthContext);
+  const {publishedEvents} = useContext(EventContext);
+
+  const firstEventOnDatabase = publishedEvents[1];
+  console.log(firstEventOnDatabase)
   
-    const userData = {
-      username: `${userDetails.firstname + " " + userDetails.lastname}`,
-      email: `${userDetails.email}`,
-    };
+  const userData = {
+    username: `${userDetails.firstname + " " + userDetails.lastname}`,
+    email: `${userDetails.email}`,
+  };
 
   const percentage = 0;
   return (

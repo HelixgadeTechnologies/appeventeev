@@ -33,11 +33,20 @@ import NoStatePage from "../../components/NoStatePage";
 
 const Attendees = () => {
   const sortOptions = ["A-Z", "Z-A", "Latest", "Oldest"];
-
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
-
   const toggleDropDown = () => {
     setIsDropDownOpen(!isDropDownOpen);
+  };
+
+
+  // to check in attendees
+  const [checkedInAttendees, setCheckedInAttendees] = useState({});
+
+  const handleCheckIn = (id) => {
+    setCheckedInAttendees(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
   };
 
   const [selected, setSelected] = useState({});
@@ -204,7 +213,7 @@ const Attendees = () => {
         </Thead>
         {query !== "" && filteredQuery.length === 0 ? (
           // for when there are no results
-          <Tbody>
+          <Tbody height={"full"}>
             <Tr>
               <Td colSpan="5">
                 <Center flexDir={"column"}>
@@ -230,7 +239,7 @@ const Attendees = () => {
                       isChecked={selected[attendee.id] || false}
                       onChange={() => toggleSelection(attendee.id)}
                       colorScheme={"orange"}
-                      size={"lg"}
+                      size={"md"}
                     />
 
                     <Avatar
@@ -242,7 +251,7 @@ const Attendees = () => {
                       htmlFor={attendee.id}
                       onClick={() => toggleSelection(attendee.id)}
                       fontWeight={"medium"}
-                      fontSize={"sm"}
+                      fontSize={"small"}
                       color={"#101928"}
                       marginTop={"8px"}
                       cursor={"pointer"}
@@ -252,7 +261,7 @@ const Attendees = () => {
                   </Flex>
                 </Td>
                 <Td>
-                  <Text color={"#344054"} fontSize={"sm"} fontWeight={"normal"}>
+                  <Text color={"#344054"} fontSize={"small"} fontWeight={"normal"}>
                     {attendee.useremail}
                   </Text>
                 </Td>
@@ -272,8 +281,8 @@ const Attendees = () => {
                 <Td>
                   <Switch
                     colorScheme="orange"
-                    isChecked={selected[attendee.id] || false}
-                    onChange={() => toggleSelection(attendee.id)}
+                    isChecked={checkedInAttendees[attendee.id] || false}
+                    onChange={() => handleCheckIn(attendee.id)}
                   />
                 </Td>
                 <Td>
@@ -301,7 +310,7 @@ const Attendees = () => {
                       isChecked={selected[attendee.id] || false}
                       onChange={() => toggleSelection(attendee.id)}
                       colorScheme={"orange"}
-                      size={"lg"}
+                      size={"md"}
                     />
 
                     <Avatar
@@ -313,7 +322,7 @@ const Attendees = () => {
                       htmlFor={attendee.id}
                       onClick={() => toggleSelection(attendee.id)}
                       fontWeight={"medium"}
-                      fontSize={"sm"}
+                      fontSize={"small"}
                       color={"#101928"}
                       marginTop={"8px"}
                       cursor={"pointer"}
@@ -323,7 +332,7 @@ const Attendees = () => {
                   </Flex>
                 </Td>
                 <Td>
-                  <Text color={"#344054"} fontSize={"sm"} fontWeight={"normal"}>
+                  <Text color={"#344054"} fontSize={"small"} fontWeight={"normal"}>
                     {attendee.useremail}
                   </Text>
                 </Td>
@@ -343,8 +352,8 @@ const Attendees = () => {
                 <Td>
                   <Switch
                     colorScheme="orange"
-                    isChecked={selected[attendee.id] || false}
-                    onChange={() => toggleSelection(attendee.id)}
+                    isChecked={checkedInAttendees[attendee.id] || false}
+                    onChange={() => handleCheckIn(attendee.id)}
                   />
                 </Td>
                 <Td>
