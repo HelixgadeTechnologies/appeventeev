@@ -38,7 +38,7 @@ const SignIn = () => {
         localStorage.setItem("userToken", JSON.stringify(authToken));
         localStorage.setItem("userDetails", JSON.stringify(userData));
         
-        navigate("/dashboard");
+        navigate("/all-events");
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Login failed. Please try again.");

@@ -35,8 +35,8 @@ const Calendar = () => {
 
       {/* Calendar Grid */}
       <div className="grid grid-cols-7 gap-2 text-center text-gray-700">
-        {["S", "M", "T", "W", "T", "F", "S"].map((day) => (
-          <div key={day} className="text-[14px] font-semibold text-[#212934]">{day}</div>
+        {["S", "M", "T", "W", "T", "F", "S"].map((day, index) => (
+          <div key={index} className="text-[14px] font-semibold text-[#212934]">{day}</div>
         ))}
         {days.map((day, index) => (
           <div

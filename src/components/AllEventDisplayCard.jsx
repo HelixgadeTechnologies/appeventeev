@@ -2,12 +2,15 @@ import React, { useContext, useState } from "react";
 import { Avatar, Box, Center, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { IoIosMore } from "react-icons/io";
 import "typeface-open-sans";
-import { AiTwotoneCreditCard, AiTwotoneDelete } from "react-icons/ai";
+import { AiTwotoneEdit, AiTwotoneDelete, AiTwotoneGold } from "react-icons/ai";
 import { UserAuthContext } from "../contexts/UserAuthContext";
+import { Link } from "react-router-dom";
+import { EventContext } from "../contexts/EventContext";
 
 const AllEventDisplayCard = ({ event }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { userDetails } = useContext(UserAuthContext);
+  const {formatDate} = useContext(EventContext);
   
     const userData = {
       username: `${userDetails.firstname + " " + userDetails.lastname}`,
@@ -21,12 +24,12 @@ const AllEventDisplayCard = ({ event }) => {
     <Box
       borderWidth={"1px"}
       borderColor={"#B8C4CE"}
-      height={"235px"}
+      height={"full"}
       width={"full"}
       borderRadius={"16px"}
       bg={"white"}
       padding={"20px"}
-      className="space-y-10"
+      className="space-y-8"
       style={{ fontFamily: "Open Sans, sans-serif" }}
     >
       <Flex justifyContent={"space-between"} alignItems={"start"}>
@@ -57,9 +60,9 @@ const AllEventDisplayCard = ({ event }) => {
             <Box
               position={"absolute"}
               right={"10"}
-              top={"2"}
+              top={"-2"}
               width={"150px"}
-              height={"60px"}
+              height={"fit-content"}
               borderRadius={"md"}
               boxShadow={"md"}
               color={"#1A1A1A"}
@@ -68,13 +71,19 @@ const AllEventDisplayCard = ({ event }) => {
               className="space-y-1.5 z-20 bg-white"
             >
                 <Flex alignItems={"center"} gap={"1"} _hover={{ bg: "gray.100"}} paddingY={"4px"} paddingX={"5px"}>
-                    <AiTwotoneDelete className="text-sm"/>
+                    <AiTwotoneDelete className="text-base"/>
                     <Text fontSize={"10px"}>Delete event</Text>
                 </Flex>
                 <Flex alignItems={"center"} gap={"1"} _hover={{ bg: "gray.100"}} paddingY={"4px"} paddingX={"5px"}>
-                    <AiTwotoneCreditCard className="text-sm"/>
+                    <AiTwotoneEdit className="text-base"/>
                     <Text fontSize={"10px"}>Edit event</Text>
                 </Flex>
+                <Link to={`/all-events/${event._id}`}>
+                  <Flex alignItems={"center"} gap={"1"} _hover={{ bg: "gray.100"}} paddingY={"4px"} paddingX={"5px"}>
+                      <AiTwotoneGold className="text-base"/>
+                      <Text fontSize={"10px"}>View event</Text>
+                  </Flex>
+                </Link>
             </Box>
           )}
         </Center>
@@ -96,7 +105,7 @@ const AllEventDisplayCard = ({ event }) => {
           gap={"4px"}
         >
           <Text>{event.startTime},</Text>
-          <Text>{event.startDate}</Text>
+          <Text>{formatDate(event.startDate)}</Text>
         </Flex>
       </Box>
       <Flex

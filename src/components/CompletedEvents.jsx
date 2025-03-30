@@ -6,7 +6,7 @@ import AllEventDisplayCard from "./AllEventDisplayCard";
 const CompletedEvents = () => {
   return (
     <Box>
-      <Grid templateColumns={"repeat(3,1fr)"} gap={"16px"}>
+      <Grid templateColumns={"repeat(3,1fr)"} gap={"20px"}>
         {allEvents.slice(0, 1).map((event) => (
           <GridItem key={event.id}>
             <AllEventDisplayCard event={event} />
