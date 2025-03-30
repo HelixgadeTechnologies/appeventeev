@@ -2,6 +2,7 @@ import React, {  useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
+import { ClassNames } from "@emotion/react";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -46,6 +47,8 @@ const SignUp = () => {
     }
   };
   
+   const windowHeight = window.innerHeight
+  const spacing = windowHeight > 600 ? 'flex items-center my-10' : 'flex items-center my-4'
   
 
   return (
@@ -64,15 +67,15 @@ const SignUp = () => {
         <img
           src="https://res.cloudinary.com/dnou1zvji/image/upload/v1741467037/Rectangle_5081_rpciho_j39bll.png"
           alt="Event"
-          className="w-full h-full object-cover opacity-65"
+          className="w-full h-full object-cover opacity-85"
         />
         <div className="absolute inset-0 flex flex-col gap-5  px-10 text-white top-40 ">
-          <div className="text-5xl font-bold ">
+          <div className="text-5xl font-bold mt-16 ml-5">
             <p>Elevate your Event </p>
             <p>Workflow with</p>
             <p>Eventeev</p>
           </div>
-          <p className="text-sm pr-52">
+          <p className="text-sm pr-52 ml-5">
             Our comprehensive Event platform offers you an unparalleled range of event components, sparking creativity and boosting efficiency.
           </p>
         </div>
@@ -84,7 +87,7 @@ const SignUp = () => {
           <h2 className="text-2xl font-bold mb-7">Sign up</h2>
           <form className="space-y-4" onSubmit={handleSubmit}>
             {/* Name Fields */}
-            <div className="grid grid-cols-2 space-x-2">
+            <div className="grid grid-cols-2 space-x-2 ">
 
              <div className="flex flex-col w-full">
              <label htmlFor="">first name</label>
@@ -97,6 +100,7 @@ const SignUp = () => {
                 required
               />
              </div>
+
            <div className="flex flex-col"> 
             <label htmlFor="">Last name</label>
            <input
@@ -153,7 +157,11 @@ const SignUp = () => {
           </p>
 
           {/* Divider */}
-          <div className="mt-2 text-center text-gray-500 text-sm">Or</div>
+                    <div className={spacing}>
+            <div className="flex-grow border-t border-gray-300"></div>
+            <span className="px-4 text-gray-500">Or</span>
+            <div className="flex-grow border-t border-gray-300"></div>
+          </div>
 
           {/* Google Sign-In */}
           <button className="w-full border p-2 mt-4 flex items-center justify-center space-x-2 rounded-md">

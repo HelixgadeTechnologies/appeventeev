@@ -10,7 +10,7 @@ const DisplayLayout = ({ children }) => {
       {/* sidebar */}
       <SideBar />
       {/* nav and main content */}
-      <Box className="w-full ml-[240px] bg-[#F9FAFB] h-full">
+      <Box className="w-full ml-[240px] bg-[#f9fafb] h-full">
         <Header />
         <Toaster position="top-center" reverseOrder={false} />
         <main className={`rounded-b-lg h-full mx-5`}>{children}</main>

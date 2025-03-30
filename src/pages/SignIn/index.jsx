@@ -50,14 +50,14 @@ const SignIn = () => {
 
 
   return (
-    <div className="screen overflow-hidden relative flex items-center justify-center bg-contain bg-center flex-col">
+    <div className="screen overflow-hidden relative flex items-center justify-center bg-contain bg-center flex-col max-sm:p-2">
       <img 
         src="https://res.cloudinary.com/dnou1zvji/image/upload/v1741467043/Log-In_jwspvw_tvgirp.png" 
-        className="absolute z-0 top-0 left-0 object-cover w-full h-full"  
+        className="absolute z-0 top-0 left-0 object-cover w-full h-full "  
         alt="background-image" 
       />
 
-      <div className={ windowHeight > 600 ? 'top-3 absolute left-1/2 transform -translate-x-1/2  z-20' :
+      <div className={ windowHeight > 600 ? 'top-3 absolute left-1/2 transform -translate-x-1/2  z-20 max-sm:-top-8' :
          'absolute left-1/2 transform -translate-x-1/2  z-20 -top-16 '}>
         <img 
           src="https://res.cloudinary.com/dnou1zvji/image/upload/v1741567378/7da8bbfcdabdcf31233ff8e8a1e2135a_oclnkb.png" 
@@ -82,7 +82,11 @@ const SignIn = () => {
         <span className='text-sm font-medium'>Continue with Google</span>
       </button>
 
-      <div className="mt-2 mb-0 text-center text-gray-500 text-sm">Or</div>
+          <div className="flex items-center my-4">
+      <div className="flex-grow border-t border-gray-300"></div>
+      <span className="px-4 text-gray-500">Or</span>
+      <div className="flex-grow border-t border-gray-300"></div>
+    </div>
 
 
         <form onSubmit={handleSubmit} className='mt-2'>

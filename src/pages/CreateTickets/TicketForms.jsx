@@ -114,39 +114,40 @@ const TicketForm = ({ onClose, ticketType }) => {
     <form onSubmit={handleSubmit}>
       <VStack spacing={4} mt={5} align="stretch">
         <Text fontWeight="medium">Ticket name</Text>
-        <Input name="name" value={formData.name} onChange={handleChange} placeholder="Regular" required />
+        <Input  focusBorderColor="orange.500"
+         name="name" value={formData.name} onChange={handleChange} placeholder="Regular" required />
 
         <Text fontWeight="medium">Ticket quantity</Text>
-        <Input name="quantity" value={formData.quantity} onChange={handleChange} placeholder="150" required />
+        <Input  focusBorderColor="orange.500" name="quantity" value={formData.quantity} onChange={handleChange} placeholder="150" required />
 
-        {ticketType !== "Free" && (
+        {ticketType !== "free" && (
           <>
             <Text fontWeight="medium">Price</Text>
-            <Input name="price" value={formData.price} onChange={handleChange} placeholder="$5.99" required />
+            <Input   focusBorderColor="orange.500" name="price" value={formData.price} onChange={handleChange} placeholder="$5.99" required />
           </>
         )}
 
         <HStack>
           <VStack align="stretch" flex={1}>
             <Text fontWeight="medium">Start Date</Text>
-            <Input name="startDate" value={formData.startDate} onChange={handleChange} type="date" required />
+            <Input focusBorderColor="orange.500" name="startDate" value={formData.startDate} onChange={handleChange} type="date" required />
           </VStack>
 
           <VStack align="stretch" flex={1}>
             <Text fontWeight="medium">Start Time</Text>
-            <Input name="startTime" value={formData.startTime} onChange={handleChange} type="time" required />
+            <Input focusBorderColor="orange.500" value={formData.startTime} onChange={handleChange} type="time" required />
           </VStack>
         </HStack>
 
         <HStack>
           <VStack align="stretch" flex={1}>
             <Text fontWeight="medium">End Date</Text>
-            <Input name="endDate" value={formData.endDate} onChange={handleChange} type="date" required />
+            <Input focusBorderColor="orange.500" name="endDate" value={formData.endDate} onChange={handleChange} type="date" required />
           </VStack>
 
           <VStack align="stretch" flex={1}>
             <Text fontWeight="medium">End Time</Text>
-            <Input name="endTime" value={formData.endTime} onChange={handleChange} type="time" required />
+            <Input focusBorderColor="orange.500" name="endTime" value={formData.endTime} onChange={handleChange} type="time" required />
           </VStack>
         </HStack>
 

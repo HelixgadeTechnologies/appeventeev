@@ -92,17 +92,17 @@ import {
     };
   
       return (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto " >
               <table className="min-w-full border border-gray-200 rounded-lg mt-2">
                   <thead>
-                      <tr className="text-left" style={{ backgroundColor: "transparent" }}>
+                      <tr className="text-left" style={{ backgroundColor: "#f0f2f5" }}>
                           <th className="px-4 py-2"><input type="checkbox" /></th>
                           <th className="px-4 py-2 font-medium">Name</th>
                           <th className="px-4 py-2 font-medium">Ticket Type</th>
                           <th className="px-4 py-2 font-medium">Ticket ID</th>
                           <th className="px-4 py-2 font-medium">Amount</th>
                           <th className="px-4 py-2 font-medium">Date</th>
-                          <th className="px-4 py-2 font-medium">Actions</th>
+                          {/* <th className="px-4 py-2 font-medium">Actions</th> */}
                       </tr>
                   </thead>
                   <tbody>
@@ -122,9 +122,9 @@ import {
                               <td className=" text-sm ">
                                <span className=" p-1 rounded-md" style={{backgroundColor: '#ffece5',}}> {formatDate(ticket.updatedAt)}</span>
                                 </td>
-                              <td className="px-4 py-3 text-sm  ">
+                              {/* <td className="px-4 py-3 text-sm  ">
                                   <FaEdit style={{color:'#e8562e'}} className="cursor-pointer" onClick={() => handleEditClick(ticket)} />
-                              </td>
+                              </td> */}
                           </tr>
                       ))}
                   </tbody>

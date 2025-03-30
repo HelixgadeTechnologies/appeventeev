@@ -62,16 +62,18 @@ const OrgForm = () => {
       alt="Presentation"
       className="h-full w-full object-cover"
     />
+
+<img
+      src="https://res.cloudinary.com/dnou1zvji/image/upload/v1741567378/7da8bbfcdabdcf31233ff8e8a1e2135a_oclnkb.png"
+      alt="Eventeev Logo"
+      className="w-52 mb-4 absolute -top-12 -left-2 z-20"
+    />
   </div>
 
   {/* Right Side - Form */}
   <div className="lg:w-1/2 flex flex-col justify-center items-center h-full">
-    <img
-      src="https://res.cloudinary.com/dnou1zvji/image/upload/v1741554375/Eventeev_blac-08_5_gtcyzt.png"
-      alt="Eventeev Logo"
-      className="w-32 mb-4"
-    />
-    <div className="max-w-md bg-white p-6 rounded-lg shadow-lg w-full overflow-hidden max-h-[80vh]">
+  
+    <div className="max-w-md bg-white p-6  w-full overflow-hidden max-h-[100vh]">
       <h2 className="text-2xl font-bold text-gray-900 mb-2">Organisation details!</h2>
       <p className="text-gray-600 mb-4">Please tell us about your organisation</p>
 
@@ -125,9 +127,9 @@ const OrgForm = () => {
         </button>
       </form>
 
-      <p className="mt-3 text-center text-gray-600">
+      <p className="mt-3 text-center text-gray-600 flex gap-1 justify-center items-center">
         Back to
-        <Link  className="text-orange-500 cursor-pointer" to={'/signUp'}>Registration</Link>
+        <Link  className="text-orange-500 cursor-pointer " to={'/signUp'}>Registration</Link>
       </p>
     </div>
   </div>
