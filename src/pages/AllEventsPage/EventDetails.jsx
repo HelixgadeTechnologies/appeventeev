@@ -19,6 +19,7 @@ import {
 } from "@chakra-ui/react";
 import statsIcon from "../../assets/icons/stats.svg";
 import { FaChevronRight } from "react-icons/fa6";
+import { FiCalendar } from "react-icons/fi";
 import { LuClock3 } from "react-icons/lu";
 import { IoCalendarClearOutline } from "react-icons/io5";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
@@ -88,7 +89,34 @@ const EventDetails = () => {
   }
 
   const percentage = 0;
-  
+
+  // function for getting date
+  function todaysDate() {
+    const date = new Date();
+
+    // Get day, month, and year
+    const day = date.getDate();
+    const month = date.toLocaleString("en-US", { month: "long" });
+    const year = date.getFullYear();
+
+    // Function to get the ordinal suffix (st, nd, rd, th)
+    function getOrdinalSuffix(day) {
+      if (day > 3 && day < 21) return "th"; // Covers 11th-13th
+      switch (day % 10) {
+        case 1:
+          return "st";
+        case 2:
+          return "nd";
+        case 3:
+          return "rd";
+        default:
+          return "th";
+      }
+    }
+
+    return `${day}${getOrdinalSuffix(day)} ${month}, ${year}`;
+  }
+
   return (
     <>
       {/* custom heading */}
@@ -131,6 +159,32 @@ const EventDetails = () => {
               health 😊
             </Text>
           </Box>
+          {/* date tab */}
+          <Center
+            width={"280px"}
+            height={"74px"}
+            borderRadius={"12px"}
+            gap={"12px"}
+            bg={"white"}
+            marginRight={"10"}
+            marginTop={"2.5"}
+            paddingY={"16px"}
+            paddingX={"20px"}
+            borderWidth={"thin"}
+          >
+            <Center
+              borderRadius={"full"}
+              height={"40px"}
+              width={"40px"}
+              bg={"#F0F2F5"}
+            >
+              <FiCalendar className="text-[#344054] text-xl" />
+            </Center>
+            <Box>
+              <Text fontSize={"small"}>Today's Date</Text>
+              <Heading fontSize={"sm"}>{todaysDate()}</Heading>
+            </Box>
+          </Center>
         </Flex>
       </Box>
 
@@ -389,7 +443,7 @@ const EventDetails = () => {
             </Flex>
           </Box>
 
-          <Calendar />
+          <Calendar eventDate={currentEvent.startDate} />
         </Box>
       </Flex>
     </>
