@@ -2,7 +2,9 @@ import { useState } from "react";
 import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, add, isSameDay } from "date-fns";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
 
-const Calendar = () => {
+const Calendar = ({eventDate}) => {
+  const highlightDate = eventDate ? new Date(eventDate) : null;
+  
   const [currentDate, setCurrentDate] = useState(new Date());
   const today = new Date();
 
@@ -43,7 +45,8 @@ const Calendar = () => {
             key={index}
             className={`p-2 rounded-full flex h-10 w-10 justify-center items-center text-sm ${
               isSameDay(day, today) ? "bg-gray-200 font-bold" : ""
-            } ${format(day, "MM") !== format(currentDate, "MM") ? "text-gray-400" : ""}`}
+            } ${format(day, "MM") !== format(currentDate, "MM") ? "text-gray-400" : ""
+            } ${highlightDate && isSameDay(day, highlightDate) && "bg-orange-400 text-white"}`}
           >
             {format(day, "d")}
           </div>

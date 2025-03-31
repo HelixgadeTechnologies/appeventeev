@@ -24,6 +24,7 @@ import AllEventsPage from "./pages/AllEventsPage";
 import Attendees from "./pages/Attendees"
 import ProfileSettings from "./pages/settings/SettingsPage";
 import EventDetails from "./pages/AllEventsPage/EventDetails";
+import EditEventFirst from "./pages/EditEvent/EditEventFirst";
 
 
 const App = () => {
@@ -50,6 +51,9 @@ const App = () => {
         {/* all events route */}
         <Route path="/all-events" element={<AllEventsPage/>} />
         <Route path="/all-events/:id" element={<EventDetails/>} />
+
+        {/* edit event routes */}
+        <Route path="/edit-event/:id-1" element={<EditEventFirst/>} />
 
         {/* create ticket routes */}
         <Route path="/tickets" element={<TicketPage />} />

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useState, useEffect } from "react";
+import { useToast } from "@chakra-ui/react";
 
 export const EventContext = createContext();
 
@@ -13,6 +14,9 @@ const EventProvider = ({ children }) => {
   const [draftedEventsLoading, setDraftedEventsLoading] = useState(true);
   const [draftedEventsError, setDraftedEventsError] = useState(false);
 
+  const toast = useToast();
+
+  // get published events
   useEffect(() => {
     const getPublishedEvents = async () => {
       setPublishedEventsError(false);
@@ -40,6 +44,7 @@ const EventProvider = ({ children }) => {
     getPublishedEvents();
   }, []);
 
+  // get drafted events
   useEffect(() => {
     const getDraftedEvents = async () => {
       setDraftedEventsError(false);
@@ -68,7 +73,45 @@ const EventProvider = ({ children }) => {
     getDraftedEvents();
   }, []);
 
-  // for formatting date
+  // delete event
+  const deletePublishedEvents = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(
+        `https://eventeevapi.onrender.com/event/deleteevent/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      toast({
+        title: "Event Deleted Successfully.",
+        description: "Your event has been deleted successfully!",
+        status: "success",
+        duration: 4000,
+        isClosable: true,
+        position: "top-right",
+      });
+
+      setPublishedEvents((prevEvent) =>
+        prevEvent.filter((event) => event._id !== id)
+      );
+    } catch (error) {
+      console.error("Error deleting Event:", error);
+      toast({
+        title: "An error occured",
+        description: "Please check your internet connection or try again later",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+        position: "top-right",
+      });
+    }
+  };
+
+  // for date format
   const formatDate = (dateStr) => {
       if (!dateStr) return "";
     
@@ -91,6 +134,7 @@ const EventProvider = ({ children }) => {
         draftedEventsLoading,
         draftedEventsError,
         formatDate,
+        deletePublishedEvents,
       }}
     >
       {children}
