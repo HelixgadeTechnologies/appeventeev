@@ -23,10 +23,9 @@ import { IoAddCircleOutline } from "react-icons/io5";
 import { FiCalendar } from "react-icons/fi";
 
 const Header = () => {
+  const location = useLocation();
   const { publishedEvents } = useContext(EventContext);
-  
   const { userDetails } = useContext(UserAuthContext);
-  const location = useLocation()
 
   const userData = {
     username: `${userDetails.firstname + " " + userDetails.lastname}`,
@@ -42,21 +41,34 @@ const Header = () => {
       title: `Attendees`,
       subtitle: "Showing data over the last 30 days",
     },
-    "/tickets":{
-      title: 'My tickets',
-      subtitle: 'choose a ticket type or use multiple types'
+    "/tickets": {
+      title: "My tickets",
+      subtitle: "choose a ticket type or use multiple types",
     },
-    "/Profile-settings":{
-      title: 'Settings',
-      subtitle: 'Take a look at your policies and the new policy to see what is covered.'
-    }
-    
+    "/Profile-settings": {
+      title: "Settings",
+      subtitle:
+        "Take a look at your policies and the new policy to see what is covered.",
+    },
   };
 
+  if (
+    /^\/all-events\/[^/]+$/.test(location.pathname) ||
+    /^\/all-events-draft\/[^/]+$/.test(location.pathname) ||
+    (location.pathname === "/dashboard" && publishedEvents.length > 0)
+  ) {
+    return null;
+  }
+
   let { title, subtitle } = pageData[location.pathname] || {
-    title: `Welcome GDG Port Harcourt`, //need to take org name to display here for when user isn't on dashboard or hasn't added event
+    title: `Welcome ${userDetails.firstname}`,
     subtitle: "Control your profile and setup integrations",
   };
+
+  if (location.pathname.startsWith("/edit-event")) {
+    title = "Edit your event";
+    subtitle = "Follow the steps to make modifications to your existing event.";
+  }
 
   function todaysDate() {
     const date = new Date();
@@ -107,28 +119,29 @@ const Header = () => {
           />
         </Flex>
       </Flex>
-      <Flex justifyContent={"space-between"} alignItems={"end"} >
-      
-           <Box bg={
-              (location.pathname === `/dashboard` &&
-                publishedEvents.length > 0) ||
-              publishedEvents.length > 0 ||
-              location.pathname !== "/dashboard"
-                ? `#F9FAFB`
-                : `white`
-            }
-            width={"full"}
-            marginX={"5"}
-            marginTop={"3.5"}
-            padding={location.pathname === `/dashboard` ? `5` : `2`}
-            borderTopRadius={"lg"}>
-           <Heading fontWeight={"bold"} fontSize={"24px"} color="#000">
-              {title}
-            </Heading>
-            <Text color={"#667185"} fontSize={"small"} fontWeight={"normal"}>
-              {subtitle}
-            </Text>
-           </Box>
+      <Flex justifyContent={"space-between"} alignItems={"end"}>
+        <Box
+          bg={
+            (location.pathname === `/dashboard` &&
+              publishedEvents.length > 0) ||
+            publishedEvents.length > 0 ||
+            location.pathname !== "/dashboard"
+              ? `#F9FAFB`
+              : `white`
+          }
+          width={"full"}
+          marginX={"5"}
+          marginTop={"3.5"}
+          padding={location.pathname === `/dashboard` ? `5` : `2`}
+          borderTopRadius={"lg"}
+        >
+          <Heading fontWeight={"bold"} fontSize={"24px"} color="#000">
+            {title}
+          </Heading>
+          <Text color={"#667185"} fontSize={"small"} fontWeight={"normal"}>
+            {subtitle}
+          </Text>
+        </Box>
 
         {/* tab to show on dashboard page */}
         {location.pathname === "/dashboard" && publishedEvents.length > 0 && (
@@ -159,15 +172,13 @@ const Header = () => {
           </Center>
         )}
 
-          {/* add button to tickets */}
-          {
-            location.pathname === "/tickets" && (
-            <div className="mr-20">
-              <AddTicket />
-            </div>
-            )
-          }
-      
+        {/* add button to tickets */}
+        {location.pathname === "/tickets" && (
+          <div className="mr-20">
+            <AddTicket />
+          </div>
+        )}
+
         {/* buttons to show on attendee page */}
         {location.pathname === "/attendees" && (
           <Flex gap={"12px"} alignItems={"center"} marginX={"5"}>

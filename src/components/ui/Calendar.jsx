@@ -2,7 +2,9 @@ import { useState } from "react";
 import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, add, isSameDay } from "date-fns";
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
 
-const Calendar = () => {
+const Calendar = ({eventDate}) => {
+  const highlightDate = eventDate ? new Date(eventDate) : null;
+  
   const [currentDate, setCurrentDate] = useState(new Date());
   const today = new Date();
 
@@ -35,15 +37,16 @@ const Calendar = () => {
 
       {/* Calendar Grid */}
       <div className="grid grid-cols-7 gap-2 text-center text-gray-700">
-        {["S", "M", "T", "W", "T", "F", "S"].map((day) => (
-          <div key={day} className="text-[14px] font-semibold text-[#212934]">{day}</div>
+        {["S", "M", "T", "W", "T", "F", "S"].map((day, index) => (
+          <div key={index} className="text-[14px] font-semibold text-[#212934]">{day}</div>
         ))}
         {days.map((day, index) => (
           <div
             key={index}
             className={`p-2 rounded-full flex h-10 w-10 justify-center items-center text-sm ${
               isSameDay(day, today) ? "bg-gray-200 font-bold" : ""
-            } ${format(day, "MM") !== format(currentDate, "MM") ? "text-gray-400" : ""}`}
+            } ${format(day, "MM") !== format(currentDate, "MM") ? "text-gray-400" : ""
+            } ${highlightDate && isSameDay(day, highlightDate) && "bg-orange-400 text-white"}`}
           >
             {format(day, "d")}
           </div>

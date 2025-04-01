@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CreateEventLayout from "../../layout/CreateEventLayout";
 import {
   Box,
@@ -19,15 +19,23 @@ const CreateEventSecond = () => {
   const toast = useToast();
 
   const thirdPageData = location.state || {};
-  console.log("Data being sent:", thirdPageData);
+  // console.log("Data being sent:", thirdPageData);
 
-  const [isImageDisplay, setIsImageDisplay] = useState(true);
+  const [isImageDisplay, setIsImageDisplay] = useState(false);
 
   const removeImage = () => {
     setIsImageDisplay(false);
     thirdPageData.thumbnail = null;
     thirdPageData.thumbnailPreview = null;
   };
+
+  useEffect(() => {
+    if (thirdPageData.thumbnail && thirdPageData.thumbnailPreview) {
+      setIsImageDisplay(true);
+    } else {
+      setIsImageDisplay(false);
+    }
+  }, [thirdPageData.thumbnail, thirdPageData.thumbnailPreview]); 
 
   console.log("Data being sent:", thirdPageData);
 
@@ -106,6 +114,11 @@ const CreateEventSecond = () => {
     }
   };
 
+  const countWords = (text) => {
+    if (!text) return 0;
+    return text.trim().split(/\s+/).length;
+  };
+
   return (
     <CreateEventLayout heading="Event Review" activeStep={4}>
       <Box>
@@ -156,7 +169,7 @@ const CreateEventSecond = () => {
               Event Description:
             </Heading>
             <Text fontWeight={"medium"} fontSize={"small"}>
-              {thirdPageData.description}
+              {countWords(thirdPageData.description) < 60 ? thirdPageData.description : thirdPageData.description.substring(0,60) + "..."}
             </Text>
           </Flex>
           <Flex
@@ -251,6 +264,7 @@ const CreateEventSecond = () => {
           </Flex>
         </Box>
 
+        buttons
         <Flex justifyContent={"space-between"} marginTop={"5"} gap={"32px"}>
           <Button
             onClick={() => navigate("/dashboard")}

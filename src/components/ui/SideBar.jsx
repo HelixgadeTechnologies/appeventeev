@@ -29,7 +29,7 @@ const SideBar = () => {
     email: `${userDetails.email}`,
   };
 
-  const { publishedEvents } = useContext(EventContext);
+  const { publishedEvents, draftedEvents, completedEvents } = useContext(EventContext);
 
   return (
     <aside className="w-[250px] bg-white py-[30px] border-r border-[#E4E7EC] fixed top-0 left-0 h-screen z-50">
@@ -41,7 +41,7 @@ const SideBar = () => {
             paddingLeft={"6"}
             height={"30px"}
           />
-          {publishedEvents.length > 0 ? (
+          {publishedEvents.length > 0 || draftedEvents.length > 0 || completedEvents.length > 0 ? (
             // sidebar with more links
             <Box marginTop={"8px"} padding={"2"}>
               {sidebarTopLinks.map((link, index) => (

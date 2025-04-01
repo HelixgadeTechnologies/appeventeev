@@ -18,11 +18,22 @@ import CreateEventThird from "./pages/CreateEvent/CreateEventThird";
 import CreateEventFourth from "./pages/CreateEvent/CreateEventFourth";
 import TicketPage from "./pages/CreateTickets/CreateTicketPage";
 import AddTicket from "./pages/CreateTickets/TicketForms";
-
 import ResetPassword from "./pages/SignIn/ResetPassword";
 import AllEventsPage from "./pages/AllEventsPage";
 import Attendees from "./pages/Attendees"
 import ProfileSettings from "./pages/settings/SettingsPage";
+import PublishedEventDetails from "./pages/AllEventsPage/PublishedEventDetails";
+import DraftedEventDetails from "./pages/AllEventsPage/DraftedEventDetails";
+
+// edit event routes
+import EditEventFirst from "./pages/EditEvents/EditEventFirst";
+import EditEventSecond from "./pages/EditEvents/EditEventSecond";
+import EditEventThird from "./pages/EditEvents/EditEventThird";
+import EditEventFour from "./pages/EditEvents/EditEventFour";
+import EditDraftsFirst from "./pages/EditEvents/EditDraftsFirst";
+import EditDraftsSecond from "./pages/EditEvents/EditDraftsSecond";
+import EditDraftsThird from "./pages/EditEvents/EditDraftsThird";
+import EditDraftsFourth from "./pages/EditEvents/EditDraftsFourth";
 
 
 const App = () => {
@@ -48,6 +59,20 @@ const App = () => {
 
         {/* all events route */}
         <Route path="/all-events" element={<AllEventsPage/>} />
+        <Route path="/all-events/:id" element={<PublishedEventDetails/>} />
+        <Route path="/all-events-draft/:id" element={<DraftedEventDetails/>} />
+
+        {/* edit live event routes */}
+        <Route path="/edit-event-step-one/:id" element={<EditEventFirst/>} />
+        <Route path="/edit-event-step-two/:id" element={<EditEventSecond/>} />
+        <Route path="/edit-event-step-three/:id" element={<EditEventThird/>} />
+        <Route path="/edit-event-step-four/:id" element={<EditEventFour/>} />
+
+        {/* edit drafted event routes */}
+        <Route path="/edit-draft-step-one/:id" element={<EditDraftsFirst/>} />
+        <Route path="/edit-draft-step-two/:id" element={<EditDraftsSecond/>} />
+        <Route path="/edit-draft-step-three/:id" element={<EditDraftsThird/>} />
+        <Route path="/edit-draft-step-four/:id" element={<EditDraftsFourth/>} />
 
         {/* create ticket routes */}
         <Route path="/tickets" element={<TicketPage />} />
