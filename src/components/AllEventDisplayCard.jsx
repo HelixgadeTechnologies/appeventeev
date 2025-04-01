@@ -17,7 +17,7 @@ import { UserAuthContext } from "../contexts/UserAuthContext";
 import { Link } from "react-router-dom";
 import { EventContext } from "../contexts/EventContext";
 
-const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, canBeEdited = false, }) => {
+const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute, detailsRoute }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { userDetails } = useContext(UserAuthContext);
   const { formatDate } = useContext(EventContext);
@@ -96,21 +96,19 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, canBeEdit
                     <AiTwotoneDelete className="text-base" />
                     <Text fontSize={"10px"}>Delete event</Text>
                   </Flex>
-                  {canBeEdited && (
-                    <Link to={`/edit-event-step-one/${event._id}`}>
-                      <Flex
-                        alignItems={"center"}
-                        gap={"1"}
-                        _hover={{ bg: "gray.100" }}
-                        paddingY={"4px"}
-                        paddingX={"5px"}
-                      >
-                        <AiTwotoneEdit className="text-base" />
-                        <Text fontSize={"10px"}>Edit event</Text>
-                      </Flex>
-                    </Link>
-                  )}
-                  <Link to={`/all-events/${event._id}`}>
+                  <Link to={editRoute}>
+                    <Flex
+                      alignItems={"center"}
+                      gap={"1"}
+                      _hover={{ bg: "gray.100" }}
+                      paddingY={"4px"}
+                      paddingX={"5px"}
+                    >
+                      <AiTwotoneEdit className="text-base" />
+                      <Text fontSize={"10px"}>Edit event</Text>
+                    </Flex>
+                  </Link>
+                  <Link to={detailsRoute}>
                     <Flex
                       alignItems={"center"}
                       gap={"1"}

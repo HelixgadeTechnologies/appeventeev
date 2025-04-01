@@ -221,6 +221,7 @@ const EventProvider = ({ children }) => {
     }
   };
 
+  // reusable update function
   const updatePublishedEvent = async (id, updatedEventData) => {
     try {
       const token = localStorage.getItem("token");
@@ -257,6 +258,7 @@ const EventProvider = ({ children }) => {
     }
   };
   
+
 
   // for date format
   const formatDate = (dateStr) => {

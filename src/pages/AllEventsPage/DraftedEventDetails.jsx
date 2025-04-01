@@ -15,7 +15,6 @@ import {
   Divider,
   Button,
   Avatar,
-  AvatarBadge,
 } from "@chakra-ui/react";
 import statsIcon from "../../assets/icons/stats.svg";
 import { FaChevronRight } from "react-icons/fa6";
@@ -30,11 +29,11 @@ import { BiError } from "react-icons/bi";
 import SearchBar from "../../components/ui/SearchBar";
 import Notifications from "../../components/ui/Notifications";
 
-const EventDetails = () => {
+const DraftedEventDetails = () => {
   const {
-    publishedEvents,
-    publishedEventsLoading,
-    publishedEventsError,
+    draftedEvents,
+    draftedEventsLoading,
+    draftedEventsError,
     formatDate,
     todaysDate,
   } = useContext(EventContext);
@@ -48,7 +47,7 @@ const EventDetails = () => {
 
   const { id } = useParams();
 
-  if (publishedEventsLoading) {
+  if (draftedEventsLoading) {
     return (
       <Center height={"100vh"}>
         <Box className="loader"></Box>
@@ -56,7 +55,7 @@ const EventDetails = () => {
     );
   }
 
-  if (publishedEventsError) {
+  if (draftedEventsError) {
     return (
       <Center height={"100vh"}>
         <Center flexDir={"column"} color={"red.500"} gap={"5"}>
@@ -69,7 +68,7 @@ const EventDetails = () => {
     );
   }
 
-  if (!publishedEvents || publishedEvents.length === 0) {
+  if (!draftedEvents || draftedEvents.length === 0) {
     return (
       <NoStatePage
         img={
@@ -83,15 +82,13 @@ const EventDetails = () => {
   }
 
   // Find the specific event
-  const currentEvent = publishedEvents.find((event) => event._id === id);
+  const currentEvent = draftedEvents.find((event) => event._id === id);
 
   if (!currentEvent) {
     return <Text>Event not found.</Text>;
   }
 
   const percentage = 0;
-
-
   return (
     <>
       {/* custom heading */}
@@ -394,7 +391,9 @@ const EventDetails = () => {
             <Divider></Divider>
             <Flex gap={"10px"} marginX={"2.5"} marginY={"2.5"}>
               <Button
-                onClick={() => navigate(`/edit-event-step-one/${currentEvent._id}-1`)}
+                onClick={() =>
+                  navigate(`/edit-event-step-one/${currentEvent._id}-1`)
+                }
                 variant={"outline"}
                 color={"#344054"}
                 fontWeight={"medium"}
@@ -426,4 +425,4 @@ const EventDetails = () => {
   );
 };
 
-export default EventDetails;
+export default DraftedEventDetails;

@@ -17,6 +17,7 @@ const DisplayLayout = ({ children }) => {
         <Toaster position="top-center" reverseOrder={false} />
         <main
           className={`${
+            /^\/all-events-draft\/[^/]+$/.test(location.pathname) ||
             /^\/all-events\/[^/]+$/.test(location.pathname) ||
             location.pathname === "/dashboard"
               ? "mx-0"

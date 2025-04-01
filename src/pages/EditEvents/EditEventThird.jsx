@@ -4,14 +4,11 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Switch,
   Link,
   Text,
   Flex,
   Button,
-  FormErrorMessage,
   Center,
-  Heading,
 } from "@chakra-ui/react";
 import { EventContext } from "../../contexts/EventContext";
 import { useLocation, useNavigate, useParams } from "react-router-dom";

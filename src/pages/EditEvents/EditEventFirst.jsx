@@ -13,7 +13,6 @@ import {
   Flex,
   Button,
   Center,
-  Heading,
   Text,
   FormErrorMessage
 } from "@chakra-ui/react";

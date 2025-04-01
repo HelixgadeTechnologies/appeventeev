@@ -6,8 +6,12 @@ import NoStatePage from "./NoStatePage";
 import { RiSignalWifiErrorFill } from "react-icons/ri";
 
 const DraftedEvents = () => {
-  const { draftedEvents, draftedEventsLoading, draftedEventsError, deleteDraftedEvents } =
-    useContext(EventContext);
+  const {
+    draftedEvents,
+    draftedEventsLoading,
+    draftedEventsError,
+    deleteDraftedEvents,
+  } = useContext(EventContext);
 
   return (
     <div>
@@ -28,7 +32,12 @@ const DraftedEvents = () => {
         <Grid templateColumns={"repeat(3,1fr)"} gap={"20px"}>
           {draftedEvents.map((event) => (
             <GridItem key={event._id}>
-              <AllEventDisplayCard event={event} onDelete={() => deleteDraftedEvents(event._id)} />
+              <AllEventDisplayCard
+                event={event}
+                onDelete={() => deleteDraftedEvents(event._id)}
+                editRoute={`/edit-draft-step-one/${event._id}`}
+                detailsRoute={`/all-events-draft/${event._id}`}
+              />
             </GridItem>
           ))}
         </Grid>
