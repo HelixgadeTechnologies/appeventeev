@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { EventContext } from "../../contexts/EventContext";
 import { flexData, services } from "../../utils/dashboard";
 import {
@@ -15,7 +15,6 @@ import {
   Divider,
   Button,
   Avatar,
-  AvatarBadge,
 } from "@chakra-ui/react";
 import statsIcon from "../../assets/icons/stats.svg";
 import { FaChevronRight } from "react-icons/fa6";
@@ -30,16 +29,17 @@ import { BiError } from "react-icons/bi";
 import SearchBar from "../../components/ui/SearchBar";
 import Notifications from "../../components/ui/Notifications";
 
-const EventDetails = () => {
+const DraftedEventDetails = () => {
   const {
-    publishedEvents,
-    publishedEventsLoading,
-    publishedEventsError,
+    draftedEvents,
+    draftedEventsLoading,
+    draftedEventsError,
     formatDate,
+    todaysDate,
   } = useContext(EventContext);
   //   importing user details from context
   const { userDetails } = useContext(UserAuthContext);
-
+  const navigate = useNavigate();
   const userData = {
     username: `${userDetails.firstname + " " + userDetails.lastname}`,
     email: `${userDetails.email}`,
@@ -47,7 +47,7 @@ const EventDetails = () => {
 
   const { id } = useParams();
 
-  if (publishedEventsLoading) {
+  if (draftedEventsLoading) {
     return (
       <Center height={"100vh"}>
         <Box className="loader"></Box>
@@ -55,7 +55,7 @@ const EventDetails = () => {
     );
   }
 
-  if (publishedEventsError) {
+  if (draftedEventsError) {
     return (
       <Center height={"100vh"}>
         <Center flexDir={"column"} color={"red.500"} gap={"5"}>
@@ -68,7 +68,7 @@ const EventDetails = () => {
     );
   }
 
-  if (!publishedEvents || publishedEvents.length === 0) {
+  if (!draftedEvents || draftedEvents.length === 0) {
     return (
       <NoStatePage
         img={
@@ -82,41 +82,13 @@ const EventDetails = () => {
   }
 
   // Find the specific event
-  const currentEvent = publishedEvents.find((event) => event._id === id);
+  const currentEvent = draftedEvents.find((event) => event._id === id);
 
   if (!currentEvent) {
     return <Text>Event not found.</Text>;
   }
 
   const percentage = 0;
-
-  // function for getting date
-  function todaysDate() {
-    const date = new Date();
-
-    // Get day, month, and year
-    const day = date.getDate();
-    const month = date.toLocaleString("en-US", { month: "long" });
-    const year = date.getFullYear();
-
-    // Function to get the ordinal suffix (st, nd, rd, th)
-    function getOrdinalSuffix(day) {
-      if (day > 3 && day < 21) return "th"; // Covers 11th-13th
-      switch (day % 10) {
-        case 1:
-          return "st";
-        case 2:
-          return "nd";
-        case 3:
-          return "rd";
-        default:
-          return "th";
-      }
-    }
-
-    return `${day}${getOrdinalSuffix(day)} ${month}, ${year}`;
-  }
-
   return (
     <>
       {/* custom heading */}
@@ -148,7 +120,7 @@ const EventDetails = () => {
             width={"full"}
             marginX={"5"}
             marginTop={"3.5"}
-            padding={location.pathname === `/dashboard` ? `5` : `2`}
+            padding={"5"}
             borderTopRadius={"lg"}
           >
             <Heading fontWeight={"bold"} fontSize={"24px"} color="#000">
@@ -419,6 +391,9 @@ const EventDetails = () => {
             <Divider></Divider>
             <Flex gap={"10px"} marginX={"2.5"} marginY={"2.5"}>
               <Button
+                onClick={() =>
+                  navigate(`/edit-event-step-one/${currentEvent._id}-1`)
+                }
                 variant={"outline"}
                 color={"#344054"}
                 fontWeight={"medium"}
@@ -450,4 +425,4 @@ const EventDetails = () => {
   );
 };
 
-export default EventDetails;
+export default DraftedEventDetails;

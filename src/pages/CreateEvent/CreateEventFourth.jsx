@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CreateEventLayout from "../../layout/CreateEventLayout";
 import {
   Box,
@@ -19,7 +19,7 @@ const CreateEventSecond = () => {
   const toast = useToast();
 
   const thirdPageData = location.state || {};
-  console.log("Data being sent:", thirdPageData);
+  // console.log("Data being sent:", thirdPageData);
 
   const [isImageDisplay, setIsImageDisplay] = useState(false);
 
@@ -28,6 +28,14 @@ const CreateEventSecond = () => {
     thirdPageData.thumbnail = null;
     thirdPageData.thumbnailPreview = null;
   };
+
+  useEffect(() => {
+    if (thirdPageData.thumbnail && thirdPageData.thumbnailPreview) {
+      setIsImageDisplay(true);
+    } else {
+      setIsImageDisplay(false);
+    }
+  }, [thirdPageData.thumbnail, thirdPageData.thumbnailPreview]); 
 
   console.log("Data being sent:", thirdPageData);
 
@@ -256,6 +264,7 @@ const CreateEventSecond = () => {
           </Flex>
         </Box>
 
+        buttons
         <Flex justifyContent={"space-between"} marginTop={"5"} gap={"32px"}>
           <Button
             onClick={() => navigate("/dashboard")}
