@@ -25,6 +25,9 @@ import Attendees from "./pages/Attendees"
 import ProfileSettings from "./pages/settings/SettingsPage";
 import EventDetails from "./pages/AllEventsPage/EventDetails";
 import EditEventFirst from "./pages/EditEvent/EditEventFirst";
+import EditEventSecond from "./pages/EditEvent/EditEventSecond";
+import EditEventThird from "./pages/EditEvent/EditEventThird";
+import EditEventFour from "./pages/EditEvent/EditEventFour";
 
 
 const App = () => {
@@ -53,7 +56,10 @@ const App = () => {
         <Route path="/all-events/:id" element={<EventDetails/>} />
 
         {/* edit event routes */}
-        <Route path="/edit-event/:id-1" element={<EditEventFirst/>} />
+        <Route path="/edit-event-step-one/:id" element={<EditEventFirst/>} />
+        <Route path="/edit-event-step-two/:id" element={<EditEventSecond/>} />
+        <Route path="/edit-event-step-three/:id" element={<EditEventThird/>} />
+        <Route path="/edit-event-step-four/:id" element={<EditEventFour/>} />
 
         {/* create ticket routes */}
         <Route path="/tickets" element={<TicketPage />} />

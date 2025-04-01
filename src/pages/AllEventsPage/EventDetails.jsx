@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { EventContext } from "../../contexts/EventContext";
 import { flexData, services } from "../../utils/dashboard";
 import {
@@ -36,10 +36,11 @@ const EventDetails = () => {
     publishedEventsLoading,
     publishedEventsError,
     formatDate,
+    todaysDate,
   } = useContext(EventContext);
   //   importing user details from context
   const { userDetails } = useContext(UserAuthContext);
-
+  const navigate = useNavigate();
   const userData = {
     username: `${userDetails.firstname + " " + userDetails.lastname}`,
     email: `${userDetails.email}`,
@@ -90,32 +91,6 @@ const EventDetails = () => {
 
   const percentage = 0;
 
-  // function for getting date
-  function todaysDate() {
-    const date = new Date();
-
-    // Get day, month, and year
-    const day = date.getDate();
-    const month = date.toLocaleString("en-US", { month: "long" });
-    const year = date.getFullYear();
-
-    // Function to get the ordinal suffix (st, nd, rd, th)
-    function getOrdinalSuffix(day) {
-      if (day > 3 && day < 21) return "th"; // Covers 11th-13th
-      switch (day % 10) {
-        case 1:
-          return "st";
-        case 2:
-          return "nd";
-        case 3:
-          return "rd";
-        default:
-          return "th";
-      }
-    }
-
-    return `${day}${getOrdinalSuffix(day)} ${month}, ${year}`;
-  }
 
   return (
     <>
@@ -148,7 +123,7 @@ const EventDetails = () => {
             width={"full"}
             marginX={"5"}
             marginTop={"3.5"}
-            padding={location.pathname === `/dashboard` ? `5` : `2`}
+            padding={"5"}
             borderTopRadius={"lg"}
           >
             <Heading fontWeight={"bold"} fontSize={"24px"} color="#000">
@@ -419,6 +394,7 @@ const EventDetails = () => {
             <Divider></Divider>
             <Flex gap={"10px"} marginX={"2.5"} marginY={"2.5"}>
               <Button
+                onClick={() => navigate(`/edit-event-step-one/${currentEvent._id}-1`)}
                 variant={"outline"}
                 color={"#344054"}
                 fontWeight={"medium"}

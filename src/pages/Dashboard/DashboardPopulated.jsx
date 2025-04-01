@@ -14,29 +14,130 @@ import {
   Button,
   Avatar,
 } from "@chakra-ui/react";
-import statsIcon from "../../assets/icons/stats.svg";
+import { Link } from "react-router-dom";
+// context
+import { UserAuthContext } from "../../contexts/UserAuthContext";
+import { EventContext } from "../../contexts/EventContext";
+// components
+import Calendar from "../../components/ui/Calendar";
+import AttendeeDisplay from "../../components/ui/AttendeeDisplay";
+import SearchBar from "../../components/ui/SearchBar";
+import Notifications from "../../components/ui/Notifications";
+// icons
 import { FaChevronRight } from "react-icons/fa6";
 import { LuClock3 } from "react-icons/lu";
 import { IoCalendarClearOutline } from "react-icons/io5";
-import { UserAuthContext } from "../../contexts/UserAuthContext";
-import Calendar from "../../components/ui/Calendar";
-import { EventContext } from "../../contexts/EventContext";
+import { FiCalendar } from "react-icons/fi";
+import { attendees } from "../../utils/attendees";
+import statsIcon from "../../assets/icons/stats.svg";
 
 const DashboardPopulated = () => {
   const { userDetails } = useContext(UserAuthContext);
-  const {publishedEvents} = useContext(EventContext);
+  const { publishedEvents, todaysDate, publishedEventsError, publishedEventsLoading, formatDate } = useContext(EventContext);
 
-  const firstEventOnDatabase = publishedEvents[1];
-  console.log(firstEventOnDatabase)
-  
+  const firstEventOnDatabase = publishedEvents[0];
+  console.log(firstEventOnDatabase);
+
   const userData = {
     username: `${userDetails.firstname + " " + userDetails.lastname}`,
     email: `${userDetails.email}`,
   };
 
+    if (publishedEventsLoading) {
+      return (
+        <Center height={"100vh"}>
+          <Box className="loader"></Box>
+        </Center>
+      );
+    }
+  
+    if (publishedEventsError) {
+      return (
+        <Center height={"100vh"}>
+          <Center flexDir={"column"} color={"red.500"} gap={"5"}>
+            <BiError size={100} />
+            <Text fontSize={"sm"}>
+              Uh oh! It seems an error occurred. Please try again later.
+            </Text>
+          </Center>
+        </Center>
+      );
+    }
+
   const percentage = 0;
   return (
-    <Flex marginTop={"5"} marginX={"2.5"} gap={"5"}>
+    <>
+    {/* custom heading */}
+    <Box>
+      <Flex
+        borderTopWidth={"1px"}
+        borderBottomWidth={"1px"}
+        paddingX={"36px"}
+        paddingY={"10px"}
+        bg={"white"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+      >
+        <SearchBar />
+        <Flex gap={"12px"}>
+          <Notifications />
+          <Avatar
+            src=""
+            name={userData.username}
+            height={"40px"}
+            width={"40px"}
+            fontSize={"sm"}
+          />
+        </Flex>
+      </Flex>
+      <Flex justifyContent={"space-between"} alignItems={"end"}>
+        <Box
+          bg={"#F9FAFB"}
+          width={"full"}
+          marginX={"5"}
+          marginTop={"3.5"}
+          padding={"5"}
+          borderTopRadius={"lg"}
+        >
+          <Heading fontWeight={"bold"} fontSize={"24px"} color="#000">
+            Welcome {firstEventOnDatabase.name}
+          </Heading>
+          <Text color={"#667185"} fontSize={"small"} fontWeight={"normal"}>
+            It’s a sunny day today, we hope you’re taking good care of your
+            health 😊
+          </Text>
+        </Box>
+        {/* date tab */}
+        <Center
+          width={"280px"}
+          height={"74px"}
+          borderRadius={"12px"}
+          gap={"12px"}
+          bg={"white"}
+          marginRight={"10"}
+          marginTop={"2.5"}
+          paddingY={"16px"}
+          paddingX={"20px"}
+          borderWidth={"thin"}
+        >
+          <Center
+            borderRadius={"full"}
+            height={"40px"}
+            width={"40px"}
+            bg={"#F0F2F5"}
+          >
+            <FiCalendar className="text-[#344054] text-xl" />
+          </Center>
+          <Box>
+            <Text fontSize={"small"}>Today's Date</Text>
+            <Heading fontSize={"sm"}>{todaysDate()}</Heading>
+          </Box>
+        </Center>
+      </Flex>
+    </Box>
+
+    {/* rest of page */}
+    <Flex marginTop={"5"} marginX={"7"} gap={"5"}>
       <Box width={"70%"} className="space-y-6">
         {/* flex boxes */}
         <Flex gap={"16px"} alignItems={"center"}>
@@ -54,7 +155,11 @@ const DashboardPopulated = () => {
               alignItems={"center"}
             >
               <Box width={"143px"} className="space-y-2">
-                <Text fontWeight={"normal"} fontSize={"small"} color={"#475367"}>
+                <Text
+                  fontWeight={"normal"}
+                  fontSize={"small"}
+                  color={"#475367"}
+                >
                   {box.heading}
                 </Text>
                 <Heading
@@ -99,17 +204,19 @@ const DashboardPopulated = () => {
             >
               Newest peeps
             </Heading>
-            <Flex
-              alignItems={"center"}
-              gap={"2.5"}
-              color={"#EB5017"}
-              fontWeight={"medium"}
-              fontSize={"sm"}
-              _hover={{ textDecoration: "underline", cursor: "pointer" }}
-            >
-              See all attendees
-              <FaChevronRight className="text-base" />
-            </Flex>
+            <Link to={"/attendees"}>
+              <Flex
+                alignItems={"center"}
+                gap={"2.5"}
+                color={"#EB5017"}
+                fontWeight={"medium"}
+                fontSize={"sm"}
+                _hover={{ textDecoration: "underline", cursor: "pointer" }}
+              >
+                See all attendees
+                <FaChevronRight className="text-base" />
+              </Flex>
+            </Link>
           </Flex>
           <Box
             height={"140px"}
@@ -118,16 +225,34 @@ const DashboardPopulated = () => {
             borderWidth={"thin"}
             borderColor={"#F0F2F5"}
             bg={"white"}
+            padding={"20px"}
           >
-            <Center color={"#475367"} height={"full"} fontSize={"sm"}>
-              New attendees would appear here! 😊
-            </Center>
+            {attendees.length > 0 ? (
+              <Flex
+                gap={"10"}
+                height={"full"}
+                overflowX={"auto"}
+                className="hidden-scrollbar"
+              >
+                {attendees.map((attendee) => (
+                  <AttendeeDisplay key={attendee.id} attendee={attendee} />
+                ))}
+              </Flex>
+            ) : (
+              <Center color={"#475367"} height={"full"} fontSize={"sm"}>
+                New attendees would appear here! 😊
+              </Center>
+            )}
           </Box>
         </Box>
 
         {/* services */}
         <Box width={"695px"}>
-          <Heading color={"#101928"} fontWeight={"semibold"} fontSize={"16px"}>
+          <Heading
+            color={"#101928"}
+            fontWeight={"semibold"}
+            fontSize={"16px"}
+          >
             Services
           </Heading>
           <Grid
@@ -145,7 +270,11 @@ const DashboardPopulated = () => {
                 bg={service.bg}
                 transitionDuration={"500ms"}
                 transitionProperty={"colors"}
-                _hover={{cursor: "pointer", borderWidth: "thin", borderColor: service.borderColor}}
+                _hover={{
+                  cursor: "pointer",
+                  borderWidth: "thin",
+                  borderColor: service.borderColor,
+                }}
               >
                 <Flex
                   gap={"30px"}
@@ -182,66 +311,90 @@ const DashboardPopulated = () => {
           borderColor={"#E4E7EC"}
         >
           <Heading
-          color={"#101928"}
-          fontWeight={"semibold"}
-          fontSize={"16px"}
-          margin={"5"}
+            color={"#101928"}
+            fontWeight={"semibold"}
+            fontSize={"16px"}
+            margin={"5"}
           >
             Event day
           </Heading>
-          <Divider/>
+          <Divider />
           <Box padding={"5"} className="space-y-[14px]">
             <Heading
-            color={"#101928"}
-            fontWeight={"semibold"}
-            fontSize={"small"}
+              color={"#101928"}
+              fontWeight={"semibold"}
+              fontSize={"small"}
             >
-              Friday 6, July
+              {formatDate(firstEventOnDatabase.startDate)}
             </Heading>
             <Flex gap={"2.5"} alignItems={"center"}>
-              <LuClock3 className="text-base text-[#475367]"/>
-              <Text color={"#475367"} fontWeight={"normal"} fontSize={"11px"}>11.30 - 3.00 (4:30 min)</Text>
+              <LuClock3 className="text-base text-[#475367]" />
+              <Text color={"#475367"} fontWeight={"normal"} fontSize={"11px"}>
+                {firstEventOnDatabase.startTime} - {firstEventOnDatabase.endTime}
+              </Text>
             </Flex>
             <Flex gap={"2.5"} alignItems={"start"}>
-              <IoCalendarClearOutline className="text-xl text-[#475367]"/>
-              <Text color={"#475367"} fontWeight={"normal"} fontSize={"11px"}>Cottage Medicare Hospital, 18 Iwaya Rd, Yaba 101245, Lagos</Text>
+              <IoCalendarClearOutline className="text-base text-[#475367]" />
+              <Text
+                color={"#475367"}
+                fontWeight={"normal"}
+                fontSize={"11px"}
+                textTransform={"capitalize"}
+              >
+                {firstEventOnDatabase.location}
+              </Text>
             </Flex>
             <Flex gap={"2.5"} alignItems={"center"}>
-              <Avatar name={userData.username} size={"sm"}/>
+              <Avatar name={userData.username} size={"sm"} />
               <Box>
-                <Heading fontWeight={"medium"} fontSize={"small"} color={"#101928"}>{userData.username}</Heading>
-                <Text fontWeight={"normal"} fontSize={"x-small"} color={"#475367"}>Event organiser</Text>
+                <Heading
+                  fontWeight={"medium"}
+                  fontSize={"small"}
+                  color={"#101928"}
+                >
+                  {userData.username}
+                </Heading>
+                <Text
+                  fontWeight={"normal"}
+                  fontSize={"x-small"}
+                  color={"#475367"}
+                >
+                  Event organiser
+                </Text>
               </Box>
             </Flex>
           </Box>
           <Divider></Divider>
           <Flex gap={"10px"} marginX={"2.5"} marginY={"2.5"}>
             <Button
-            variant={"outline"}
-            color={"#344054"}
-            fontWeight={"medium"}
-            borderRadius={"lg"}
-            fontSize={"small"}
-            padding={"12px"}
-            >Edit Event Details</Button>
+              variant={"outline"}
+              color={"#344054"}
+              fontWeight={"medium"}
+              borderRadius={"lg"}
+              fontSize={"small"}
+              padding={"12px"}
+            >
+              Edit Event Details
+            </Button>
             <Button
-            bg={"#EB5017"}
-            _hover={{ bg: "#e84a11" }}
-            fontSize={"small"}
-            variant={"solid"}
-            padding={"12px"}
-            borderRadius={"8px"}
-            color={"white"}
-            fontWeight={"medium"}
+              bg={"#EB5017"}
+              _hover={{ bg: "#e84a11" }}
+              fontSize={"small"}
+              variant={"solid"}
+              padding={"12px"}
+              borderRadius={"8px"}
+              color={"white"}
+              fontWeight={"medium"}
             >
               Copy Event Link
             </Button>
           </Flex>
         </Box>
 
-        <Calendar/>
+        <Calendar eventDate={firstEventOnDatabase.startDate} />
       </Box>
     </Flex>
+  </>
   );
 };
 

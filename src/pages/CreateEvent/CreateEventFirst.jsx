@@ -111,8 +111,8 @@ const CreateEventFirst = () => {
     // Ensure the date is in "YYYY-MM-DD" format
     const date = new Date(dateStr);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Ensure two digits
-    const day = String(date.getDate()).padStart(2, "0"); // Ensure two digits
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0"); 
   
     return `${year}-${month}-${day}`;
   };
@@ -123,7 +123,7 @@ const CreateEventFirst = () => {
 
     const [hour, minute] = timeStr.split(":").map(Number);
     const period = hour >= 12 ? "PM" : "AM";
-    const formattedHour = hour % 12 || 12; // Convert 0 to 12 for 12 AM
+    const formattedHour = hour % 12 || 12;
 
     return `${formattedHour}:${minute.toString().padStart(2, "0")} ${period}`;
   };
@@ -364,7 +364,7 @@ const CreateEventFirst = () => {
               color={"#EB5017"}
               borderColor={"#EB5017"}
               _hover={{ bg: "orange.50" }}
-              onClick={() => navigate("/dashboard")}
+              onClick={() => navigate("/all-events")}
             >
               Cancel
             </Button>

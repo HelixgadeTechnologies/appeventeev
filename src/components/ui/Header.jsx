@@ -52,7 +52,7 @@ const Header = () => {
     
   };
 
-  if (/^\/all-events\/[^/]+$/.test(location.pathname)) {
+  if (/^\/all-events\/[^/]+$/.test(location.pathname) || location.pathname === "/dashboard" && publishedEvents.length > 0) {
     return null;
   }
   
@@ -60,6 +60,11 @@ const Header = () => {
     title: `Welcome ${userDetails.firstname}`,
     subtitle: "Control your profile and setup integrations",
   };
+
+  if (location.pathname.startsWith("/edit-event")) {
+    title = "Edit your event";
+    subtitle = "Follow the steps to make modifications to your existing event."
+  }
 
   function todaysDate() {
     const date = new Date();

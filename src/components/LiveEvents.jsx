@@ -6,9 +6,8 @@ import NoStatePage from './NoStatePage'
 import { RiSignalWifiErrorFill } from "react-icons/ri";
 
 const LiveEvents = () => {
-    const { publishedEvents, publishedEventsLoading, publishedEventsError } = useContext(EventContext);
+    const { publishedEvents, publishedEventsLoading, publishedEventsError, deletePublishedEvents } = useContext(EventContext);
 
-    console.log(publishedEvents);
   return (
     <div>
       {publishedEventsLoading ? (
@@ -27,7 +26,7 @@ const LiveEvents = () => {
           <Grid templateColumns={"repeat(3,1fr)"} gap={"20px"} height={"full"}>
             {publishedEvents.map((event) => (
               <GridItem key={event._id}>
-                <AllEventDisplayCard event={event}/>
+                <AllEventDisplayCard event={event} onDelete={() => deletePublishedEvents(event._id)}/>
               </GridItem>
             ))}
           </Grid>
