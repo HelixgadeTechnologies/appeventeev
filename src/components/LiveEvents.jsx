@@ -26,7 +26,7 @@ const LiveEvents = () => {
           <Grid templateColumns={"repeat(3,1fr)"} gap={"20px"} height={"full"}>
             {publishedEvents.map((event) => (
               <GridItem key={event._id}>
-                <AllEventDisplayCard event={event} onDelete={() => deletePublishedEvents(event._id)}/>
+                <AllEventDisplayCard event={event} onDelete={() => deletePublishedEvents(event._id)} canBeEdited={true} />
               </GridItem>
             ))}
           </Grid>
