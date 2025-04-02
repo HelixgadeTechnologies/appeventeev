@@ -28,9 +28,9 @@ const LiveEvents = () => {
             </Text>
           </Center>
         </Center>
-      ) : publishedEvents ? (
+      ) : publishedEvents.length > 0 ? (
         <Box>
-          <Grid templateColumns={"repeat(3,1fr)"} gap={"20px"} height={"full"}>
+          <Grid templateColumns={"repeat(3,1fr)"} gap={"20px"} height={"screen"}>
             {publishedEvents.map((event) => (
               <GridItem key={event._id}>
                 <AllEventDisplayCard
