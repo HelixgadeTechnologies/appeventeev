@@ -153,6 +153,7 @@ const ProfileSettings = () => {
             name="country"
             value={formData.country}
             className="w-full mt-1 px-3 py-2 border rounded-md text-xs focus:border-[#f56630] focus:ring-1 focus:ring-[#f56630]"
+            onChange={handleChange}
           />
         </div>
       </div>

@@ -5,11 +5,16 @@ import {
 import axios from "axios";
 import { useContext, useState } from "react";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
+import { useParams } from "react-router-dom";
+
 
 const AddTicket = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedTab, setSelectedTab] = useState(0);
+  
 
+
+ 
   return (
     <>
       {/* Button to Open Modal */}
@@ -59,10 +64,12 @@ const AddTicket = () => {
 
 const TicketForm = ({ onClose, ticketType }) => {
 
-  const { token } = useContext(UserAuthContext)
+  const { token  } = useContext(UserAuthContext)
+
+  const { id } = useParams();
 
   const [formData, setFormData] = useState({
-    eventId: '67d00263d645bddd43326d35',
+    eventId: `${id}`,
     name: "",
     type: ticketType,
     quantity: "",
@@ -102,7 +109,9 @@ const TicketForm = ({ onClose, ticketType }) => {
       );
   
       console.log("Ticket added successfully:", response);
+ 
       onClose();
+
     } catch (error) {
       console.error("Error adding ticket:", error.response?.data?.message || error.message);
     }
@@ -135,7 +144,7 @@ const TicketForm = ({ onClose, ticketType }) => {
 
           <VStack align="stretch" flex={1}>
             <Text fontWeight="medium">Start Time</Text>
-            <Input focusBorderColor="orange.500" value={formData.startTime} onChange={handleChange} type="time" required />
+            <Input focusBorderColor="orange.500" name="startTime" value={formData.startTime} onChange={handleChange} type="time" required />
           </VStack>
         </HStack>
 

@@ -6,16 +6,19 @@ import { AddIcon } from "@chakra-ui/icons";
 import AddTicket from "./TicketForms";
 import Table from "../../components/ui/Table";
 import { TiTicket } from "react-icons/ti";
-import { useContext } from "react";
+import { useContext} from "react";
 import { TicketContext } from "../../contexts/TicketContext";
 import { BiDonateHeart } from "react-icons/bi";
 import { GiPresent } from "react-icons/gi";
 import ExistingTIcket from "./ExistingTIcket";
 
+
+
 const TicketPage = () => {
   const { onOpen } = useDisclosure();
+  const { ticketData, } = useContext(TicketContext)
+ 
 
-  const { ticketData } = useContext(TicketContext)
   const free = ticketData.filter(ticket => ticket.type === 'free')
   const paid = ticketData.filter(ticket => ticket.type === 'paid')
   const donated = ticketData.filter(ticket => ticket.type === 'donation')
@@ -24,7 +27,7 @@ const TicketPage = () => {
 
 
   return (
-    <Box p={5} w="full" maxW="100%" mx="auto" bg="#F9FAFB" borderRadius="lg" >
+    <Box p={5} w="full" maxW="100%" mx="auto" bg="#F9FA FB" borderRadius="lg" >
      
      <Box className="flex justify-between items-center">
 
@@ -54,7 +57,7 @@ const TicketPage = () => {
           </Tab>
         </TabList>
 
-        <ExistingTIcket />
+      
 
         <TabPanels>
          <TabPanel>

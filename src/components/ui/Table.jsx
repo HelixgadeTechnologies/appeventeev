@@ -9,6 +9,8 @@ import {
   import { FaEdit } from "react-icons/fa";
   import axios from "axios";
   import { UserAuthContext } from "../../contexts/UserAuthContext";
+import { useParams } from "react-router-dom";
+import ExistingTicket from "../../pages/CreateTickets/ExistingTIcket";
   
   const Table = ({ type }) => {
       const { ticketData,  } = useContext(TicketContext);
@@ -17,8 +19,9 @@ import {
       const [selectedTickets, setSelectedTickets] = useState(new Set());
       const [loading, setLoading] = useState(false);
       const [showModal, setShowModal] = useState(false);
+      const { id } = useParams()
       const [editTicket, setEditTicket] = useState({
-          eventId: '67d00263d645bddd43326d35',
+          eventId: `${id}`,
           name: "",
           type: type,
           quantity: "",
@@ -92,7 +95,13 @@ import {
     };
   
       return (
-          <div className="overflow-x-auto " >
+        <>
+        {
+         type === 'paid' &&  <ExistingTicket handleEdit={handleEditClick}  />
+
+        }
+
+         <div className="overflow-x-auto h-full" >
               <table className="min-w-full border border-gray-200 rounded-lg mt-2">
                   <thead>
                       <tr className="text-left" style={{ backgroundColor: "#f0f2f5" }}>
@@ -139,44 +148,46 @@ import {
                           <form onSubmit={handleEditSubmit}>
                               <VStack spacing={4} mt={5} align="stretch">
                                   <Text fontWeight="medium">Ticket name</Text>
-                                  <Input name="name" value={editTicket.name} onChange={handleEditChange} placeholder="Regular" required />
+                                  <Input name="name" value={editTicket.name} onChange={handleEditChange} placeholder="Regular"  focusBorderColor="#f56630"  required />
   
                                   <Text fontWeight="medium">Ticket quantity</Text>
-                                  <Input name="quantity" value={editTicket.quantity} onChange={handleEditChange} placeholder="150" required />
+                                  <Input name="quantity" value={editTicket.quantity} onChange={handleEditChange} placeholder="150"  focusBorderColor="#f56630"  required />
   
                                   {type !== "Free" && (
                                       <>
                                           <Text fontWeight="medium">Price</Text>
-                                          <Input name="price" value={editTicket.price} onChange={handleEditChange} placeholder="$5.99" required />
+                                          <Input 
+                                          name="price" value={editTicket.price} onChange={handleEditChange} placeholder="$5.99"
+                                          focusBorderColor="#f56630"  required />
                                       </>
                                   )}
   
                                   <HStack>
                                       <VStack align="stretch" flex={1}>
                                           <Text fontWeight="medium">Start Date</Text>
-                                          <Input name="startDate" value={editTicket.startDate} onChange={handleEditChange} type="date" required />
+                                          <Input name="startDate" value={editTicket.startDate} onChange={handleEditChange} type="date"  focusBorderColor="#f56630" required />
                                       </VStack>
   
                                       <VStack align="stretch" flex={1}>
                                           <Text fontWeight="medium">Start Time</Text>
-                                          <Input name="startTime" value={editTicket.startTime} onChange={handleEditChange} type="time" required />
+                                          <Input name="startTime" value={editTicket.startTime} onChange={handleEditChange} type="time"  focusBorderColor="#f56630"  required />
                                       </VStack>
                                   </HStack>
   
                                   <HStack>
                                       <VStack align="stretch" flex={1}>
                                           <Text fontWeight="medium">End Date</Text>
-                                          <Input name="endDate" value={editTicket.endDate} onChange={handleEditChange} type="date" required />
+                                          <Input name="endDate" value={editTicket.endDate} onChange={handleEditChange} type="date"  focusBorderColor="#f56630"  required />
                                       </VStack>
   
                                       <VStack align="stretch" flex={1}>
                                           <Text fontWeight="medium">End Time</Text>
-                                          <Input name="endTime" value={editTicket.endTime} onChange={handleEditChange} type="time" required />
+                                          <Input name="endTime" value={editTicket.endTime} onChange={handleEditChange} type="time"  focusBorderColor="#f56630"  required />
                                       </VStack>
                                   </HStack>
   
                                   <HStack mt={5} justify="space-around">
-                                      <Button w={'100%'} colorScheme="gray" onClick={onclose}>
+                                      <Button w={'100%'} colorScheme="gray" onClick={onClose}>
                                           Cancel
                                       </Button>
                                       <Button w={'100%'} type="submit" bg="#F56630" color="white" px={5} py={2} isLoading={loading}>
@@ -189,6 +200,8 @@ import {
                   </ModalContent>
               </Modal>
           </div>
+        
+        </>
       );
   };
   

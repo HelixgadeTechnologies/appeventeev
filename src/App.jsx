@@ -24,6 +24,7 @@ import AllEventsPage from "./pages/AllEventsPage";
 import Attendees from "./pages/Attendees"
 import ProfileSettings from "./pages/settings/SettingsPage";
 import EventDetails from "./pages/AllEventsPage/EventDetails";
+import TicketWrapper from "./pages/CreateTickets/TicketWrapper";
 
 
 const App = () => {
@@ -52,7 +53,11 @@ const App = () => {
         <Route path="/all-events/:id" element={<EventDetails/>} />
 
         {/* create ticket routes */}
-        <Route path="/tickets" element={<TicketPage />} />
+        <Route path="/tickets/:id" element={
+          <TicketWrapper>
+            <TicketPage />
+          </TicketWrapper>
+        } />
         <Route path="/create-ticket" element={<AddTicket/>} />
 
         {/* check-in routes */}

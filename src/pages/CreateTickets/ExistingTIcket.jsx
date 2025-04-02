@@ -4,54 +4,79 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const ExistingTicket = () => {
+const ExistingTicket = ({handleEdit}) => {
   const { ticketData } = useContext(TicketContext);
   const paidTickets = ticketData.filter((ticket) => ticket.type === 'paid');
+  const ticketCount = paidTickets.length;
 
+  
+
+  console.log(paidTickets);
+  
+
+  // Dynamic slidesToShow and slidesToScroll
   const settings = {
     dots: false,
-    infinite: true,
+    infinite: paidTickets.length > 1, // Prevent infinite scroll for a single ticket
     speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 3,
+    slidesToShow: paidTickets.length === 1 ? 1 : paidTickets.length === 2 ? 2 : 3,
+    slidesToScroll: paidTickets.length === 1 ? 1 : paidTickets.length === 2 ? 2 : 3,
     responsive: [
-      { breakpoint: 1024, settings: { slidesToShow: 3 } },
-      { breakpoint: 768, settings: { slidesToShow: 2 } },
+      { breakpoint: 1024, settings: { slidesToShow: paidTickets.length >= 2 ? 2 : 1 } },
+      { breakpoint: 768, settings: { slidesToShow: 1 } },
       { breakpoint: 480, settings: { slidesToShow: 1 } }
     ]
   };
-
+  
 
   const colors = ['#ffece5', '#e7f6ec', '#fef6e7'];
 
   return (
-    <div className=" smallFont w-[940px] py-5 ">
-      <Slider {...settings} className=" flex gap-10"> {/* Added padding to create space */}
+    <div className="w-full max-w-[920px] py-5">
+      <Slider {...settings} className="flex gap-10">
         {paidTickets.map((ticket, index) => (
-          <div key={index} className="rounded-md p-1"> {/* Added mx-2 for spacing */}
-          <div className={`py-5 px-3 rounded-md `} style={{backgroundColor: `${colors[index % 3]} `}}>
+          <div 
+            key={index} 
+            className={`rounded-md p-1 ${ticketCount === 1 ? 'w-full' : ticketCount === 2 ? 'w-1/2' : ''}`}
+          >
+            <div className={ticketCount === 1 ? `py-10 rounded-md oneTicketGrid` : `py-5 px-3 rounded-md `} style={{ backgroundColor: colors[index % 3] }}>
+
               {/* Ticket Price & Edit */}
-              <div className="flex justify-between items-center">
-              <p className="text-sm text-black">
-                <span className="font-bold text-md">{`$${ticket.price}`}</span> /per ticket
-              </p>
-              <button className="bg-orange-500 text-white px-2 py-1 rounded text-xs">Edit</button>
-            </div>
+              <div className={ticketCount === 1 ? `flex justify-between items-center px-5` : `flex justify-between items-center `}>
+                <p className="text-sm text-black">
+                  <span className="font-bold text-md">{`$${ticket.price}`}</span> /per ticket
+                </p>
+               {
+                ticketCount > 1 ? 
+                <button onClick={handleEdit} className={ticketCount === 1 ? `relative right-3 bg-orange-500 text-white px-2 py-1 rounded text-xs` : ` bg-orange-500 text-white px-2 py-1 rounded text-xs`}>Edit</button> : ''
+               }
+              </div>
 
-            {/* Available Tickets */}
-            <div className="flex justify-between items-center mt-2">
-              <p className="text-sm text-gray-700">{`${ticket.quantity} Available`}</p>
-              <span className="text-xs px-2 rounded-full text-white">
-                {ticket.capacity}
-              </span>
-            </div>
+              {/* Available Tickets */}
+              <div className={ticketCount === 1 ? `flex justify-between items-center mt-2 px-5`: `flex justify-between items-center mt-2`}>
+                <p className="text-sm" style={{color:'#f56630'}}>{`${ticket.quantity} Available`}</p>
 
-            {/* Sold & Revenue */}
-            <div className="flex justify-between items-center mt-2 text-sm font-semibold">
-              <p className="text-gray-700">{`${ticket.quantity - ticket.remainingQuantity} Sold`}</p>
-              <p>{`Revenue: $${ticket.price}`}</p>
+
+                <span className="text-xs px-2 py-[2px] rounded-full " style={{backgroundColor: '#ffcab7', color:'#f56630'}}>
+                  {ticket.quantity}
+                </span>
+              </div>
+
+
+
+              {/* Sold & Revenue */}
+              <div className={ticketCount === 1 ? "flex justify-around items-center mt-2 text-sm font-semibold" : "flex justify-between items-center mt-2 text-sm font-semibold"}>
+                <p className="" style={{color: '#f56630'}}>{`${ticket.quantity - ticket.remainingQuantity} Sold`}</p>
+                <p >{`Revenue: $${ticket.price}`}</p>
+
+
+                {
+                  ticketCount === 1 ? <button onClick={handleEdit} className={ticketCount === 1 ? `relative right-3 bg-orange-500 text-white px-2 py-1 rounded text-xs` : ` bg-orange-500 text-white px-2 py-1 rounded text-xs`}>Edit</button> : ''
+                }
+              </div>
+
+
             </div>
-          </div>
           </div>
         ))}
       </Slider>

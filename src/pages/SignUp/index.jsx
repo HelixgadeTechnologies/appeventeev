@@ -1,8 +1,21 @@
-import React, {  useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
-import { ClassNames } from "@emotion/react";
+import {
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  Text,
+  Divider,
+  Image,
+  VStack,
+  Grid,
+} from "@chakra-ui/react";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -11,170 +24,164 @@ const SignUp = () => {
     email: "",
     password: "",
   });
-    const navigate = useNavigate();
-      const {setToken } = useContext(UserAuthContext);
-
+  const navigate = useNavigate();
+  const { setToken } = useContext(UserAuthContext);
   const [button, setButton] = useState("Sign Up");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setButton("Loading...");
-  
     try {
-      const response = await axios.post("https://eventeevapi.onrender.com/auth/register", formData);
-     
-      if (response.status === 201 || response.status === 200) {
+      const response = await axios.post(
+        "https://eventeevapi.onrender.com/auth/register",
+        formData
+      );
 
-        const data = response.data
-        const authToken = data.token
-        console.log(response);
-        
-        console.log("Signup successful:", data);
+      if (response.status === 201 || response.status === 200) {
+        const data = response.data;
+        const authToken = data.token;
         setToken(authToken);
         localStorage.setItem("userToken", JSON.stringify(authToken));
-
-        
         setTimeout(() => navigate("/verify"), 1000);
       }
-
-
     } catch (error) {
-      console.error("Signup failed:", error.response?.data?.message || "Unknown error");
+      console.error(
+        "Signup failed:",
+        error.response?.data?.message || "Unknown error"
+      );
       setTimeout(() => setButton("Try Again"), 1000);
     }
   };
-  
-   const windowHeight = window.innerHeight
-  const spacing = windowHeight > 600 ? 'flex items-center my-10' : 'flex items-center my-4'
-  
 
   return (
-    <div className="grid min-h-screen grid-cols-1 md:grid-cols-2 ">
+    <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} minH="100vh">
       {/* Logo */}
-      <div className="absolute -top-7 left-4 z-10">
-        <img
+      <Box position="absolute" top="-7" left="4" zIndex="10">
+        <Image
           src="https://res.cloudinary.com/dnou1zvji/image/upload/v1741567378/7da8bbfcdabdcf31233ff8e8a1e2135a_oclnkb.png"
           alt="Eventeev Logo"
-          className="w-40 md:w-48 max-md:w-0"
+          w={{ base: "40", md: "48" }}
         />
-      </div>
+      </Box>
 
-      {/* Left Section - Image & Info (Hidden on small screens) */}
-      <div className="hidden md:flex items-center justify-center bg-black relative h-screen">
-        <img
+      {/* Left Section */}
+      <Flex
+        display={{ base: "none", md: "flex" }}
+        align="center"
+        justify="center"
+        bg="black"
+        h="100vh"
+        position="relative"
+      >
+        <Image
           src="https://res.cloudinary.com/dnou1zvji/image/upload/v1741467037/Rectangle_5081_rpciho_j39bll.png"
           alt="Event"
-          className="w-full h-full object-cover opacity-85"
+          w="full"
+          h="full"
+          objectFit="cover"
+          opacity="0.85"
         />
-        <div className="absolute inset-0 flex flex-col gap-5  px-10 text-white top-40 ">
-          <div className="text-5xl font-bold mt-16 ml-5">
-            <p>Elevate your Event </p>
-            <p>Workflow with</p>
-            <p>Eventeev</p>
-          </div>
-          <p className="text-sm pr-52 ml-5">
-            Our comprehensive Event platform offers you an unparalleled range of event components, sparking creativity and boosting efficiency.
-          </p>
-        </div>
-      </div>
+        <VStack position="absolute" px="10" color="white" top="40">
+          <Heading size="2xl" textAlign="left">
+            Elevate your Event Workflow with Eventeev
+          </Heading>
+          <Text fontSize="sm" pr="52">
+            Our comprehensive Event platform offers you an unparalleled range of
+            event components, sparking creativity and boosting efficiency.
+          </Text>
+        </VStack>
+      </Flex>
 
-      {/* Right Section - Signup Form */}
-      <div className="flex justify-center p-6 md:p-10 h-screen overflow-hidden ">
-        <div className="max-w-md w-full">
-          <h2 className="text-2xl font-bold mb-7">Sign up</h2>
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            {/* Name Fields */}
-            <div className="grid grid-cols-2 space-x-2 ">
+      {/* Right Section */}
+      <Flex justify="center" p={{ base: 6, md: 10 }} h="100vh" overflow="hidden">
+        <Box maxW="md" w="full">
+          <Heading size="lg" mb="8">Sign up</Heading>
+          <form onSubmit={handleSubmit} >
+            <Flex gap={2}>
+              <FormControl isRequired>
+                <FormLabel requiredIndicator={null} fontWeight={'normal'}>First Name</FormLabel>
+                <Input
+                  name="firstname"
+                  value={formData.firstname}
+                  onChange={handleChange}
+                  focusBorderColor="#f56630"
+                />
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel requiredIndicator={null} fontWeight={'normal'}>Last Name</FormLabel>
+                <Input
+                  name="lastname"
+                  value={formData.lastname}
+                  onChange={handleChange}
+                  focusBorderColor="#f56630"
+                />
+              </FormControl>
+            </Flex>
+            <FormControl isRequired mt={4}>
+              <FormLabel  requiredIndicator={null} fontWeight={'normal'}>Email Address</FormLabel>
+              <Input
 
-             <div className="flex flex-col w-full">
-             <label htmlFor="">first name</label>
-              <input
-                type="text"
-                className="w-full p-2 border-2 rounded-lg mb-2 outline-none focus:border-[#f56630] focus:ring-0 transition duration-300"
-                name="firstname"
-                value={formData.firstname}
+                type="email"
+                name="email"
+                value={formData.email}
                 onChange={handleChange}
-                required
+                focusBorderColor="#f56630"
               />
-             </div>
-
-           <div className="flex flex-col"> 
-            <label htmlFor="">Last name</label>
-           <input
-                type="text"
-                className=" w-full p-2 border-2 rounded-lg mb-2 outline-none focus:border-[#f56630] focus:ring-0 transition duration-300"
-                name="lastname"
-                value={formData.lastname}
+            </FormControl>
+            <FormControl isRequired mt={4}>
+              <FormLabel requiredIndicator={null} fontWeight={'normal'}>Password</FormLabel>
+              <Input
+                type="password"
+                name="password"
+                value={formData.password}
                 onChange={handleChange}
-                required
+                focusBorderColor="#f56630"
               />
-           </div>
-            </div>
+            </FormControl>
 
-            {/* Email & Password */}
-         <div>
-         <label htmlFor="">Email Address</label>
-            <input
-              type="email"
-              className="w-full p-2 border-2 rounded-lg mb-2 outline-none focus:border-[#f56630] focus:ring-0 transition duration-300 "
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-         </div>
-         
-          <div>
-            <label htmlFor="">Password</label>
-          <input
-              type="password"
-              className="w-full p-2 border-2 rounded-lg mb-2 outline-none focus:border-[#f56630] focus:ring-0 transition duration-300"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-            {/* Submit Button */}
-            <button
+            <Button
               type="submit"
-              className="w-full p-2 rounded-md font-bold text-white bg-orange-600 hover:bg-orange-700 transition"
+              w="full"
+              mt={4}
+              colorScheme="orange"
+              isLoading={button === "Loading..."}
             >
               {button}
-            </button>
+            </Button>
           </form>
 
-          {/* Login Link */}
-          <p className="text-sm mt-2">
-            Already have an account?{" "}
-            <Link to={"/"} className="text-orange-500 font-bold hover:underline">
+          <Text fontSize="sm" mt={2}>
+            Already have an account?{' '}
+            <Link to="/" style={{ color: "#f56630", fontWeight: "bold" }}>
               Log in
             </Link>
-          </p>
+          </Text>
 
-          {/* Divider */}
-                    <div className={spacing}>
-            <div className="flex-grow border-t border-gray-300"></div>
-            <span className="px-4 text-gray-500">Or</span>
-            <div className="flex-grow border-t border-gray-300"></div>
-          </div>
+          <Flex align="center" my={4}>
+            <Divider flex={1} />
+            <Text px={4} color="gray.500">
+              Or
+            </Text>
+            <Divider flex={1} />
+          </Flex>
 
-          {/* Google Sign-In */}
-          <button className="w-full border p-2 mt-4 flex items-center justify-center space-x-2 rounded-md">
-            <img
+          <Button bg={'transparent'} w="full" border="1px" borderColor={'#d0d5dd'} mt={4} display="flex" alignItems="center" justifyContent="center">
+            <Image
               src="https://res.cloudinary.com/dnou1zvji/image/upload/v1741679396/google-removebg-preview_uc9m89.png"
               alt="Google"
-              className="w-5 h-5"
+              w={5}
+              h={5}
+              mr={2}
             />
-            <span>Continue with Google</span>
-          </button>
-        </div>
-      </div>
-    </div>
+            Continue with Google
+          </Button>
+        </Box>
+      </Flex>
+    </Grid>
   );
 };
 
