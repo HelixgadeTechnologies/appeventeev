@@ -1,5 +1,8 @@
 import React, { useContext } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+
+import { Link, useNavigate, useParams } from "react-router-dom";
+
+
 import { EventContext } from "../../contexts/EventContext";
 import { flexData, services } from "../../utils/dashboard";
 import {
@@ -39,7 +42,9 @@ const EventDetails = () => {
   } = useContext(EventContext);
   //   importing user details from context
   const { userDetails } = useContext(UserAuthContext);
+
   const navigate = useNavigate();
+
   const userData = {
     username: `${userDetails.firstname + " " + userDetails.lastname}`,
     email: `${userDetails.email}`,
@@ -83,6 +88,8 @@ const EventDetails = () => {
 
   // Find the specific event
   const currentEvent = publishedEvents.find((event) => event._id === id);
+
+
 
   if (!currentEvent) {
     return <Text>Event not found.</Text>;
@@ -295,6 +302,7 @@ const EventDetails = () => {
                   bg={service.bg}
                   transitionDuration={"500ms"}
                   transitionProperty={"colors"}
+                  onClick={ service.route === '/tickets' ? ()=> navigate(`/tickets/${id}`) : ()=> navigate(service.route) }
                   _hover={{
                     cursor: "pointer",
                     borderWidth: "thin",

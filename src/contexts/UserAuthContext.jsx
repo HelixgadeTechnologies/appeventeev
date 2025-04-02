@@ -51,7 +51,7 @@ const UserAuthProvider = ({ children }) => {
       isVerified, setIsVerified, 
       userId, setUserId, 
       token, setToken,
-      logout, setResetToken
+      logout, setResetToken, resetToken
     }}>
       {children}
     </UserAuthContext.Provider>

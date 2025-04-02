@@ -22,6 +22,9 @@ import ResetPassword from "./pages/SignIn/ResetPassword";
 import AllEventsPage from "./pages/AllEventsPage";
 import Attendees from "./pages/Attendees"
 import ProfileSettings from "./pages/settings/SettingsPage";
+ import EventDetails from "./pages/AllEventsPage/PublishedEventDetails";
+import TicketWrapper from "./pages/CreateTickets/TicketWrapper";
+
 import PublishedEventDetails from "./pages/AllEventsPage/PublishedEventDetails";
 import DraftedEventDetails from "./pages/AllEventsPage/DraftedEventDetails";
 
@@ -34,6 +37,7 @@ import EditDraftsFirst from "./pages/EditEvents/EditDraftsFirst";
 import EditDraftsSecond from "./pages/EditEvents/EditDraftsSecond";
 import EditDraftsThird from "./pages/EditEvents/EditDraftsThird";
 import EditDraftsFourth from "./pages/EditEvents/EditDraftsFourth";
+
 
 
 const App = () => {
@@ -75,7 +79,11 @@ const App = () => {
         <Route path="/edit-draft-step-four/:id" element={<EditDraftsFourth/>} />
 
         {/* create ticket routes */}
-        <Route path="/tickets" element={<TicketPage />} />
+        <Route path="/tickets/:id" element={
+          <TicketWrapper>
+            <TicketPage />
+          </TicketWrapper>
+        } />
         <Route path="/create-ticket" element={<AddTicket/>} />
 
         {/* check-in routes */}

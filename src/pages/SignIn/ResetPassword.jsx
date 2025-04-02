@@ -20,6 +20,8 @@ const ResetPassword = () => {
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
 
   console.log(resetToken);
+  console.log(newPassword);
+  
   
 
   const handleResetPassword = async (e) => {
@@ -45,14 +47,19 @@ const ResetPassword = () => {
         { newPassword }
       );
       console.log(response);
+      console.log(newPassword);
+      
       
       
       toast.success("Password reset successfully! Redirecting to login...");
       setTimeout(() => navigate("/dashboard"), 3000);
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong.");
+      console.log(resetToken);
     } finally {
       setLoading(false);
+     
+      
     }
   };
 

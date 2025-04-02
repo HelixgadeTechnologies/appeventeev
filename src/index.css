@@ -77,6 +77,15 @@
   animation: fade 0.8s ease-in-out alternate infinite;
 }
 
+.oneTicketGrid{
+  display: grid;
+  grid-template-columns: 25% 30% 45%;
+}
+
+label::after {
+  content: none !important;
+}
+
 .dots div:nth-of-type(1) {
   animation-delay: -0.4s;
 }

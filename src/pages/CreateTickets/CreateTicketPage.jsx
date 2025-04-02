@@ -6,16 +6,19 @@ import { AddIcon } from "@chakra-ui/icons";
 import AddTicket from "./TicketForms";
 import Table from "../../components/ui/Table";
 import { TiTicket } from "react-icons/ti";
-import { useContext } from "react";
+import { useContext} from "react";
 import { TicketContext } from "../../contexts/TicketContext";
 import { BiDonateHeart } from "react-icons/bi";
 import { GiPresent } from "react-icons/gi";
 import ExistingTIcket from "./ExistingTIcket";
 
+
+
 const TicketPage = () => {
   const { onOpen } = useDisclosure();
+  const { ticketData, } = useContext(TicketContext)
+ 
 
-  const { ticketData } = useContext(TicketContext)
   const free = ticketData.filter(ticket => ticket.type === 'free')
   const paid = ticketData.filter(ticket => ticket.type === 'paid')
   const donated = ticketData.filter(ticket => ticket.type === 'donation')
@@ -24,7 +27,7 @@ const TicketPage = () => {
 
 
   return (
-    <Box p={5} w="full" maxW="95%" mx="auto" bg="#F9FAFB" borderRadius="lg" >
+    <Box p={5} w="full" maxW="100%" mx="auto" bg="#F9FA FB" borderRadius="lg" >
      
      <Box className="flex justify-between items-center">
 
@@ -38,14 +41,14 @@ const TicketPage = () => {
               {paid.length}
             </Box>
           </Tab>
-          <Tab _selected={{ borderBottom: "2px solid #1A202C", fontWeight: "bold", color: "#1A202C" }} px={4}>
+          <Tab _selected={{ borderBottom: "2px solid #F56630", fontWeight: "bold", color: "#F56630" }} px={4}>
           <BiDonateHeart size={25} className="mr-1" />
             Free Ticket
             <Box as="span" px="8px" py="2px" ml="6px" borderRadius="full" bg="#F56630" color="white" fontSize="sm" fontWeight="bold">
               {free.length}
             </Box>
           </Tab>
-          <Tab _selected={{ borderBottom: "2px solid #718096", fontWeight: "bold", color: "#718096" }} px={4}>
+          <Tab _selected={{ borderBottom: "2px solid #F56630", fontWeight: "bold", color: "#F56630" }} px={4}>
            <GiPresent size={25} className="mr-1" />
             Donation
             <Box as="span" px="8px" py="2px" ml="6px" borderRadius="full" bg="#F56630" color="white" fontSize="sm" fontWeight="bold">
@@ -54,7 +57,7 @@ const TicketPage = () => {
           </Tab>
         </TabList>
 
-        <ExistingTIcket />
+      
 
         <TabPanels>
          <TabPanel>
