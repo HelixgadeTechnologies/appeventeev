@@ -86,6 +86,14 @@ const Header = () => {
     return `${day}${getOrdinalSuffix(day)} ${month}, ${year}`;
   }
 
+  if (
+    /^\/all-events\/[^/]+$/.test(location.pathname) ||
+    /^\/all-events-draft\/[^/]+$/.test(location.pathname) ||
+    (location.pathname === "/dashboard" && publishedEvents.length > 0)
+  ) {
+    return null;
+  }
+
   return (
     <Box>
       <Flex
