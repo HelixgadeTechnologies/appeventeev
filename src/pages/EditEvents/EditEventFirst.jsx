@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import CreateEventLayout from "../../layout/CreateEventLayout";
+import React, { useContext, useEffect, useState } from "react";
+import { EventContext } from "../../contexts/EventContext";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Box,
   FormControl,
@@ -8,18 +9,27 @@ import {
   Textarea,
   Grid,
   GridItem,
-  Switch,
-  Link,
-  Text,
-  Button,
-  Flex,
   Divider,
-  FormErrorMessage,
+  Flex,
+  Button,
+  Center,
+  Text,
+  FormErrorMessage
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { BiError } from "react-icons/bi";
 
-const CreateEventFirst = () => {
+const EditEventFirst = () => {
+  const {
+    publishedEvents,
+    publishedEventsLoading,
+    publishedEventsError,
+    convertTo24HourFormat,
+    formatDate,
+    formatTime,
+  } = useContext(EventContext);
   const navigate = useNavigate();
+  const { id } = useParams();
+  const currentEvent = publishedEvents.find((event) => event._id === id);
 
   const [firstPageData, setFirstPageData] = useState({
     name: "",
@@ -36,6 +46,80 @@ const CreateEventFirst = () => {
   const [endDateError, setEndDateError] = useState("");
   const [startTimeError, setStartTimeError] = useState("");
   const [endTimeError, setEndTimeError] = useState("");
+
+  // Function to convert date from API format to input field format (YYYY-MM-DD)
+  const formatDateForInput = (dateStr) => {
+    if (!dateStr) return "";
+
+    // Check if the date is already in YYYY-MM-DD format
+    if (/^\d{4}-\d{2}-\d{2}/.test(dateStr)) {
+      return dateStr.split("T")[0]; // Handle ISO strings with time component
+    }
+
+    // Parse date if it's in a different format (like MM/DD/YYYY)
+    try {
+      const date = new Date(dateStr);
+      if (isNaN(date.getTime())) return ""; // Invalid date
+
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+
+      return `${year}-${month}-${day}`;
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "";
+    }
+  };
+
+  useEffect(() => {
+    if (currentEvent) {
+      setFirstPageData({
+        name: currentEvent.name || "",
+        description: currentEvent.description || "",
+        startDate: formatDateForInput(currentEvent.startDate) || "",
+        endDate: formatDateForInput(currentEvent.endDate) || "",
+        startTime: convertTo24HourFormat(currentEvent.startTime) || "",
+        endTime: convertTo24HourFormat(currentEvent.endTime) || "",
+      });
+    }
+  }, [currentEvent, convertTo24HourFormat]);
+
+  if (publishedEventsLoading) {
+    return (
+      <Center height={"100vh"}>
+        <Box className="loader"></Box>
+      </Center>
+    );
+  }
+
+  if (publishedEventsError) {
+    return (
+      <Center height={"100vh"}>
+        <Center flexDir={"column"} color={"red.500"} gap={"5"}>
+          <BiError size={100} />
+          <Text fontSize={"sm"}>
+            Uh oh! It seems an error occurred. Please try again later.
+          </Text>
+        </Center>
+      </Center>
+    );
+  }
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFirstPageData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const today = new Date().toISOString().split("T")[0];
+
+  const getCurrentTime = () => {
+    const now = new Date();
+    return now.toTimeString().slice(0, 5);
+  };
 
   const validateForm = () => {
     let isValid = true;
@@ -89,53 +173,7 @@ const CreateEventFirst = () => {
     return isValid;
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFirstPageData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    setNameError("");
-    setDescriptionError("");
-    setStartDateError("");
-    setStartTimeError("");
-    setEndDateError("");
-    setEndTimeError("");
-  };
-
-  // Function to format date as "YYYY-MM-DD"
-  const formatDate = (dateStr) => {
-    if (!dateStr) return "";
-  
-    // Ensure the date is in "YYYY-MM-DD" format
-    const date = new Date(dateStr);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0"); 
-  
-    return `${year}-${month}-${day}`;
-  };
-
-  // Function to convert time from "HH:MM" (24-hour format) to "HH:MM AM/PM"
-  const formatTime = (timeStr) => {
-    if (!timeStr) return "";
-
-    const [hour, minute] = timeStr.split(":").map(Number);
-    const period = hour >= 12 ? "PM" : "AM";
-    const formattedHour = hour % 12 || 12;
-
-    return `${formattedHour}:${minute.toString().padStart(2, "0")} ${period}`;
-  };
-
-  const today = new Date().toISOString().split("T")[0];
-
-  const getCurrentTime = () => {
-    const now = new Date();
-    return now.toTimeString().slice(0, 5);
-  };
-
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (validateForm()) {
       try {
         // Format date and time before sending
@@ -146,7 +184,7 @@ const CreateEventFirst = () => {
           startTime: formatTime(firstPageData.startTime),
           endTime: formatTime(firstPageData.endTime),
         };
-        navigate("/create-event-setup-2", { state: formattedData });
+        navigate(`/edit-event-step-two/${currentEvent._id}`, { state: formattedData });
       } catch (error) {
         console.error("An error occured: ", error);
       }
@@ -154,8 +192,14 @@ const CreateEventFirst = () => {
   };
 
   return (
-    <CreateEventLayout>
-      <Box>
+    <Center>
+      <Box
+        bg={"white"}
+        rounded={"lg"}
+        padding={"5"}
+        width={"600px"}
+        marginY={"5"}
+      >
         <form action="" className="space-y-6 text-sm">
           <FormControl isInvalid={nameError !== ""}>
             <FormLabel
@@ -331,32 +375,6 @@ const CreateEventFirst = () => {
             </GridItem>
           </Grid>
           <Divider />
-          <Box className="space-y-3">
-            <FormControl
-              display="flex"
-              alignItems="center"
-              justifyContent={"space-between"}
-            >
-              <FormLabel
-                htmlFor="recurrent-event"
-                mb="0"
-                fontWeight={"medium"}
-                fontSize={"small"}
-                color={"#1D2739"}
-                _hover={{ cursor: "pointer" }}
-              >
-                Recurrent event?
-              </FormLabel>
-              <Switch id="recurrent-event" colorScheme="orange" />
-            </FormControl>
-            <Text color={"#667185"} fontSize={"xs"}>
-              You can set up a {""}
-              <Link color={"#8F2802"}>
-                custom domain or connect your email service provider
-              </Link>{" "}
-              to change this.
-            </Text>
-          </Box>
           <Flex gap={"20px"}>
             <Button
               variant={"outline"}
@@ -366,7 +384,7 @@ const CreateEventFirst = () => {
               _hover={{ bg: "orange.50" }}
               onClick={() => navigate("/all-events")}
             >
-              Cancel
+              Back
             </Button>
             <Button
               onClick={() => handleSubmit()}
@@ -381,13 +399,13 @@ const CreateEventFirst = () => {
               color={"white"}
               fontWeight={"medium"}
             >
-              Next Step
+              Proceed
             </Button>
           </Flex>
         </form>
       </Box>
-    </CreateEventLayout>
+    </Center>
   );
 };
 
-export default CreateEventFirst;
+export default EditEventFirst;

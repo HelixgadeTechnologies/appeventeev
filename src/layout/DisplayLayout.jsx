@@ -15,7 +15,17 @@ const DisplayLayout = ({ children }) => {
       <Box className="w-full ml-[240px] bg-[#f9fafb] h-full">
         <Header />
         <Toaster position="top-center" reverseOrder={false} />
-        <main className={`${/^\/all-events\/[^/]+$/.test(location.pathname) ? "mx-0" : "mx-5"} rounded-b-lg h-full`}>{children}</main>
+        <main
+          className={`${
+            /^\/all-events-draft\/[^/]+$/.test(location.pathname) ||
+            /^\/all-events\/[^/]+$/.test(location.pathname) ||
+            location.pathname === "/dashboard"
+              ? "mx-0"
+              : "mx-5"
+          } rounded-b-lg h-full`}
+        >
+          {children}
+        </main>
       </Box>
     </Box>
   );

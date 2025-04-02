@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { EventContext } from "../../contexts/EventContext";
 import { flexData, services } from "../../utils/dashboard";
 import {
@@ -15,10 +15,10 @@ import {
   Divider,
   Button,
   Avatar,
-  AvatarBadge,
 } from "@chakra-ui/react";
 import statsIcon from "../../assets/icons/stats.svg";
 import { FaChevronRight } from "react-icons/fa6";
+import { FiCalendar } from "react-icons/fi";
 import { LuClock3 } from "react-icons/lu";
 import { IoCalendarClearOutline } from "react-icons/io5";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
@@ -29,19 +29,17 @@ import { BiError } from "react-icons/bi";
 import SearchBar from "../../components/ui/SearchBar";
 import Notifications from "../../components/ui/Notifications";
 
-const EventDetails = () => {
+const DraftedEventDetails = () => {
   const {
-    publishedEvents,
-    publishedEventsLoading,
-    publishedEventsError,
+    draftedEvents,
+    draftedEventsLoading,
+    draftedEventsError,
     formatDate,
+    todaysDate,
   } = useContext(EventContext);
   //   importing user details from context
   const { userDetails } = useContext(UserAuthContext);
-  const navigate = useNavigate()
-
-
-
+  const navigate = useNavigate();
   const userData = {
     username: `${userDetails.firstname + " " + userDetails.lastname}`,
     email: `${userDetails.email}`,
@@ -49,7 +47,7 @@ const EventDetails = () => {
 
   const { id } = useParams();
 
-  if (publishedEventsLoading) {
+  if (draftedEventsLoading) {
     return (
       <Center height={"100vh"}>
         <Box className="loader"></Box>
@@ -57,7 +55,7 @@ const EventDetails = () => {
     );
   }
 
-  if (publishedEventsError) {
+  if (draftedEventsError) {
     return (
       <Center height={"100vh"}>
         <Center flexDir={"column"} color={"red.500"} gap={"5"}>
@@ -70,7 +68,7 @@ const EventDetails = () => {
     );
   }
 
-  if (!publishedEvents || publishedEvents.length === 0) {
+  if (!draftedEvents || draftedEvents.length === 0) {
     return (
       <NoStatePage
         img={
@@ -84,16 +82,13 @@ const EventDetails = () => {
   }
 
   // Find the specific event
-  const currentEvent = publishedEvents.find((event) => event._id === id);
-
-
+  const currentEvent = draftedEvents.find((event) => event._id === id);
 
   if (!currentEvent) {
     return <Text>Event not found.</Text>;
   }
 
   const percentage = 0;
-  
   return (
     <>
       {/* custom heading */}
@@ -125,7 +120,7 @@ const EventDetails = () => {
             width={"full"}
             marginX={"5"}
             marginTop={"3.5"}
-            padding={location.pathname === `/dashboard` ? `5` : `2`}
+            padding={"5"}
             borderTopRadius={"lg"}
           >
             <Heading fontWeight={"bold"} fontSize={"24px"} color="#000">
@@ -136,6 +131,32 @@ const EventDetails = () => {
               health 😊
             </Text>
           </Box>
+          {/* date tab */}
+          <Center
+            width={"280px"}
+            height={"74px"}
+            borderRadius={"12px"}
+            gap={"12px"}
+            bg={"white"}
+            marginRight={"10"}
+            marginTop={"2.5"}
+            paddingY={"16px"}
+            paddingX={"20px"}
+            borderWidth={"thin"}
+          >
+            <Center
+              borderRadius={"full"}
+              height={"40px"}
+              width={"40px"}
+              bg={"#F0F2F5"}
+            >
+              <FiCalendar className="text-[#344054] text-xl" />
+            </Center>
+            <Box>
+              <Text fontSize={"small"}>Today's Date</Text>
+              <Heading fontSize={"sm"}>{todaysDate()}</Heading>
+            </Box>
+          </Center>
         </Flex>
       </Box>
 
@@ -273,7 +294,6 @@ const EventDetails = () => {
                   bg={service.bg}
                   transitionDuration={"500ms"}
                   transitionProperty={"colors"}
-                  onClick={ service.route === '/tickets' ? ()=> navigate(`/tickets/${id}`) : ()=> navigate(service.route) }
                   _hover={{
                     cursor: "pointer",
                     borderWidth: "thin",
@@ -371,6 +391,9 @@ const EventDetails = () => {
             <Divider></Divider>
             <Flex gap={"10px"} marginX={"2.5"} marginY={"2.5"}>
               <Button
+                onClick={() =>
+                  navigate(`/edit-event-step-one/${currentEvent._id}-1`)
+                }
                 variant={"outline"}
                 color={"#344054"}
                 fontWeight={"medium"}
@@ -395,11 +418,11 @@ const EventDetails = () => {
             </Flex>
           </Box>
 
-          <Calendar />
+          <Calendar eventDate={currentEvent.startDate} />
         </Box>
       </Flex>
     </>
   );
 };
 
-export default EventDetails;
+export default DraftedEventDetails;
