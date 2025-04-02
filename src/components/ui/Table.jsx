@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { 
     Box, Button, Input, Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack, HStack, 
-    Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, useDisclosure
+    Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, Table, Thead, Tbody, Tr, Th, Td, Checkbox, useDisclosure
   } from "@chakra-ui/react";
   import React, { useContext, useState } from "react";
   import { TicketContext } from "../../contexts/TicketContext";
@@ -12,7 +12,7 @@ import {
 import { useParams } from "react-router-dom";
 import ExistingTicket from "../../pages/CreateTickets/ExistingTIcket";
   
-  const Table = ({ type }) => {
+  const TableComponent = ({ type }) => {
       const { ticketData,  } = useContext(TicketContext);
       const { token } = useContext(UserAuthContext);
       const { isOpen, onOpen, onClose } = useDisclosure();
@@ -95,49 +95,48 @@ import ExistingTicket from "../../pages/CreateTickets/ExistingTIcket";
     };
   
       return (
-        <>
+        <div className="w-full h-full ">
         {
          type === 'paid' &&  <ExistingTicket handleEdit={handleEditClick}  />
 
         }
 
          <div className="overflow-x-auto h-full" >
-              <table className="min-w-full border border-gray-200 rounded-lg mt-2">
-                  <thead>
-                      <tr className="text-left" style={{ backgroundColor: "#f0f2f5" }}>
-                          <th className="px-4 py-2"><input type="checkbox" /></th>
-                          <th className="px-4 py-2 font-medium">Name</th>
-                          <th className="px-4 py-2 font-medium">Ticket Type</th>
-                          <th className="px-4 py-2 font-medium">Ticket ID</th>
-                          <th className="px-4 py-2 font-medium">Amount</th>
-                          <th className="px-4 py-2 font-medium">Date</th>
-                          {/* <th className="px-4 py-2 font-medium">Actions</th> */}
-                      </tr>
-                  </thead>
-                  <tbody>
-                      {ticketData.filter(ticket => ticket.type === type).map(ticket => (
-                          <tr key={ticket._id} className="border-b border-gray-200 smallFont">
-                              <td className="px-4 py-3">
-                                  <input 
-                                      type="checkbox" 
-                                      checked={selectedTickets.has(ticket._id)}
-                                      onChange={() => handleCheckboxChange(ticket._id)}
-                                  />
-                              </td>
-                              <td className="px-3 py-2 ">{ticket.name}</td>
-                              <td className="px-4 py-3 ">{ticket.type}</td>
-                              <td className="px-4 py-3 ">{ticket._id.slice(0, 7)}</td>
-                              <td className="px-4 py-3 ">{ticket.price ? `$${ticket.price}` : ticket.type}</td>
-                              <td className=" text-sm ">
-                               <span className=" p-1 rounded-md" style={{backgroundColor: '#ffece5',}}> {formatDate(ticket.updatedAt)}</span>
-                                </td>
-                              {/* <td className="px-4 py-3 text-sm  ">
-                                  <FaEdit style={{color:'#e8562e'}} className="cursor-pointer" onClick={() => handleEditClick(ticket)} />
-                              </td> */}
-                          </tr>
-                      ))}
-                  </tbody>
-              </table>
+                        <Table variant="unstyled" mt={2} minW="full" borderRadius="lg">
+                    <Thead bg="#f9fafb">
+                        <Tr  >
+                        <Th px={4} py={2}><Checkbox /></Th>
+                        <Th px={4} py={2} fontSize="sm" fontWeight="medium">Name</Th>
+                        <Th px={4} py={2} fontSize="sm" fontWeight="medium">Email</Th>
+                        <Th px={4} py={2} fontSize="sm" fontWeight="medium">Ticket Name</Th>
+                        <Th px={4} py={2} fontSize="sm" fontWeight="medium">Ticket ID</Th>
+                        <Th px={4} py={2} fontSize="sm" fontWeight="medium">Date</Th>
+                        <Th px={4} py={2} fontSize="sm" fontWeight="medium">Amount</Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody bg="white">
+                        {ticketData.filter(ticket => ticket.type === type).map(ticket => (
+                        <Tr key={ticket._id} borderBottom="1px solid" borderColor="gray.200">
+                            <Td px={4} py={3}>
+                            <Checkbox
+                                isChecked={selectedTickets.has(ticket._id)}
+                                onChange={() => handleCheckboxChange(ticket._id)}
+                            />
+                            </Td>
+                            <Td px={3} py={2}>{ticket.name}</Td>
+                            <Td px={3} py={2}>{ticket.email}</Td>
+                            <Td px={4} py={3}>{ticket.type}</Td>
+                            <Td px={4} py={3}>{ticket._id.slice(0, 7)}</Td>
+                            <Td px={4} py={3} fontSize="sm">
+                            <Box bg="#ffece5" color="#ad3307" borderRadius="12px" px={5} py={1} display="inline-block">
+                                {formatDate(ticket.updatedAt)}
+                            </Box>
+                            </Td>
+                            <Td px={4} py={3}>{ticket.price ? `$${ticket.price}` : ticket.type}</Td>
+                        </Tr>
+                        ))}
+                    </Tbody>
+                    </Table>
   
               <Modal isOpen={isOpen} onClose={onClose} isCentered>
                   <ModalOverlay />
@@ -201,9 +200,9 @@ import ExistingTicket from "../../pages/CreateTickets/ExistingTIcket";
               </Modal>
           </div>
         
-        </>
+        </div>
       );
   };
   
-  export default Table;
+  export default TableComponent;
   

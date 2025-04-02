@@ -32,12 +32,12 @@ const TicketPage = () => {
      <Box className="flex justify-between items-center">
 
      </Box>
-      <Tabs variant="unstyled" mt={4}>
+      <Tabs variant="unstyled" mt={4} >
         <TabList borderBottom="1px solid #E2E8F0" display="grid" gridTemplateColumns="repeat(3, 1fr)"  style={{backgroundColor:'#f0f2f5'}}>
           <Tab _selected={{ borderBottom: "2px solid #F56630", fontWeight: "bold", color: "#F56630" }} px={4} >
            <TiTicket size={25} className="mr-1" />
             Paid Ticket
-            <Box as="span" px="8px" py="2px" ml="6px" borderRadius="full" bg="#E53E3E" color="white" fontSize="sm" fontWeight="bold">
+            <Box as="span"  px="8px" py="2px" ml="6px" borderRadius="full" bg="#E53E3E" color="white" fontSize="sm" fontWeight="bold" >
               {paid.length}
             </Box>
           </Tab>
@@ -59,18 +59,18 @@ const TicketPage = () => {
 
       
 
-        <TabPanels>
-         <TabPanel>
+        <TabPanels >
+         <TabPanel padding={'0px'}>
           {ticketData.length < 1 ?
            <EmptyState onAddTicket={onOpen} /> 
            : <Table type={'paid'} /> }
            </TabPanel>
-          <TabPanel>
+          <TabPanel padding={'0px'}>
           {ticketData.length < 1 ?
            <EmptyState onAddTicket={onOpen} /> 
            : <Table type={'free'} /> }
           </TabPanel>
-          <TabPanel>
+          <TabPanel padding={'0px'}>
           {ticketData.length < 1 ?
            <EmptyState onAddTicket={onOpen} /> 
            : <Table type={'donation'} /> }
