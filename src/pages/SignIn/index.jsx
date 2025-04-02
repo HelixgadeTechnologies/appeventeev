@@ -101,7 +101,7 @@ const SignIn = () => {
         <form onSubmit={handleSubmit}>
           <Stack spacing={3}>
             <FormControl>
-              <FormLabel >Email Address</FormLabel>
+              <FormLabel font>Email Address</FormLabel>
               <Input focusBorderColor="#f56630" type="email" name="email" value={formData.email} onChange={handleChange} required />
             </FormControl>
 
@@ -121,7 +121,7 @@ const SignIn = () => {
               <Checkbox>
               <chakra.span fontSize="sm">Remember me for 30 days</chakra.span>
              </Checkbox>
-             <Link color="orange.500" fontSize="sm">Forgot Password?</Link>
+             <Link color="orange.500" fontSize="sm" onClick={() => navigate('/forgot-password')}>Forgot Password?</Link>
            </Flex>
 
 

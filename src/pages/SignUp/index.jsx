@@ -103,7 +103,7 @@ const SignUp = () => {
           <form onSubmit={handleSubmit} >
             <Flex gap={2}>
               <FormControl isRequired>
-                <FormLabel requiredIndicator={null} fontWeight={'normal'}>First Name</FormLabel>
+                <FormLabel requiredIndicator={null} fontWeight={'medium'} fontSize={'sm'} >First Name</FormLabel>
                 <Input
                   name="firstname"
                   value={formData.firstname}
@@ -112,7 +112,7 @@ const SignUp = () => {
                 />
               </FormControl>
               <FormControl isRequired>
-                <FormLabel requiredIndicator={null} fontWeight={'normal'}>Last Name</FormLabel>
+                <FormLabel requiredIndicator={null} fontWeight={'medium'}  fontSize={'sm'}>Last Name</FormLabel>
                 <Input
                   name="lastname"
                   value={formData.lastname}
@@ -122,7 +122,7 @@ const SignUp = () => {
               </FormControl>
             </Flex>
             <FormControl isRequired mt={4}>
-              <FormLabel  requiredIndicator={null} fontWeight={'normal'}>Email Address</FormLabel>
+              <FormLabel  requiredIndicator={null} fontWeight={'medium'}  fontSize={'sm'}>Email Address</FormLabel>
               <Input
 
                 type="email"
@@ -133,7 +133,7 @@ const SignUp = () => {
               />
             </FormControl>
             <FormControl isRequired mt={4}>
-              <FormLabel requiredIndicator={null} fontWeight={'normal'}>Password</FormLabel>
+              <FormLabel requiredIndicator={null} fontWeight={'medium'} fontSize={'sm'}>Password</FormLabel>
               <Input
                 type="password"
                 name="password"

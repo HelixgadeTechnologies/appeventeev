@@ -17,7 +17,7 @@ const ExistingTicket = ({handleEdit}) => {
   // Dynamic slidesToShow and slidesToScroll
   const settings = {
     dots: false,
-    infinite: paidTickets.length > 1, // Prevent infinite scroll for a single ticket
+    infinite: paidTickets.length > 3, // Prevent infinite scroll for a single ticket
     speed: 500,
     slidesToShow: paidTickets.length === 1 ? 1 : paidTickets.length === 2 ? 2 : 3,
     slidesToScroll: paidTickets.length === 1 ? 1 : paidTickets.length === 2 ? 2 : 3,
@@ -32,14 +32,14 @@ const ExistingTicket = ({handleEdit}) => {
   const colors = ['#ffece5', '#e7f6ec', '#fef6e7'];
 
   return (
-    <div className="w-full max-w-[920px] py-5">
+    <div className={paidTickets.length === 1 ? "w-full py-5 mx-auto" : paidTickets.length === 2 ? "w-full py-5" : paidTickets.length === 3? "w-full max-w-[59rem]  py-5 " : '"w-full  py-5"'}>
       <Slider {...settings} className="flex gap-10">
         {paidTickets.map((ticket, index) => (
           <div 
             key={index} 
             className={`rounded-md p-1 ${ticketCount === 1 ? 'w-full' : ticketCount === 2 ? 'w-1/2' : ''}`}
           >
-            <div className={ticketCount === 1 ? `py-10 rounded-md oneTicketGrid` : `py-5 px-3 rounded-md `} style={{ backgroundColor: colors[index % 3] }}>
+            <div className={ticketCount === 1 ? `py-10 rounded-md oneTicketGrid` : `py-5 px-3 rounded-md space-y-3`} style={{ backgroundColor: colors[index % 3] }}>
 
               {/* Ticket Price & Edit */}
               <div className={ticketCount === 1 ? `flex justify-between items-center px-5` : `flex justify-between items-center `}>
@@ -48,7 +48,7 @@ const ExistingTicket = ({handleEdit}) => {
                 </p>
                {
                 ticketCount > 1 ? 
-                <button onClick={handleEdit} className={ticketCount === 1 ? `relative right-3 bg-orange-500 text-white px-2 py-1 rounded text-xs` : ` bg-orange-500 text-white px-2 py-1 rounded text-xs`}>Edit</button> : ''
+                <button onClick={handleEdit} className={ticketCount === 1 ? `relative right-3 bg-orange-500 text-white px-2 py-1  text-xs rounded-sm` : ` bg-orange-500 rounded-sm text-white px-2 py-1  text-xs`}>Edit</button> : ''
                }
               </div>
 
@@ -71,7 +71,7 @@ const ExistingTicket = ({handleEdit}) => {
 
 
                 {
-                  ticketCount === 1 ? <button onClick={handleEdit} className={ticketCount === 1 ? `relative right-3 bg-orange-500 text-white px-2 py-1 rounded text-xs` : ` bg-orange-500 text-white px-2 py-1 rounded text-xs`}>Edit</button> : ''
+                  ticketCount === 1 ? <button onClick={handleEdit} className={ticketCount === 1 ? `relative right-3 bg-orange-500 text-white px-2 py-1 rounded-sm text-xs` : ` bg-orange-500 text-white px-2 py-1 rounded-sm text-xs`}>Edit</button> : ''
                 }
               </div>
 

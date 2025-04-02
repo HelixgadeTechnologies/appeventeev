@@ -142,7 +142,7 @@ const Header = () => {
 
         {/* Show Add Ticket button on tickets page */}
         {location.pathname.startsWith("/tickets") && (
-          <div className="mr-20">
+          <div className="mr-10">
             <AddTicket />
           </div>
         )}
