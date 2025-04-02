@@ -5,11 +5,16 @@ import {
 import axios from "axios";
 import { useContext, useState } from "react";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
+import { useParams } from "react-router-dom";
+
 
 const AddTicket = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedTab, setSelectedTab] = useState(0);
+  
 
+
+ 
   return (
     <>
       {/* Button to Open Modal */}
@@ -59,10 +64,12 @@ const AddTicket = () => {
 
 const TicketForm = ({ onClose, ticketType }) => {
 
-  const { token } = useContext(UserAuthContext)
+  const { token  } = useContext(UserAuthContext)
+
+  const { id } = useParams();
 
   const [formData, setFormData] = useState({
-    eventId: '67d00263d645bddd43326d35',
+    eventId: `${id}`,
     name: "",
     type: ticketType,
     quantity: "",
@@ -102,7 +109,9 @@ const TicketForm = ({ onClose, ticketType }) => {
       );
   
       console.log("Ticket added successfully:", response);
+ 
       onClose();
+
     } catch (error) {
       console.error("Error adding ticket:", error.response?.data?.message || error.message);
     }
@@ -114,39 +123,40 @@ const TicketForm = ({ onClose, ticketType }) => {
     <form onSubmit={handleSubmit}>
       <VStack spacing={4} mt={5} align="stretch">
         <Text fontWeight="medium">Ticket name</Text>
-        <Input name="name" value={formData.name} onChange={handleChange} placeholder="Regular" required />
+        <Input  focusBorderColor="orange.500"
+         name="name" value={formData.name} onChange={handleChange} placeholder="Regular" required />
 
         <Text fontWeight="medium">Ticket quantity</Text>
-        <Input name="quantity" value={formData.quantity} onChange={handleChange} placeholder="150" required />
+        <Input  focusBorderColor="orange.500" name="quantity" value={formData.quantity} onChange={handleChange} placeholder="150" required />
 
-        {ticketType !== "Free" && (
+        {ticketType !== "free" && (
           <>
             <Text fontWeight="medium">Price</Text>
-            <Input name="price" value={formData.price} onChange={handleChange} placeholder="$5.99" required />
+            <Input   focusBorderColor="orange.500" name="price" value={formData.price} onChange={handleChange} placeholder="$5.99" required />
           </>
         )}
 
         <HStack>
           <VStack align="stretch" flex={1}>
             <Text fontWeight="medium">Start Date</Text>
-            <Input name="startDate" value={formData.startDate} onChange={handleChange} type="date" required />
+            <Input focusBorderColor="orange.500" name="startDate" value={formData.startDate} onChange={handleChange} type="date" required />
           </VStack>
 
           <VStack align="stretch" flex={1}>
             <Text fontWeight="medium">Start Time</Text>
-            <Input name="startTime" value={formData.startTime} onChange={handleChange} type="time" required />
+            <Input focusBorderColor="orange.500" name="startTime" value={formData.startTime} onChange={handleChange} type="time" required />
           </VStack>
         </HStack>
 
         <HStack>
           <VStack align="stretch" flex={1}>
             <Text fontWeight="medium">End Date</Text>
-            <Input name="endDate" value={formData.endDate} onChange={handleChange} type="date" required />
+            <Input focusBorderColor="orange.500" name="endDate" value={formData.endDate} onChange={handleChange} type="date" required />
           </VStack>
 
           <VStack align="stretch" flex={1}>
             <Text fontWeight="medium">End Time</Text>
-            <Input name="endTime" value={formData.endTime} onChange={handleChange} type="time" required />
+            <Input focusBorderColor="orange.500" name="endTime" value={formData.endTime} onChange={handleChange} type="time" required />
           </VStack>
         </HStack>
 
