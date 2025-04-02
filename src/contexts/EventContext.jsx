@@ -41,19 +41,19 @@ const EventProvider = ({ children }) => {
         // console.log(response.data)
       } catch (error) {
         console.error("Error getting published events", error);
-        setPublishedEventsError(true);
         if (error.response.status === 404) {
           return (
             <NoStatePage
-              img={
-                "https://res.cloudinary.com/dnou1zvji/image/upload/v1742481874/emptystate_bmtwlz.png"
-              }
-              heading={"You currently have no events listed here."}
-              content={
-                "You will see a list of events that are live."
-              }
+            img={
+              "https://res.cloudinary.com/dnou1zvji/image/upload/v1742481874/emptystate_bmtwlz.png"
+            }
+            heading={"You currently have no events listed here."}
+            content={
+              "You will see a list of events that are live."
+            }
             />
           );
+          setPublishedEventsError(true);
         }
       } finally {
         setPublishedEventsLoading(false);
