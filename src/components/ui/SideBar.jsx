@@ -41,7 +41,7 @@ const SideBar = () => {
             paddingLeft={"6"}
             height={"30px"}
           />
-          {publishedEvents.length > 0 || draftedEvents.length > 0 || completedEvents.length > 0 ? (
+          {/^\/all-events-draft\/[^/]+$/.test(location.pathname) || /^\/all-events\/[^/]+$/.test(location.pathname) > 0 ? (
             // sidebar with more links
             <Box marginTop={"8px"} padding={"2"}>
               {sidebarTopLinks.map((link, index) => (
