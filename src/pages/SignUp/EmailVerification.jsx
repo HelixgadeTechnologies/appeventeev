@@ -17,6 +17,7 @@ const EmailVerification = () => {
       console.log(response);
 
       const userId = response.data.userId
+      
       console.log(userId);
       setUserId(userId)
 

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, use, useEffect } from "react";
 import {
   Box,
   Button,
@@ -16,10 +16,12 @@ import {
   Divider,
   Stack,
   chakra,
+  useToast,
+
 } from "@chakra-ui/react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import axios from "axios";
-import { toast } from "react-hot-toast";
+//import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
 
@@ -27,9 +29,17 @@ const SignIn = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [buttonText, setButtonText] = useState("Sign In");
   const [showPassword, setShowPassword] = useState(false);
-  const { setUserDetails, setUserId, setIsVerified, setToken } = useContext(UserAuthContext);
+  const { setUserId, setIsVerified, handleAuthSuccess, userDetails } = useContext(UserAuthContext);
   const navigate = useNavigate();
+  const toast = useToast()
 
+ 
+  useEffect(()=>{
+    if(userDetails){
+      navigate('/all-events')
+    }
+  },[])
+  
   const height = window.innerHeight
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -42,24 +52,40 @@ const SignIn = () => {
     try {
       const response = await axios.post("https://eventeevapi.onrender.com/auth/login", formData);
       if (response.status === 200 || response.status === 201) {
-        toast.success("Login successful! 🎉");
+     //   toast.success("Login successful! 🎉");
+     toast({
+      title:'Successful Login',
+      description: "you've successfully logged in",
+      status:"success",
+      duration:3000,
+      isClosable:true,
+      position:"top-right",
+     })
+
         const userData = response.data.user;
+
         const authToken = response.data.token;
 
-        setUserDetails(userData);
+     //   setUserDetails(userData);
         setUserId(userData._id);
         setIsVerified(userData.isVerified);
-        setToken(authToken);
-
-        localStorage.setItem("userId", userData._id);
-        localStorage.setItem("userToken", JSON.stringify(authToken));
-        localStorage.setItem("userDetails", JSON.stringify(userData));
+   //     setToken(authToken);
+        handleAuthSuccess(authToken, userData); // Update context with user info
+        localStorage.setItem("token", JSON.stringify(authToken));
 
         navigate("/all-events");
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Login failed. Please try again.");
-      setButtonText("Sign In");
+   //   toast.error(error.response?.data?.message || "Login failed. Please try again.");
+      toast({
+        title:'Incorrect credentials',
+        description: `${error.response?.data?.message || "Login failed. Please try again."}`,
+        status:"error",
+        duration:3000,
+        isClosable:true,
+        position:"top-right",
+       })
+      setButtonText("Try Again");
     }
   };
 
@@ -101,12 +127,12 @@ const SignIn = () => {
         <form onSubmit={handleSubmit}>
           <Stack spacing={3}>
             <FormControl>
-              <FormLabel font>Email Address</FormLabel>
+              <FormLabel fontSize={'smaller'}>Email Address</FormLabel>
               <Input focusBorderColor="#f56630" type="email" name="email" value={formData.email} onChange={handleChange} required />
             </FormControl>
 
             <FormControl>
-              <FormLabel>Password</FormLabel>
+              <FormLabel fontSize={'smaller'}>Password</FormLabel>
               <InputGroup>
                 <Input focusBorderColor="#f56630" type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange} required />
                 <InputRightElement>
