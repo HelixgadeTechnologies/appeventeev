@@ -28,7 +28,7 @@ import AddTicket from "./pages/CreateTickets/TicketForms";
 import AllEventsPage from "./pages/AllEventsPage";
 import Attendees from "./pages/Attendees";
 import ProfileSettings from "./pages/settings/SettingsPage";
-import PublishedEventDetails from "./pages/AllEventsPage/PublishedEventDetails";
+import TicketWrapper from "./pages/CreateTickets/TicketWrapper";
 import DraftedEventDetails from "./pages/AllEventsPage/DraftedEventDetails";
 import TicketWrapper from "./pages/CreateTickets/TicketWrapper";
 
@@ -41,8 +41,10 @@ import EditDraftsFirst from "./pages/EditEvents/EditDraftsFirst";
 import EditDraftsSecond from "./pages/EditEvents/EditDraftsSecond";
 import EditDraftsThird from "./pages/EditEvents/EditDraftsThird";
 import EditDraftsFourth from "./pages/EditEvents/EditDraftsFourth";
+import NotFoundPage from "./pages/NotFoundPage";
 
-const router = createBrowserRouter(
+const App = () => {
+ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       {/* Public Routes */}
@@ -84,8 +86,11 @@ const router = createBrowserRouter(
           }
         />
         <Route path="/create-ticket" element={<AddTicket />} />
-        <Route path="/attendees" element={<Attendees />} />
+        <Route path="/attendees/:id" element={<Attendees />} />
         <Route path="/Profile-settings" element={<ProfileSettings />} />
+          
+         {/* not found */}
+        <Route path="*" element={<NotFoundPage/>} />
       </Route>
     </Route>
   )
