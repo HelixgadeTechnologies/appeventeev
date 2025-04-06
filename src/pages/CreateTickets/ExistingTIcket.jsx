@@ -48,7 +48,7 @@ const ExistingTicket = ({handleEdit}) => {
                 </p>
                {
                 ticketCount > 1 ? 
-                <button onClick={handleEdit} className={ticketCount === 1 ? `relative right-3 bg-orange-500 text-white px-2 py-1  text-xs rounded-sm` : ` bg-orange-500 rounded-sm text-white px-2 py-1  text-xs`}>Edit</button> : ''
+                <button onClick={() => handleEdit(ticket._id)} className={ticketCount === 1 ? `relative right-3 bg-orange-500 text-white px-2 py-1  text-xs rounded-sm` : ` bg-orange-500 rounded-sm text-white px-2 py-1  text-xs`}>Edit</button> : ''
                }
               </div>
 

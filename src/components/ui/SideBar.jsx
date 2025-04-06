@@ -29,6 +29,8 @@ const SideBar = () => {
     email: `${userDetails.email}`,
   };
 
+  
+  
   const { publishedEvents, draftedEvents, completedEvents } = useContext(EventContext);
 
   return (

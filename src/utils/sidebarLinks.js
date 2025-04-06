@@ -17,6 +17,11 @@ import chatRoomActive from "../assets/icons/message-alt.svg";
 import ticketsActive from "../assets/icons/tickets-active.svg";
 import analyticsActive from "../assets/icons/analytics-active.svg";
 
+const pathParts = window.location.pathname.split("/");
+const id = pathParts[pathParts.length - 1];
+
+
+
 export const sidebarTopLinks = [
   { 
     route: "/dashboard", 
@@ -43,7 +48,7 @@ export const sidebarTopLinks = [
     active: chatRoomActive 
   },
   { 
-    route: "/tickets", 
+    route: `/tickets/${id}`, 
     icon: tickets, 
     text: "Tickets", 
     active: ticketsActive 
