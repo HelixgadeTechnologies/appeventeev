@@ -14,11 +14,12 @@ import "typeface-open-sans";
 import { AiTwotoneEdit, AiTwotoneDelete, AiTwotoneGold } from "react-icons/ai";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { UserAuthContext } from "../contexts/UserAuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { EventContext } from "../contexts/EventContext";
 
-const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute, detailsRoute }) => {
+const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute, detailsRoute, isDrafted = false }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
   const { userDetails } = useContext(UserAuthContext);
   const { formatDate } = useContext(EventContext);
 
@@ -28,6 +29,13 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
 
   const handleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const { setCurrentEventId } = useContext(EventContext);
+
+  const handleCardClick = (id) => {
+    setCurrentEventId(id);
+    navigate(`/dashboard/${id}`);
   };
 
   // for confirming delete
@@ -108,18 +116,34 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
                       <Text fontSize={"10px"}>Edit event</Text>
                     </Flex>
                   </Link>
-                  <Link to={detailsRoute}>
-                    <Flex
-                      alignItems={"center"}
-                      gap={"1"}
-                      _hover={{ bg: "gray.100" }}
-                      paddingY={"4px"}
-                      paddingX={"5px"}
-                    >
-                      <AiTwotoneGold className="text-base" />
-                      <Text fontSize={"10px"}>View event</Text>
-                    </Flex>
+                  {isDrafted ? (
+                    <Link to={detailsRoute}>
+                      <Flex
+                        alignItems={"center"}
+                        gap={"1"}
+                        _hover={{ bg: "gray.100" }}
+                        paddingY={"4px"}
+                        paddingX={"5px"}
+                      >
+                        <AiTwotoneGold className="text-base" />
+                        <Text fontSize={"10px"}>View event</Text>
+                      </Flex>
                   </Link>
+                  ) : (
+                    <Link onClick={() => handleCardClick(event._id)}>
+                      <Flex
+                        alignItems={"center"}
+                        gap={"1"}
+                        _hover={{ bg: "gray.100" }}
+                        paddingY={"4px"}
+                        paddingX={"5px"}
+                      >
+                        <AiTwotoneGold className="text-base" />
+                        <Text fontSize={"10px"}>View event</Text>
+                      </Flex>
+                    </Link>
+
+                  )}
                 </Box>
               )}
             </Center>

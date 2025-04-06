@@ -2,12 +2,19 @@ import { useContext,  useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
 import { timeZones } from "../../utils/utils";
+import axios from "axios";
+import { useToast } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 const ProfileSettings = () => {
 
-  const { userDetails } = useContext(UserAuthContext);
+  const { userDetails, token } = useContext(UserAuthContext);
+
+  const { _id } = userDetails;
   console.log(userDetails);
 
+  const toast = useToast()
+  const navigate = useNavigate()
 
   const { 
     firstname, 
@@ -41,9 +48,45 @@ const ProfileSettings = () => {
   };
   
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
+   
+    try{
+      const response = await axios.put(`https://eventeevapi.onrender.com/user/updateuser/${_id}`, formData,
+        {
+          headers: {
+            "Content-Type":"application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+
+      toast({
+        title:'Update successful',
+        description:'User details has been updated',
+        status:'success',
+        duration:3000,
+        isClosable:true,
+        position:'top-right',
+      })
+      navigate(-1)
+      console.log('user profile updated successfully', response);
+    
+
+ 
+    }catch(error){
+      console.error(error.message);
+      toast({
+        title:'Update failed',
+        description:`${error.message || "Update failed. Please try again."}`,
+        status:'error',
+        duration:5000,
+        isClosable:true,
+        position:'top-right',
+      })
+      
+    }
   };
 
   return (
@@ -95,6 +138,7 @@ const ProfileSettings = () => {
             value={formData.email}
             disabled
             className="w-full mt-1 px-3 py-2 border rounded-md bg-gray-100 text-xs"
+            onChange={handleChange}
           />
         </div>
         <div>
@@ -104,6 +148,7 @@ const ProfileSettings = () => {
             name="gender"
             value={formData.gender}
             className="w-full mt-1 px-3 py-2 border rounded-md text-xs focus:border-[#f56630] focus:ring-1 focus:ring-[#f56630]"
+            onChange={handleChange}
           />
         </div>
       </div>
@@ -133,6 +178,7 @@ const ProfileSettings = () => {
             name="country"
             value={formData.country}
             className="w-full mt-1 px-3 py-2 border rounded-md text-xs focus:border-[#f56630] focus:ring-1 focus:ring-[#f56630]"
+            onChange={handleChange}
           />
         </div>
       </div>

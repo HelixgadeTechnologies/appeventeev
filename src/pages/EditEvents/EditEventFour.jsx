@@ -146,7 +146,7 @@ const EditEventFour = () => {
           <Button
             onClick={() => {
               updatePublishedEvent(currentEvent._id, thirdPageData),
-                navigate(`/all-events/${currentEvent._id}`);
+                navigate(`/dashboard/${currentEvent._id}`);
             }}
             bg={"#EB5017"}
             size={"md"}

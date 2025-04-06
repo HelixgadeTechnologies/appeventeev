@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { LuListFilter, LuChevronDown } from "react-icons/lu";
 import { FiCalendar } from "react-icons/fi";
 import { FcFilledFilter } from "react-icons/fc";
@@ -30,6 +30,9 @@ import {
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import NoStatePage from "../../components/NoStatePage";
+import { EventContext } from "../../contexts/EventContext";
+import { useParams } from "react-router-dom";
+import { TicketContext } from "../../contexts/TicketContext";
 
 const Attendees = () => {
   const sortOptions = ["A-Z", "Z-A", "Latest", "Oldest"];
@@ -38,7 +41,27 @@ const Attendees = () => {
     setIsDropDownOpen(!isDropDownOpen);
   };
 
+  const { ticketData } = useContext(TicketContext);
+  console.log(ticketData);
 
+  const { getAttendees } = useContext(EventContext);
+  const { id } = useParams();
+  
+  // if (!ticketData) {
+  //   return (
+  //     <Center height={"100vh"}>
+  //       <Center flexDir={"column"} color={"red.500"} gap={"5"}>
+  //         <BiError size={100} />
+  //         <Text fontSize={"sm"}>
+  //           Uh oh! It seems an error occurred. Please try again later.
+  //         </Text>
+  //       </Center>
+  //     </Center>
+  //   );
+  // }
+  // const currentAttendee = ticketData.find((event) => event._id === id);
+  // const attendees = getAttendees(currentAttendee._id);
+  // console.log(attendees)
   // to check in attendees
   const [checkedInAttendees, setCheckedInAttendees] = useState({});
 

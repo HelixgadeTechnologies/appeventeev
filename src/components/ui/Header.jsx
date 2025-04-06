@@ -15,9 +15,6 @@ import { UserAuthContext } from "../../contexts/UserAuthContext";
 import { EventContext } from "../../contexts/EventContext";
 import { useLocation } from "react-router-dom";
 import AddTicket from "../../pages/CreateTickets/TicketForms";
-import { div } from "framer-motion/client";
-
-// import icons
 import { RxDownload } from "react-icons/rx";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { FiCalendar } from "react-icons/fi";
@@ -43,7 +40,7 @@ const Header = () => {
     },
     "/tickets": {
       title: "My tickets",
-      subtitle: "choose a ticket type or use multiple types",
+      subtitle: "Choose a ticket type or use multiple types",
     },
     "/Profile-settings": {
       title: "Settings",
@@ -52,18 +49,16 @@ const Header = () => {
     },
   };
 
-  if (
-    /^\/all-events\/[^/]+$/.test(location.pathname) ||
-    /^\/all-events-draft\/[^/]+$/.test(location.pathname) ||
-    (location.pathname === "/dashboard" && publishedEvents.length > 0)
-  ) {
-    return null;
-  }
+  const isTicketPage = /^\/tickets\//.test(location.pathname);
 
-  let { title, subtitle } = pageData[location.pathname] || {
-    title: `Welcome ${userDetails.firstname}`,
-    subtitle: "Control your profile and setup integrations",
-  };
+  let { title, subtitle } =
+    pageData[location.pathname] ||
+    (isTicketPage
+      ? pageData["/tickets"]
+      : {
+          title: `Welcome ${userDetails.firstname}`,
+          subtitle: "Control your profile and setup integrations",
+        });
 
   if (location.pathname.startsWith("/edit-event")) {
     title = "Edit your event";
@@ -72,15 +67,11 @@ const Header = () => {
 
   function todaysDate() {
     const date = new Date();
-
-    // Get day, month, and year
     const day = date.getDate();
     const month = date.toLocaleString("en-US", { month: "long" });
     const year = date.getFullYear();
-
-    // Function to get the ordinal suffix (st, nd, rd, th)
     function getOrdinalSuffix(day) {
-      if (day > 3 && day < 21) return "th"; // Covers 11th-13th
+      if (day > 3 && day < 21) return "th";
       switch (day % 10) {
         case 1:
           return "st";
@@ -92,8 +83,15 @@ const Header = () => {
           return "th";
       }
     }
-
     return `${day}${getOrdinalSuffix(day)} ${month}, ${year}`;
+  }
+
+  if (
+    /^\/dashboard\/[^/]+$/.test(location.pathname) ||
+    /^\/all-events-draft\/[^/]+$/.test(location.pathname) ||
+    (location.pathname === "/dashboard" && publishedEvents.length > 0) 
+  ) {
+    return null;
   }
 
   return (
@@ -122,8 +120,7 @@ const Header = () => {
       <Flex justifyContent={"space-between"} alignItems={"end"}>
         <Box
           bg={
-            (location.pathname === `/dashboard` &&
-              publishedEvents.length > 0) ||
+            (location.pathname === `/dashboard` && publishedEvents.length > 0) ||
             publishedEvents.length > 0 ||
             location.pathname !== "/dashboard"
               ? `#F9FAFB`
@@ -143,7 +140,14 @@ const Header = () => {
           </Text>
         </Box>
 
-        {/* tab to show on dashboard page */}
+        {/* Show Add Ticket button on tickets page */}
+        {location.pathname.startsWith("/tickets") && (
+          <div className="mr-10">
+            <AddTicket />
+          </div>
+        )}
+
+        {/* Show Today's Date on Dashboard */}
         {location.pathname === "/dashboard" && publishedEvents.length > 0 && (
           <Center
             width={"280px"}
@@ -157,12 +161,7 @@ const Header = () => {
             paddingX={"20px"}
             borderWidth={"thin"}
           >
-            <Center
-              borderRadius={"full"}
-              height={"40px"}
-              width={"40px"}
-              bg={"#F0F2F5"}
-            >
+            <Center borderRadius={"full"} height={"40px"} width={"40px"} bg={"#F0F2F5"}>
               <FiCalendar className="text-[#344054] text-xl" />
             </Center>
             <Box>
@@ -172,14 +171,7 @@ const Header = () => {
           </Center>
         )}
 
-        {/* add button to tickets */}
-        {location.pathname === "/tickets" && (
-          <div className="mr-20">
-            <AddTicket />
-          </div>
-        )}
-
-        {/* buttons to show on attendee page */}
+        {/* Show Buttons on Attendees Page */}
         {location.pathname === "/attendees" && (
           <Flex gap={"12px"} alignItems={"center"} marginX={"5"}>
             <Button
@@ -213,8 +205,6 @@ const Header = () => {
           </Flex>
         )}
       </Flex>
-
-      {/* divider to show on only dashboard page */}
       {location.pathname === `/dashboard` && (
         <Center marginX={"10"}>
           <Divider />

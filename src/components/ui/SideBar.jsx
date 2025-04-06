@@ -12,12 +12,27 @@ import {
 import {
   sidebarBottomLinks,
   sidebarFirstLinks,
-  sidebarTopLinks,
+  minimalSidebarRoutes,
 } from "../../utils/sidebarLinks";
 import signOut from "../../assets/icons/sign-out.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
 import { EventContext } from "../../contexts/EventContext";
+
+import home from "../../assets/icons/home.svg";
+import attendees from "../../assets/icons/user-group.svg";
+import calendar from "../../assets/icons/calendar.svg";
+import message from "../../assets/icons/message-alt.svg";
+import tickets from "../../assets/icons/ticket.svg";
+import receipt from "../../assets/icons/receipt.svg";
+
+// active icons
+import homeActive from "../../assets/icons/dashboard-active.svg";
+import attendeesActive from "../../assets/icons/attendees-active.svg";
+import speakerActive from "../../assets/icons/calendar.svg";
+import chatRoomActive from "../../assets/icons/message-alt.svg";
+import ticketsActive from "../../assets/icons/tickets-active.svg";
+import analyticsActive from "../../assets/icons/analytics-active.svg";
 
 const SideBar = () => {
   const location = useLocation();
@@ -29,7 +44,61 @@ const SideBar = () => {
     email: `${userDetails.email}`,
   };
 
-  const { publishedEvents, draftedEvents, completedEvents } = useContext(EventContext);
+  const { currentEventId } = useContext(EventContext);
+
+  const sidebarTopLinks = [
+    {
+      route: `/dashboard/${currentEventId}`,
+      icon: home,
+      text: "Dashboard",
+      active: homeActive,
+    },
+    {
+      route: `/attendees/${currentEventId}`,
+      icon: attendees,
+      text: "Attendees",
+      active: attendeesActive,
+    },
+    {
+      route: `/speakers/${currentEventId}`,
+      icon: calendar,
+      text: "Speaker List",
+      active: speakerActive,
+    },
+    {
+      route: `/chat/${currentEventId}`,
+      icon: message,
+      text: "Chat Room",
+      active: chatRoomActive,
+    },
+    {
+      route: `/tickets/${currentEventId}`,
+      icon: tickets,
+      text: "Tickets",
+      active: ticketsActive,
+    },
+    {
+      route: `/analytics/${currentEventId}`,
+      icon: receipt,
+      text: "Analytics",
+      active: analyticsActive,
+    },
+  ];
+
+  const isEventRoute = () => {
+    // Check if current path matches any event-specific route pattern
+    const eventRoutePatterns = [
+      /^\/dashboard\/[^/]+$/,
+      /^\/attendees\/[^/]+$/,
+      /^\/speakers\/[^/]+$/,
+      /^\/chat\/[^/]+$/,
+      /^\/tickets\/[^/]+$/,
+      /^\/analytics\/[^/]+$/,
+    ];
+    
+    return eventRoutePatterns.some(pattern => pattern.test(location.pathname));
+  };
+
 
   return (
     <aside className="w-[250px] bg-white py-[30px] border-r border-[#E4E7EC] fixed top-0 left-0 h-screen z-50">
@@ -41,38 +110,9 @@ const SideBar = () => {
             paddingLeft={"6"}
             height={"30px"}
           />
-          {publishedEvents.length > 0 || draftedEvents.length > 0 || completedEvents.length > 0 ? (
-            // sidebar with more links
-            <Box marginTop={"8px"} padding={"2"}>
-              {sidebarTopLinks.map((link, index) => (
-                <Flex
-                  onClick={() => navigate(link.route)}
-                  key={index}
-                  paddingY={"12px"}
-                  paddingX={"16px"}
-                  height={"35px"}
-                  gap={"8px"}
-                  alignItems={"center"}
-                  borderRadius={"4px"}
-                  _hover={{
-                    cursor: "pointer",
-                    bg: `${location.pathname !== link.route && "#fcf7f5"}`,
-                  }}
-                  bg={location.pathname === link.route && "#FFECE5"}
-                >
-                  {location.pathname === link.route ? (
-                    <Image src={link.active} height={"15px"} />
-                  ) : (
-                    <Image src={link.icon} height={"18px"} />
-                  )}
-                  <Text fontWeight={"normal"} fontSize={"xs"} color={"#101928"}>
-                    {link.text}
-                  </Text>
-                </Flex>
-              ))}
-              <Divider />
-            </Box>
-          ) : (
+          {!currentEventId ||
+          minimalSidebarRoutes.includes(location.pathname) || 
+          !isEventRoute() ? (
             // sidebar with fewer links
             <Box marginTop={"8px"} padding={"2"}>
               {sidebarFirstLinks.map((link, index) => (
@@ -103,13 +143,44 @@ const SideBar = () => {
               ))}
               <Divider />
             </Box>
+          ) : (
+              // sidebar with more links
+              <Box marginTop={"8px"} padding={"2"}>
+              {sidebarTopLinks.map((link, index) => (
+                <Flex
+                  onClick={() => navigate(link.route)}
+                  key={index}
+                  paddingY={"12px"}
+                  paddingX={"16px"}
+                  height={"35px"}
+                  gap={"8px"}
+                  alignItems={"center"}
+                  borderRadius={"4px"}
+                  _hover={{
+                    cursor: "pointer",
+                    bg: `${location.pathname !== link.route && "#fcf7f5"}`,
+                  }}
+                  bg={link.route.includes(location.pathname) && "#FFECE5"}
+                >
+                  {link.route.includes(location.pathname) ? (
+                    <Image src={link.active} height={"15px"} />
+                  ) : (
+                    <Image src={link.icon} height={"18px"} />
+                  )}
+                  <Text fontWeight={"normal"} fontSize={"xs"} color={"#101928"}>
+                    {link.text}
+                  </Text>
+                </Flex>
+              ))}
+              <Divider />
+            </Box>
           )}
         </Box>
         <Box>
           <Box padding={"2"}>
             {sidebarBottomLinks.map((link, index) => (
               <Flex
-              onClick={() => navigate(link.route)}
+                onClick={() => navigate(link.route)}
                 key={index}
                 paddingY={"12px"}
                 paddingX={"16px"}

@@ -1,58 +1,66 @@
 import { createContext, useState, useEffect } from "react";
 // eslint-disable-next-line react-refresh/only-export-components
-export const UserAuthContext = createContext();
+export const UserAuthContext = createContext(null);
 
 const UserAuthProvider = ({ children }) => {
 
 
-  // Load data from localStorage
-  const [userId, setUserId] = useState(() => localStorage.getItem("userId") || "");
+  // State to hold token and user details
   const [token, setToken] = useState(() => localStorage.getItem("token") || "");
-  const [resetToken, setResetToken] = useState(() => localStorage.getItem("resetToken") || "");
-  
-  
   const [userDetails, setUserDetails] = useState(() => {
-    const storedUser = localStorage.getItem("userDetails");
-    return storedUser ? JSON.parse(storedUser) : {};
+    const storedDetails = sessionStorage.getItem("userDetails");
+    return storedDetails ? JSON.parse(storedDetails) : null;
   });
-
-  const [isVerified, setIsVerified] = useState(false);
-
-  // Update localStorage when userId, token, resetToken, or userDetails change
-  useEffect(() => {
-    if (userId) {
-      localStorage.setItem("userId", userId);
-      localStorage.setItem("token", token);
-      localStorage.setItem("userDetails", JSON.stringify(userDetails));
-      localStorage.setItem("resetToken", resetToken);
-    } else {
-      localStorage.removeItem("userId");
-      localStorage.removeItem("token");
-      localStorage.removeItem("userDetails"); // Remove on logout
-      localStorage.removeItem("resetToken");
-    }
-  }, [userId, token, userDetails]);
-
-  const logout = () => {
-    setUserId("");
-    setToken("");
-    setUserDetails({});
-    setIsVerified(false);
+  console.log(userDetails);
   
-    localStorage.removeItem("userId");
-    localStorage.removeItem("token");
-    localStorage.removeItem("userDetails");
+  const [isVerified, setIsVerified] = useState(false); // User verification status
+  const [userId, setUserId ] = useState(null)
+
+  console.log(token);
+  
+  // UseEffect to update localStorage with token if available
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem("token", token);
+    } else {
+      localStorage.removeItem("token");
+    }
+  }, [token]);
+
+  // Logout function
+  const logout = () => {
+    setToken(""); // Clear token
+    setUserDetails(null); // Clear user details
+    setIsVerified(false); // Reset verification status
+    localStorage.removeItem("token"); // Remove token from localStorage
+    sessionStorage.removeItem('userDetails'); // Remove user details from sessionStorage
   };
+
+  // Sign-up or sign-in success handler (update token and user details)
+  const handleAuthSuccess = (token, userDetails) => {
+    setToken(token);
+    setUserDetails(userDetails);
+    sessionStorage.setItem("userDetails", JSON.stringify(userDetails)); // Persist user details in sessionStorage
+    localStorage.setItem("token", token); // Persist token in localStorage
+  };
+
+  
   
 
   return (
-    <UserAuthContext.Provider value={{ 
-      userDetails, setUserDetails, 
-      isVerified, setIsVerified, 
-      userId, setUserId, 
-      token, setToken,
-      logout, setResetToken
-    }}>
+    <UserAuthContext.Provider
+      value={{
+        token,
+        setToken,
+        userDetails,
+        setUserDetails,
+        isVerified,
+        setIsVerified,
+        logout,
+        userId, setUserId,
+        handleAuthSuccess, // A method to call for sign-in or sign-up success
+      }}
+    >
       {children}
     </UserAuthContext.Provider>
   );

@@ -28,16 +28,16 @@ const LiveEvents = () => {
             </Text>
           </Center>
         </Center>
-      ) : publishedEvents ? (
+      ) : publishedEvents.length > 0 ? (
         <Box>
-          <Grid templateColumns={"repeat(3,1fr)"} gap={"20px"} height={"full"}>
+          <Grid templateColumns={"repeat(3,1fr)"} gap={"20px"} height={"screen"}>
             {publishedEvents.map((event) => (
               <GridItem key={event._id}>
                 <AllEventDisplayCard
                   event={event}
                   onDelete={() => deletePublishedEvents(event._id)}
                   editRoute={`/edit-event-step-one/${event._id}`}
-                  detailsRoute={`/all-events/${event._id}`}
+                  detailsRoute={`/dashboard/${event._id}`}
                 />
               </GridItem>
             ))}

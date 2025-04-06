@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { 
     Box, Button, Input, Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack, HStack, 
-    Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, useDisclosure
+    Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, Table, Thead, Tbody, Tr, Th, Td, Checkbox, useDisclosure,
+    useToast
   } from "@chakra-ui/react";
   import React, { useContext, useState } from "react";
   import { TicketContext } from "../../contexts/TicketContext";
@@ -9,16 +10,22 @@ import {
   import { FaEdit } from "react-icons/fa";
   import axios from "axios";
   import { UserAuthContext } from "../../contexts/UserAuthContext";
+import { useParams } from "react-router-dom";
+import ExistingTicket from "../../pages/CreateTickets/ExistingTIcket";
+import { ticketData } from "../../utils/tickets";
   
-  const Table = ({ type }) => {
-      const { ticketData,  } = useContext(TicketContext);
+  const TableComponent = ({ type }) => {
+     // const { ticketData,  } = useContext(TicketContext);
       const { token } = useContext(UserAuthContext);
       const { isOpen, onOpen, onClose } = useDisclosure();
       const [selectedTickets, setSelectedTickets] = useState(new Set());
       const [loading, setLoading] = useState(false);
       const [showModal, setShowModal] = useState(false);
+      const [editTicketId, setEditTicketId] = useState(null)
+      const { refreshTickets } = useContext(TicketContext)
+      const { id } = useParams()
       const [editTicket, setEditTicket] = useState({
-          eventId: '67d00263d645bddd43326d35',
+          eventId: `${id}`,
           name: "",
           type: type,
           quantity: "",
@@ -28,6 +35,9 @@ import {
           endDate: "",
           endTime: "",
       });
+      const toast = useToast()
+
+      
   
       const handleCheckboxChange = (id) => {
           setSelectedTickets((prev) => {
@@ -37,8 +47,9 @@ import {
           });
       };
   
-      const handleEditClick = (ticket) => {
-          setEditTicket(ticket);
+      const handleEditClick = (id) => {
+         // setEditTicket(ticket);
+         setEditTicketId(id)
           setShowModal(true);
           onOpen();
       };
@@ -50,9 +61,11 @@ import {
       const handleEditSubmit = async (e) => {
           e.preventDefault();
           setLoading(true);
+        
+          
           try {
               const response = await axios.put(
-                  `https://eventeevapi.onrender.com/ticket/edit/${editTicket._id}`,
+                  `https://eventeevapi.onrender.com/ticket/edit/${editTicketId}`,
                   editTicket,
                   {
                       headers: {
@@ -64,13 +77,34 @@ import {
   
               if (response.status !== 200) throw new Error("Failed to update ticket");
   
-              toast.success("Ticket updated successfully");
+            //  toast.success("Ticket updated successfully");
+            refreshTickets()
+            console.log(response);
+            
+            toast({
+                title: 'Ticket updated successfully',
+                duration:3000,
+                position:"top-right",
+                status:"success",
+                isClosable:true,
+            })
               setShowModal(false);
               onClose();
           } catch (error) {
-              toast.error(error.response?.data?.message || "Something went wrong");
+         
+            
+             toast({
+                title: 'Error updating ticket',
+                description: error.response?.data?.message || "An error occurred while updating the ticket.",
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+                position: "top-right",
+             })
               console.error("Error updating ticket:", error);
-              console.log(editTicket);
+             
+           
+              
               
           } finally {
               setLoading(false);
@@ -92,43 +126,49 @@ import {
     };
   
       return (
-          <div className="overflow-x-auto">
-              <table className="min-w-full border border-gray-200 rounded-lg mt-2">
-                  <thead>
-                      <tr className="text-left" style={{ backgroundColor: "transparent" }}>
-                          <th className="px-4 py-2"><input type="checkbox" /></th>
-                          <th className="px-4 py-2 font-medium">Name</th>
-                          <th className="px-4 py-2 font-medium">Ticket Type</th>
-                          <th className="px-4 py-2 font-medium">Ticket ID</th>
-                          <th className="px-4 py-2 font-medium">Amount</th>
-                          <th className="px-4 py-2 font-medium">Date</th>
-                          <th className="px-4 py-2 font-medium">Actions</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      {ticketData.filter(ticket => ticket.type === type).map(ticket => (
-                          <tr key={ticket._id} className="border-b border-gray-200 smallFont">
-                              <td className="px-4 py-3">
-                                  <input 
-                                      type="checkbox" 
-                                      checked={selectedTickets.has(ticket._id)}
-                                      onChange={() => handleCheckboxChange(ticket._id)}
-                                  />
-                              </td>
-                              <td className="px-3 py-2 ">{ticket.name}</td>
-                              <td className="px-4 py-3 ">{ticket.type}</td>
-                              <td className="px-4 py-3 ">{ticket._id.slice(0, 7)}</td>
-                              <td className="px-4 py-3 ">{ticket.price ? `$${ticket.price}` : ticket.type}</td>
-                              <td className=" text-sm ">
-                               <span className=" p-1 rounded-md" style={{backgroundColor: '#ffece5',}}> {formatDate(ticket.updatedAt)}</span>
-                                </td>
-                              <td className="px-4 py-3 text-sm  ">
-                                  <FaEdit style={{color:'#e8562e'}} className="cursor-pointer" onClick={() => handleEditClick(ticket)} />
-                              </td>
-                          </tr>
-                      ))}
-                  </tbody>
-              </table>
+        <div className={type === 'paid'?  "max-w-[1085px] h-full" : "w-full h-full" }>
+        {
+
+         type === 'paid' &&  <ExistingTicket handleEdit={handleEditClick}  />
+
+        }
+
+         <div className={type === 'paid' ? "overflow-x-auto h-full " : "overflow-x-auto h-full mt-7"} >
+                        <Table variant="unstyled" mt={2} minW="full" borderRadius="lg" >
+                    <Thead bg="#f9fafb" >
+                        <Tr  >
+                        <Th px={4} py={2}><Checkbox /></Th>
+                        <Th px={4} py={2} fontSize="smaller" fontWeight="medium" >Name</Th>
+                        <Th px={4} py={2} fontSize="smaller" fontWeight="medium"  >Email</Th>
+                        <Th px={4} py={2} fontSize="smaller" fontWeight="medium">Ticket Name</Th>
+                        <Th px={4} py={2} fontSize="smaller" fontWeight="medium">Ticket ID</Th>
+                        <Th px={4} py={2} fontSize="smaller" fontWeight="medium">Date</Th>
+                        <Th px={4} py={2} fontSize="smaller" fontWeight="medium">Amount</Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody bg="white">
+                        {ticketData.filter(ticket => ticket.ticketType === type).map(ticket => (
+                        <Tr key={ticket._id} borderBottom="1px solid" borderColor="gray.200">
+                            <Td px={4} py={3}>
+                            <Checkbox colorScheme="orange"
+                                isChecked={selectedTickets.has(ticket.ticketID)}
+                                onChange={() => handleCheckboxChange(ticket.ticketID)}
+                            />
+                            </Td>
+                            <Td px={3} py={3} fontSize={'sm'}>{ticket.name}</Td>
+                            <Td px={3} py={3}  fontSize={'sm'}>{ticket.email}</Td>
+                            <Td px={4} py={3} fontSize={'sm'}>{ticket.ticketName}</Td>
+                            <Td px={4} py={3} fontSize={'sm'}>{ticket.ticketID}</Td>
+                            <Td px={4} py={3} fontSize={'sm'}  >
+                            <Box className="uppercase flex justify-center" flex={'center'}  bg="#fed7d7" color="#ad3307" borderRadius="20px" px={5} py={1} display="inline-block"  fontSize={'x-small'} fontWeight={'medium'}>
+                                <Text className="">{ticket.dateRegistered}</Text>
+                            </Box>
+                            </Td>
+                            <Td px={4} py={3}>{ticket.amount ? `${ticket.amount}` : ticket.ticketType}</Td>
+                        </Tr>
+                        ))}
+                    </Tbody>
+                    </Table>
   
               <Modal isOpen={isOpen} onClose={onClose} isCentered>
                   <ModalOverlay />
@@ -137,46 +177,48 @@ import {
                       <ModalCloseButton />
                       <ModalBody>
                           <form onSubmit={handleEditSubmit}>
-                              <VStack spacing={4} mt={5} align="stretch">
-                                  <Text fontWeight="medium">Ticket name</Text>
-                                  <Input name="name" value={editTicket.name} onChange={handleEditChange} placeholder="Regular" required />
+                              <VStack spacing={2} mt={3} align="stretch">
+                                  <Text fontWeight="normal" fontSize={'sm'} >Ticket name</Text>
+                                  <Input name="name" value={editTicket.name} onChange={handleEditChange} placeholder="Regular"  focusBorderColor="#f56630"  required />
   
-                                  <Text fontWeight="medium">Ticket quantity</Text>
-                                  <Input name="quantity" value={editTicket.quantity} onChange={handleEditChange} placeholder="150" required />
+                                  <Text fontWeight="normal" fontSize={'sm'}>Ticket quantity</Text>
+                                  <Input name="quantity" value={editTicket.quantity} onChange={handleEditChange} placeholder="150"  focusBorderColor="#f56630"  required />
   
                                   {type !== "Free" && (
                                       <>
-                                          <Text fontWeight="medium">Price</Text>
-                                          <Input name="price" value={editTicket.price} onChange={handleEditChange} placeholder="$5.99" required />
+                                          <Text fontWeight="normal" fontSize={'sm'}>Price</Text>
+                                          <Input 
+                                          name="price" value={editTicket.price} onChange={handleEditChange} placeholder="$5.99"
+                                          focusBorderColor="#f56630"  required />
                                       </>
                                   )}
   
                                   <HStack>
                                       <VStack align="stretch" flex={1}>
-                                          <Text fontWeight="medium">Start Date</Text>
-                                          <Input name="startDate" value={editTicket.startDate} onChange={handleEditChange} type="date" required />
+                                          <Text fontWeight="normal" fontSize={'sm'}>Start Date</Text>
+                                          <Input name="startDate" value={editTicket.startDate} onChange={handleEditChange} type="date"  focusBorderColor="#f56630" required />
                                       </VStack>
   
                                       <VStack align="stretch" flex={1}>
-                                          <Text fontWeight="medium">Start Time</Text>
-                                          <Input name="startTime" value={editTicket.startTime} onChange={handleEditChange} type="time" required />
+                                          <Text fontWeight="normal" fontSize={'sm'}>Start Time</Text>
+                                          <Input name="startTime" value={editTicket.startTime} onChange={handleEditChange} type="time"  focusBorderColor="#f56630"  required />
                                       </VStack>
                                   </HStack>
   
                                   <HStack>
                                       <VStack align="stretch" flex={1}>
-                                          <Text fontWeight="medium">End Date</Text>
-                                          <Input name="endDate" value={editTicket.endDate} onChange={handleEditChange} type="date" required />
+                                          <Text fontWeight="normal" fontSize={'sm'}>End Date</Text>
+                                          <Input name="endDate" value={editTicket.endDate} onChange={handleEditChange} type="date"  focusBorderColor="#f56630"  required />
                                       </VStack>
   
                                       <VStack align="stretch" flex={1}>
-                                          <Text fontWeight="medium">End Time</Text>
-                                          <Input name="endTime" value={editTicket.endTime} onChange={handleEditChange} type="time" required />
+                                          <Text fontWeight="normal" fontSize={'sm'}>End Time</Text>
+                                          <Input name="endTime" value={editTicket.endTime} onChange={handleEditChange} type="time"  focusBorderColor="#f56630"  required />
                                       </VStack>
                                   </HStack>
   
-                                  <HStack mt={5} justify="space-around">
-                                      <Button w={'100%'} colorScheme="gray" onClick={onclose}>
+                                  <HStack mt={5} justify="space-around" mb={'10px'}>
+                                      <Button w={'100%'} colorScheme="gray" border={'1px'} borderColor={'#f56630'} onClick={onClose}>
                                           Cancel
                                       </Button>
                                       <Button w={'100%'} type="submit" bg="#F56630" color="white" px={5} py={2} isLoading={loading}>
@@ -189,8 +231,10 @@ import {
                   </ModalContent>
               </Modal>
           </div>
+        
+        </div>
       );
   };
   
-  export default Table;
+  export default TableComponent;
   
