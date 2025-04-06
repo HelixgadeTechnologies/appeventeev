@@ -22,10 +22,10 @@ import ResetPassword from "./pages/SignIn/ResetPassword";
 import AllEventsPage from "./pages/AllEventsPage";
 import Attendees from "./pages/Attendees"
 import ProfileSettings from "./pages/settings/SettingsPage";
- import EventDetails from "./pages/AllEventsPage/PublishedEventDetails";
+//  import EventDetails from "./pages/AllEventsPage/PublishedEventDetails";
 import TicketWrapper from "./pages/CreateTickets/TicketWrapper";
 
-import PublishedEventDetails from "./pages/AllEventsPage/PublishedEventDetails";
+// import PublishedEventDetails from "./pages/AllEventsPage/PublishedEventDetails";
 import DraftedEventDetails from "./pages/AllEventsPage/DraftedEventDetails";
 
 // edit event routes
@@ -37,6 +37,7 @@ import EditDraftsFirst from "./pages/EditEvents/EditDraftsFirst";
 import EditDraftsSecond from "./pages/EditEvents/EditDraftsSecond";
 import EditDraftsThird from "./pages/EditEvents/EditDraftsThird";
 import EditDraftsFourth from "./pages/EditEvents/EditDraftsFourth";
+import NotFoundPage from "./pages/NotFoundPage";
 
 
 
@@ -52,7 +53,7 @@ const App = () => {
         <Route path="/verify" element={<EmailVerification />} />
         <Route path="/OrganizationDetails" element={<OrgForm />} />
         <Route path="/create-new-password" element={<ResetPassword />} />
-        <Route path="/dashboard" element={<Dashboard/> } />
+        <Route path="/dashboard/:id" element={<Dashboard/> } />
        
 
         {/* create event routes */}
@@ -63,7 +64,7 @@ const App = () => {
 
         {/* all events route */}
         <Route path="/all-events" element={<AllEventsPage/>} />
-        <Route path="/all-events/:id" element={<PublishedEventDetails/>} />
+        {/* <Route path="/all-events/:id" element={<PublishedEventDetails/>} /> */}
         <Route path="/all-events-draft/:id" element={<DraftedEventDetails/>} />
 
         {/* edit live event routes */}
@@ -87,12 +88,13 @@ const App = () => {
         <Route path="/create-ticket" element={<AddTicket/>} />
 
         {/* check-in routes */}
-        <Route path="/attendees" element={<Attendees/>} />
+        <Route path="/attendees/:id" element={<Attendees/>} />
 
         {/* settings route  */}
         <Route path="/Profile-settings" element={<ProfileSettings /> } />
 
-
+        {/* not found */}
+        <Route path="*" element={<NotFoundPage/>} />
         
       </Route>
     )

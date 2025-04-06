@@ -28,6 +28,7 @@ import AttendeeDisplay from "../../components/ui/AttendeeDisplay";
 import { BiError } from "react-icons/bi";
 import SearchBar from "../../components/ui/SearchBar";
 import Notifications from "../../components/ui/Notifications";
+import signOut from "../../assets/icons/sign-out.svg";
 
 const DraftedEventDetails = () => {
   const {
@@ -36,6 +37,7 @@ const DraftedEventDetails = () => {
     draftedEventsError,
     formatDate,
     todaysDate,
+    setCurrentEventId,
   } = useContext(EventContext);
   //   importing user details from context
   const { userDetails } = useContext(UserAuthContext);
@@ -419,6 +421,25 @@ const DraftedEventDetails = () => {
           </Box>
 
           <Calendar eventDate={currentEvent.startDate} />
+
+          {/* exit */}
+          <Flex
+            justifyContent={"end"}
+            alignItems={"center"}
+            fontSize={"sm"}
+            gap={"2"}
+            _groupHover={{ cursor: "pointer", color: "#EB5017" }}
+          >
+            <Text>Exit Draft</Text>
+            <Image
+              onClick={() => {
+                navigate("/all-events"), setCurrentEventId(null);
+              }}
+              src={signOut}
+              _hover={{ cursor: "pointer" }}
+              height={"20px"}
+            />
+          </Flex>
         </Box>
       </Flex>
     </>

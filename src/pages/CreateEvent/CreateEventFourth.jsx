@@ -169,7 +169,7 @@ const CreateEventSecond = () => {
               Event Description:
             </Heading>
             <Text fontWeight={"medium"} fontSize={"small"}>
-              {countWords(thirdPageData.description) < 60 ? thirdPageData.description : thirdPageData.description.substring(0,60) + "..."}
+              {countWords < 60 ? thirdPageData.description : thirdPageData.description.substring(0,60) + "..."}
             </Text>
           </Flex>
           <Flex
@@ -264,7 +264,7 @@ const CreateEventSecond = () => {
           </Flex>
         </Box>
 
-        buttons
+        {/* buttons */}
         <Flex justifyContent={"space-between"} marginTop={"5"} gap={"32px"}>
           <Button
             onClick={() => navigate("/dashboard")}
