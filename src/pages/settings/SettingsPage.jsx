@@ -3,12 +3,18 @@ import { CgProfile } from "react-icons/cg";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
 import { timeZones } from "../../utils/utils";
 import axios from "axios";
+import { useToast } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 const ProfileSettings = () => {
 
-  const { userDetails, token, userId } = useContext(UserAuthContext);
+  const { userDetails, token } = useContext(UserAuthContext);
+
+  const { _id } = userDetails;
   console.log(userDetails);
 
+  const toast = useToast()
+  const navigate = useNavigate()
 
   const { 
     firstname, 
@@ -47,7 +53,7 @@ const ProfileSettings = () => {
     console.log("Form submitted:", formData);
    
     try{
-      const response = await axios.put(`https://eventeevapi.onrender.com/user/updateuser/${userId}`, formData,
+      const response = await axios.put(`https://eventeevapi.onrender.com/user/updateuser/${_id}`, formData,
         {
           headers: {
             "Content-Type":"application/json",
@@ -56,10 +62,29 @@ const ProfileSettings = () => {
         }
       )
 
+      toast({
+        title:'Update successful',
+        description:'User details has been updated',
+        status:'success',
+        duration:3000,
+        isClosable:true,
+        position:'top-right',
+      })
+      navigate(-1)
       console.log('user profile updated successfully', response);
+    
+
  
     }catch(error){
       console.error(error.message);
+      toast({
+        title:'Update failed',
+        description:`${error.message || "Update failed. Please try again."}`,
+        status:'error',
+        duration:5000,
+        isClosable:true,
+        position:'top-right',
+      })
       
     }
   };

@@ -98,7 +98,7 @@ const SideBar = () => {
     
     return eventRoutePatterns.some(pattern => pattern.test(location.pathname));
   };
-  
+
 
   return (
     <aside className="w-[250px] bg-white py-[30px] border-r border-[#E4E7EC] fixed top-0 left-0 h-screen z-50">
