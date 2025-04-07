@@ -37,7 +37,7 @@ const LiveEvents = () => {
                   event={event}
                   onDelete={() => deletePublishedEvents(event._id)}
                   editRoute={`/edit-event-step-one/${event._id}`}
-                  detailsRoute={`/all-events/${event._id}`}
+                  detailsRoute={`/dashboard/${event._id}`}
                 />
               </GridItem>
             ))}

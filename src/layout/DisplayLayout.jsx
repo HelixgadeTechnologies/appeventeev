@@ -18,8 +18,7 @@ const DisplayLayout = ({ children }) => {
         <main
           className={`${
             /^\/all-events-draft\/[^/]+$/.test(location.pathname) ||
-            /^\/all-events\/[^/]+$/.test(location.pathname) ||
-            location.pathname === "/dashboard"
+            /^\/dashboard\/[^/]+$/.test(location.pathname)
               ? "mx-0"
               : "mx-5"
           } rounded-b-lg h-full`}

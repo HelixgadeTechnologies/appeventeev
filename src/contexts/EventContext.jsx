@@ -9,6 +9,7 @@ const EventProvider = ({ children }) => {
   const [publishedEvents, setPublishedEvents] = useState([]);
   const [draftedEvents, setDraftedEvents] = useState([]);
   const [completedEvents, setCompletedEvents] = useState([]);
+  const [attendees, setAttendees] = useState([]);
 
   const [publishedEventsLoading, setPublishedEventsLoading] = useState(true);
   const [publishedEventsError, setPublishedEventsError] = useState(false);
@@ -18,6 +19,19 @@ const EventProvider = ({ children }) => {
 
   const [completedEventsLoading, setCompletedEventsLoading] = useState(true);
   const [completedEventsError, setCompletedEventsError] = useState(false);
+
+  const [attendeesLoading, setAttendeesLoading] = useState(true);
+  const [attendeesError, setAttendeesError] = useState(false);
+
+  const [currentEventId, setCurrentEventId] = useState(() => {
+    return localStorage.getItem("currentEventId") || null;
+  });
+
+  useEffect(() => {
+    if (currentEventId) {
+      localStorage.setItem("currentEventId", currentEventId);
+    }
+  }, [currentEventId]);
 
   const toast = useToast();
 
@@ -53,8 +67,8 @@ const EventProvider = ({ children }) => {
             }
             />
           );
-          setPublishedEventsError(true);
         }
+        setPublishedEventsError(true);
       } finally {
         setPublishedEventsLoading(false);
       }
@@ -258,8 +272,42 @@ const EventProvider = ({ children }) => {
     }
   };
   
-
-
+  // function to get attendees
+    const getAttendees = async (id) => {
+      setAttendeesError(false);
+      setAttendeesLoading(true);
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          `https://eventeevapi.onrender.com/ticket/${id}/attendees`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        setAttendees(response.data.events || []);
+      } catch (error) {
+        console.error("Error getting attendees", error);
+        if (error.response.status === 404) {
+          return (
+            <NoStatePage
+              img={
+                "https://res.cloudinary.com/dnou1zvji/image/upload/v1742481874/emptystate_bmtwlz.png"
+              }
+              heading={"You currently have no attendees here."}
+              content={
+                "You will see a list of events that you have added to drafts."
+              }
+            />
+          );
+        }
+        setAttendeesError(true);
+      } finally {
+        setAttendeesLoading(false);
+      }
+    };
   // for date format
   const formatDate = (dateStr) => {
     if (!dateStr) return "";
@@ -351,6 +399,9 @@ const convertTo24HourFormat = (timeStr) => {
         completedEvents,
         completedEventsError,
         completedEventsLoading,
+        attendees,
+        attendeesError,
+        attendeesLoading,
         formatDate,
         formatTime,
         deletePublishedEvents,
@@ -358,6 +409,9 @@ const convertTo24HourFormat = (timeStr) => {
         todaysDate,
         convertTo24HourFormat,
         updatePublishedEvent,
+        currentEventId,
+        setCurrentEventId,
+        getAttendees,
       }}
     >
       {children}

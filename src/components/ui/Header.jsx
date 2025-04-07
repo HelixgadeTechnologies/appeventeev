@@ -87,9 +87,9 @@ const Header = () => {
   }
 
   if (
-    /^\/all-events\/[^/]+$/.test(location.pathname) ||
+    /^\/dashboard\/[^/]+$/.test(location.pathname) ||
     /^\/all-events-draft\/[^/]+$/.test(location.pathname) ||
-    (location.pathname === "/dashboard" && publishedEvents.length > 0)
+    (location.pathname === "/dashboard" && publishedEvents.length > 0) 
   ) {
     return null;
   }
