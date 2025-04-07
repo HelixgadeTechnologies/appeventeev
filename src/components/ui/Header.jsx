@@ -117,7 +117,7 @@ const Header = () => {
           />
         </Flex>
       </Flex>
-      <Flex justifyContent={"space-between"} alignItems={"end"}>
+      <Flex justifyContent={"space-between"} alignItems={"end"}  width={'100%'}>
         <Box
           bg={
             (location.pathname === `/dashboard` && publishedEvents.length > 0) ||
@@ -138,14 +138,11 @@ const Header = () => {
           <Text color={"#667185"} fontSize={"small"} fontWeight={"normal"}>
             {subtitle}
           </Text>
+
+          
         </Box>
 
-        {/* Show Add Ticket button on tickets page */}
-        {location.pathname.startsWith("/tickets") && (
-          <div className="mr-10">
-            <AddTicket />
-          </div>
-        )}
+     
 
         {/* Show Today's Date on Dashboard */}
         {location.pathname === "/dashboard" && publishedEvents.length > 0 && (

@@ -32,6 +32,14 @@ const TableComponent = ({ type }) => {
     endTime: "",
   });
 
+
+
+  const ticketCount = ticketData.filter(ticket => ticket.type === type).length;
+
+  const containerClass = `
+    ${ticketCount >= 3 ? 'max-w-[92%]' : 'max-w-[100%]'}
+    overflow-x-hidden h-full relative
+  `;
   const toast = useToast();
 
   const handleCheckboxChange = (id) => {
@@ -114,7 +122,7 @@ const TableComponent = ({ type }) => {
   };
 
   return (
-    <div className="w-full h-full">
+    <div className={containerClass}>
       {ticketData.length === 0 ? (
         <Flex justify="center" align="center" height="100vh">
           <Box className="loader"></Box>
@@ -127,7 +135,7 @@ const TableComponent = ({ type }) => {
             <Table variant="unstyled" mt={2} minW="full" borderRadius="lg">
               <Thead bg="#f9fafb">
                 <Tr>
-                  <Th px={4} py={2}><Checkbox /></Th>
+                  <Th px={4} py={2}><Checkbox colorScheme="orange" /></Th>
                   <Th px={4} py={2} fontSize="smaller" fontWeight="medium">Name</Th>
                   <Th px={4} py={2} fontSize="smaller" fontWeight="medium">Email</Th>
                   <Th px={4} py={2} fontSize="smaller" fontWeight="medium">Ticket Name</Th>

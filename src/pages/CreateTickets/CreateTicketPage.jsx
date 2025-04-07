@@ -26,12 +26,12 @@ const TicketPage = () => {
 
 
   return (
-    <Box p={5} w="full" maxW="100%" mx="auto" bg="#F9FA FB" borderRadius="lg" >
+    <Box className={`w-[100%]" overflow='hidden'  p={5}   bg="#F9FA FB" borderRadius="lg`} >
      
-     <Box className="flex justify-between items-center">
+     <Box className="flex justify-between items-center  ">
 
      </Box>
-      <Tabs variant="unstyled" mt={4} >
+      <Tabs variant="unstyled" mt={4}  >
         <TabList borderBottom="1px solid #E2E8F0" display="grid" gridTemplateColumns="repeat(3, 1fr)"  style={{backgroundColor:'#f0f2f5'}}>
           <Tab _selected={{ borderBottom: "2px solid #F56630", fontWeight: "bold", color: "#F56630" }} px={4} >
            <TiTicket size={25} className="mr-1" />
