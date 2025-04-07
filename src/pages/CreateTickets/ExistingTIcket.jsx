@@ -66,7 +66,7 @@ const ExistingTicket = ({handleEdit}) => {
 
               {/* Sold & Revenue */}
               <div className={ticketCount === 1 ? "flex justify-around items-center mt-2 text-sm font-semibold" : "flex justify-between items-center mt-2 smallFont font-semibold"}>
-                <p className="" style={{color: '#f56630'}}>{`${ticket.quantity - ticket.remainingQuantity} Sold`}</p>
+                <p className="" style={{color: '#f56630'}}>{`${ ticket.remainingQuantity - ticket.quantity } Sold`}</p>
                 <p >{`Revenue: $${ticket.price}`}</p>
 
 
