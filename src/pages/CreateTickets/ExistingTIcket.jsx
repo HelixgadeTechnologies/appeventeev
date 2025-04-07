@@ -32,7 +32,7 @@ const ExistingTicket = ({handleEdit}) => {
   const colors = ['#ffece5', '#e7f6ec', '#fef6e7'];
 
   return (
-    <div className={paidTickets.length === 1 ? "w-full py-5 mx-auto" : paidTickets.length === 2 ? "w-full py-5" : paidTickets.length === 3? "w-full max-w-[59rem]  py-5 " : '"w-full  py-5"'}>
+    <div className={paidTickets.length === 1 ? "w-full py-5 mx-auto" : paidTickets.length === 2 ? "w-full py-5" : paidTickets.length === 3? "w-full   py-5 " : '"w-full  py-5"'}>
       <Slider {...settings} className="flex gap-10">
         {paidTickets.map((ticket, index) => (
           <div 

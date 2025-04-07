@@ -10,7 +10,6 @@ import { useContext} from "react";
 import { TicketContext } from "../../contexts/TicketContext";
 import { BiDonateHeart } from "react-icons/bi";
 import { GiPresent } from "react-icons/gi";
-import ExistingTIcket from "./ExistingTIcket";
 
 
 

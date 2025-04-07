@@ -178,8 +178,8 @@ import { boughtTicketData } from "../../utils/tickets";
                             <Text fontSize="x-small">{ticket.dateRegistered}</Text>
                           </Box>
                         </Td>
-                        <Td px={4} py={3}>
-                          {ticket.amount ? `$${ticket.amount}` : ticket.ticketType}
+                        <Td px={4} py={3} fontSize={'small'}>
+                          {ticket.amount ? `${ticket.amount}` : ticket.ticketType}
                         </Td>
                       </Tr>
                     ))}
