@@ -17,6 +17,7 @@ import {
   Stack,
   chakra,
   useToast,
+  Spinner,
 
 } from "@chakra-ui/react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
@@ -50,7 +51,7 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setButtonText("Loading...");
+    setButtonText(<Spinner></Spinner>);
 
     try {
       const response = await axios.post("https://eventeevapi.onrender.com/auth/login", formData);
@@ -151,7 +152,7 @@ const SignIn = () => {
             </FormControl>
 
              <Flex justify="space-between" fontSize="sm" alignItems="center">
-              <Checkbox>
+              <Checkbox colorScheme="orange">
               <chakra.span fontSize="sm">Remember me for 30 days</chakra.span>
              </Checkbox>
              <Link color="orange.500" fontSize="sm" onClick={() => navigate('/forgot-password')}>Forgot Password?</Link>
