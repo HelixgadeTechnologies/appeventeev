@@ -1,6 +1,7 @@
 import { 
   Box, Button, Input, Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack, HStack, 
-  Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, useDisclosure 
+  Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, useDisclosure, 
+  useToast
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useContext, useState } from "react";
@@ -11,6 +12,7 @@ import { useParams } from "react-router-dom";
 const AddTicket = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedTab, setSelectedTab] = useState(0);
+
   
 
 
@@ -68,6 +70,7 @@ const TicketForm = ({ onClose, ticketType }) => {
   const { token  } = useContext(UserAuthContext)
 
   const { id } = useParams();
+  const toast = useToast()
 
   const [formData, setFormData] = useState({
     eventId: `${id}`,
@@ -108,6 +111,16 @@ const TicketForm = ({ onClose, ticketType }) => {
           },
         }
       );
+
+
+      toast({
+        title: "Ticket Added",
+        description: "Ticket added successfully",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      })
   
       console.log("Ticket added successfully:", response);
  

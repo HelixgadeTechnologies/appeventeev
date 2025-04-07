@@ -42,22 +42,22 @@ const ExistingTicket = ({handleEdit}) => {
             <div className={ticketCount === 1 ? `py-10 rounded-md oneTicketGrid` : `py-5 px-3 rounded-md space-y-3`} style={{ backgroundColor: colors[index % 3] }}>
 
               {/* Ticket Price & Edit */}
-              <div className={ticketCount === 1 ? `flex justify-between items-center px-5` : `flex justify-between items-center `}>
+              <div className={ticketCount === 1 ? `flex justify-between items-center px-5 smallFont` : `flex justify-between items-center smallFont`}>
                 <p className="text-sm text-black">
-                  <span className="font-bold text-md">{`$${ticket.price}`}</span> /per ticket
+                  <span className="font-bold smallFont">{`$${ticket.price}`}</span> /per ticket
                 </p>
                {
                 ticketCount > 1 ? 
-                <button onClick={() => handleEdit(ticket._id)} className={ticketCount === 1 ? `relative right-3 bg-orange-500 text-white px-2 py-1  text-xs rounded-sm` : ` bg-orange-500 rounded-sm text-white px-2 py-1  text-xs`}>Edit</button> : ''
+                <button onClick={() => handleEdit(ticket._id)} className={ticketCount === 1 ? `relative right-3 bg-orange-500 text-white px-2 py-1  text-xs rounded-sm smallFont` : ` bg-orange-500 rounded-sm text-white px-2 py-1  smallFont`}>Edit</button> : ''
                }
               </div>
 
               {/* Available Tickets */}
-              <div className={ticketCount === 1 ? `flex justify-between items-center mt-2 px-5`: `flex justify-between items-center mt-2`}>
+              <div className={ticketCount === 1 ? `flex justify-between items-center mt-2 px-5 smallFont`: `flex justify-between items-center mt-2 smallFont`}>
                 <p className="text-sm" style={{color:'#f56630'}}>{`${ticket.quantity} Available`}</p>
 
 
-                <span className="text-xs px-2 py-[2px] rounded-full " style={{backgroundColor: '#ffcab7', color:'#f56630'}}>
+                <span className="text-sm px-2 py-[2px] rounded-full smallFont" style={{backgroundColor: '#ffcab7', color:'#f56630'}}>
                   {ticket.quantity}
                 </span>
               </div>
@@ -65,13 +65,13 @@ const ExistingTicket = ({handleEdit}) => {
 
 
               {/* Sold & Revenue */}
-              <div className={ticketCount === 1 ? "flex justify-around items-center mt-2 text-sm font-semibold" : "flex justify-between items-center mt-2 text-sm font-semibold"}>
+              <div className={ticketCount === 1 ? "flex justify-around items-center mt-2 text-sm font-semibold" : "flex justify-between items-center mt-2 smallFont font-semibold"}>
                 <p className="" style={{color: '#f56630'}}>{`${ticket.quantity - ticket.remainingQuantity} Sold`}</p>
                 <p >{`Revenue: $${ticket.price}`}</p>
 
 
                 {
-                  ticketCount === 1 ? <button onClick={handleEdit} className={ticketCount === 1 ? `relative right-3 bg-orange-500 text-white px-2 py-1 rounded-sm text-xs` : ` bg-orange-500 text-white px-2 py-1 rounded-sm text-xs`}>Edit</button> : ''
+                  ticketCount === 1 ? <button onClick={handleEdit} className={ticketCount === 1 ? `relative right-3 bg-orange-500 text-white px-2 py-1 rounded-sm smallFont` : ` bg-orange-500 text-white px-2 py-1 rounded-sm smallFont`}>Edit</button> : ''
                 }
               </div>
 

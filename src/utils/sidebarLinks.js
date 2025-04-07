@@ -17,7 +17,7 @@ import attendeesActive from "../assets/icons/attendees-active.svg";
 // import ticketsActive from "../assets/icons/tickets-active.svg";
 // import analyticsActive from "../assets/icons/analytics-active.svg";
 
-const pathParts = window.location.pathname.split("/");
+const pathParts = window.location.pathname.split("/").filter(Boolean);
 const id = pathParts[pathParts.length - 1];
 
 // export const sidebarTopLinks = [
