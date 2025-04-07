@@ -29,6 +29,7 @@ import { BiError } from "react-icons/bi";
 import SearchBar from "../../components/ui/SearchBar";
 import Notifications from "../../components/ui/Notifications";
 import signOut from "../../assets/icons/sign-out.svg";
+import NoStatePage from "../../components/NoStatePage";
 
 const DashboardPopulated = () => {
   const {

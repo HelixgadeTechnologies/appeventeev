@@ -42,7 +42,7 @@ const Attendees = () => {
   };
 
   const { ticketData } = useContext(TicketContext);
-  console.log(ticketData)
+  console.log(ticketData);
 
   const { getAttendees } = useContext(EventContext);
   const { id } = useParams();

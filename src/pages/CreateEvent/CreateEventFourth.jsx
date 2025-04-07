@@ -169,7 +169,7 @@ const CreateEventSecond = () => {
               Event Description:
             </Heading>
             <Text fontWeight={"medium"} fontSize={"small"}>
-              {countWords < 60 ? thirdPageData.description : thirdPageData.description.substring(0,60) + "..."}
+              {countWords < 60 ? (thirdPageData.description) : (thirdPageData.description.substring(0,60) + "...")}
             </Text>
           </Flex>
           <Flex
@@ -230,7 +230,7 @@ const CreateEventSecond = () => {
             <Heading fontWeight={"800"} fontSize={"sm"}>
               Event Type:
             </Heading>
-            <Text fontWeight={"medium"} fontSize={"sm"}>
+            <Text fontWeight={"medium"} fontSize={"sm"} textTransform={"capitalize"}>
               {thirdPageData.type}
             </Text>
           </Flex>
@@ -244,7 +244,7 @@ const CreateEventSecond = () => {
             <Heading fontWeight={"800"} fontSize={"sm"}>
               Location:
             </Heading>
-            <Text fontWeight={"medium"} fontSize={"sm"}>
+            <Text fontWeight={"medium"} fontSize={"sm"} textTransform={"capitalize"}>
               {thirdPageData.location}
             </Text>
           </Flex>
@@ -258,7 +258,7 @@ const CreateEventSecond = () => {
             <Heading fontWeight={"800"} fontSize={"sm"}>
               Category:
             </Heading>
-            <Text fontWeight={"medium"} fontSize={"sm"}>
+            <Text fontWeight={"medium"} fontSize={"sm"} textTransform={"capitalize"}>
               {thirdPageData.category}
             </Text>
           </Flex>
