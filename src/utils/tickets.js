@@ -1,4 +1,7 @@
-export const ticketData = [
+
+
+// dummy data for bought tickets
+export const boughtTicketData = [
     {
       name: "Olamide Akintan",
       email: "olamideakintan@gmail.com",
