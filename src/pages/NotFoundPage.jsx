@@ -11,11 +11,11 @@ const NotFoundPage = () => {
           <Center flexDir={"column"} gap={"2"}>
             <Heading
               fontWeight={"bold"}
-              fontSize={"17px"}
+              fontSize={"30px"}
               lineHeight={"24px"}
               textAlign={"center"}
               width={"250px"}
-              color={"red.500"}
+              color={"red.600"}
               marginBottom={"2"}
             >
               Page not found

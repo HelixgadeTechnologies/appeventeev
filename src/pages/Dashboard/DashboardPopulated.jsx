@@ -126,8 +126,8 @@ const DashboardPopulated = () => {
             bg={"#F9FAFB"}
             width={"full"}
             marginX={"5"}
-            marginTop={"3.5"}
-            padding={"5"}
+            // marginTop={"2"}
+            padding={"2"}
             borderTopRadius={"lg"}
           >
             <Heading fontWeight={"bold"} fontSize={"24px"} color="#000">
