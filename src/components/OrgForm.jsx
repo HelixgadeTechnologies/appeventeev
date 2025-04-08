@@ -36,7 +36,7 @@ const OrgForm = () => {
         const userData = response.data.user;
         setUserDetails(userData);
         localStorage.setItem("userDetails", JSON.stringify(userData));
-        navigate("/dashboard");
+        navigate("/all-events");
       }
       toast.success("Registration successful");
     } catch (error) {
