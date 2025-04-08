@@ -147,12 +147,6 @@ const Header = () => {
           </Text>
         </Box>
 
-        {/* Show Add Ticket button on tickets page */}
-        {location.pathname.startsWith("/tickets") && (
-          <div className="mr-10">
-            <AddTicket />
-          </div>
-        )}
 
         {/* Show Today's Date on Dashboard */}
         {location.pathname === `/dashboard/${currentEvent?._id}` && publishedEvents.length > 0 && (
