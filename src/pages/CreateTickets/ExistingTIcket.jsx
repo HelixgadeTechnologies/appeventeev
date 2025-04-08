@@ -13,37 +13,49 @@ const ExistingTicket = ({ handleEdit, type }) => {
 
   if (!tickets.length) return <p className="text-center py-10">No {type} tickets created</p>;
 
+  const slidesToShow = Math.min(tickets.length, 3);
+
   const settings = {
     dots: false,
     infinite: tickets.length > 3,
     speed: 500,
-    slidesToShow: tickets.length === 1 ? 1 : tickets.length === 2 ? 2 : 3,
-    slidesToScroll: tickets.length === 1 ? 1 : tickets.length === 2 ? 2 : 3,
+    slidesToShow,
+    slidesToScroll: slidesToShow,
     responsive: [
-      { breakpoint: 1024, settings: { slidesToShow: tickets.length >= 2 ? 2 : 1 } },
-      { breakpoint: 768, settings: { slidesToShow: 1 } },
-      { breakpoint: 480, settings: { slidesToShow: 1 } }
-    ]
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: Math.min(tickets.length, 2),
+          slidesToScroll: Math.min(tickets.length, 2),
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   return (
-    <div className={`w-full py-5 ${tickets.length === 1 ? 'mx-auto w-[98%]' : tickets.length === 2 ? 'mx-auto w-[98%]' : tickets.length === 3 ? 'mx-auto ' : ''}`}>
-      <Slider {...settings} className="flex gap-10 overflow-hidden">
+    <div className={`w-full py-5 mx-auto ${tickets.length <= 2 ? 'w-[98%]' : ''}`}>
+      <Slider {...settings} className="flex gap-10 overflow-x-hidden">
         {tickets.map((ticket, index) => {
           const sold = ticket.remainingQuantity - ticket.quantity;
 
           return (
             <div
               key={index}
-              className={`rounded-md p-1 ${tickets.length === 1 ? 'w-full' : tickets.length === 2 ? 'w-[90%]' : ''} `}
-
+              className={`rounded-md p-1 ${tickets.length <= 2 ? 'w-[90%]' : ''}`}
             >
               <div
-                className={`rounded-md text-sm  ${tickets.length === 1 ? 'py-10 oneTicketGrid px-3' : 'py-5 px-3 space-y-3'}`}
+                className={`rounded-md text-sm ${tickets.length === 1 ? 'py-10 oneTicketGrid px-3' : 'py-5 px-3 space-y-3'}`}
                 style={{ backgroundColor: colors[index % 3] }}
               >
                 {/* Price & Edit */}
-                <div className={ `flex justify-between items-center smallFont ${tickets.length === 1 ? 'px-5' : ''}`}>
+                <div className={`flex justify-between items-center smallFont ${tickets.length === 1 ? 'px-5' : ''}`}>
                   <p className="smallFont text-black">
                     <span className="font-bold">${ticket.price}</span> /per ticket
                   </p>
@@ -60,7 +72,10 @@ const ExistingTicket = ({ handleEdit, type }) => {
                 {/* Quantity */}
                 <div className={`flex justify-between items-center mt-2 smallFont ${tickets.length === 1 ? 'px-5' : ''}`}>
                   <p className="smallFont text-orange-600">{ticket.quantity} Available</p>
-                  <span className="text-sm px-2 py-[2px] rounded-full" style={{ backgroundColor: '#ffcab7', color: '#f56630' }}>
+                  <span
+                    className="text-sm px-2 py-[2px] rounded-full"
+                    style={{ backgroundColor: '#ffcab7', color: '#f56630' }}
+                  >
                     {ticket.quantity}
                   </span>
                 </div>
@@ -68,7 +83,7 @@ const ExistingTicket = ({ handleEdit, type }) => {
                 {/* Sold & Revenue */}
                 <div className="flex justify-between items-center mt-2 smallFont font-semibold">
                   <p className="text-orange-600 smallFont">{sold} Sold</p>
-                  <p className='smallFont'>Revenue: ${sold * ticket.price}</p>
+                  <p className="smallFont">Revenue: ${sold * ticket.price}</p>
                   {tickets.length === 1 && (
                     <button
                       onClick={() => handleEdit(ticket._id)}

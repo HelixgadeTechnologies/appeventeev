@@ -31,8 +31,16 @@ const TicketPage = () => {
      <Box className="flex justify-between items-center  ">
 
      </Box>
-      <Tabs variant="unstyled" mt={4}  >
-        <TabList borderBottom="1px solid #E2E8F0" display="grid" gridTemplateColumns="repeat(3, 1fr)"  style={{backgroundColor:'#f0f2f5'}}>
+      <Tabs  variant="unstyled"
+       mt={4}
+       w={'98%'} >
+        <TabList
+        className='' 
+        overflow={'hidden'} 
+        borderBottom="1px solid #E2E8F0" 
+        display="grid" gridTemplateColumns="repeat(3, 1fr)" 
+        style={{backgroundColor:'#f0f2f5'}}>
+
           <Tab _selected={{ borderBottom: "2px solid #F56630", fontWeight: "bold", color: "#F56630" }} px={4} >
            <TiTicket size={25} className="mr-1" />
            <Text fontSize={'sm'}> Paid Ticket</Text>
