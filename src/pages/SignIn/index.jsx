@@ -35,9 +35,12 @@ const SignIn = () => {
 
  
   useEffect(()=>{
+
     if(userDetails){
       navigate('/all-events')
+
     }
+
   },[])
   
   const height = window.innerHeight
@@ -78,7 +81,7 @@ const SignIn = () => {
     } catch (error) {
    //   toast.error(error.response?.data?.message || "Login failed. Please try again.");
       toast({
-        title:'Incorrect credentials',
+        title:`${error.message}`,
         description: `${error.response?.data?.message || "Login failed. Please try again."}`,
         status:"error",
         duration:3000,
@@ -86,8 +89,12 @@ const SignIn = () => {
         position:"top-right",
        })
       setButtonText("Try Again");
+
+      console.log(error);
+      
     }
   };
+
 
   return (
     <Flex
