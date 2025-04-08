@@ -13,7 +13,7 @@ import {
 import Notifications from "./Notifications";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
 import { EventContext } from "../../contexts/EventContext";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import AddTicket from "../../pages/CreateTickets/TicketForms";
 import { RxDownload } from "react-icons/rx";
 import { IoAddCircleOutline } from "react-icons/io5";
@@ -21,7 +21,11 @@ import { FiCalendar } from "react-icons/fi";
 
 const Header = () => {
   const location = useLocation();
+  const { id } = useParams();
   const { publishedEvents } = useContext(EventContext);
+
+  const currentEvent = publishedEvents.find(event => event._id === id);
+
   const { userDetails } = useContext(UserAuthContext);
 
   const userData = {
@@ -29,23 +33,27 @@ const Header = () => {
   };
 
   const pageData = {
-    "/dashboard": {
-      title: `Hello, ${userDetails.firstname}`,
-      subtitle:
-        "It’s a sunny day today, we hope you’re taking good care of your health 😊",
-    },
-    "/attendees": {
-      title: `Attendees`,
-      subtitle: "Showing data over the last 30 days",
-    },
-    "/tickets": {
-      title: "My tickets",
-      subtitle: "Choose a ticket type or use multiple types",
-    },
+    ...(currentEvent && {
+      [`/dashboard/${currentEvent._id}`]: {
+        title: `Welcome, ${currentEvent.name}`,
+        subtitle: "It’s a sunny day today, we hope you’re taking good care of your health 😊",
+      },
+    }),
+    ...(currentEvent && {
+      [`/attendees/${currentEvent._id}`]: {
+        title: `Attendees for ${currentEvent.name}`,
+        subtitle: "Showing data over the last 30 days",
+      },
+    }),
+    ...(currentEvent && {
+      [`/tickets/${currentEvent._id}`]: {
+        title: "My tickets",
+        subtitle: "Choose a ticket type or use multiple types",
+      },
+    }),
     "/Profile-settings": {
       title: "Settings",
-      subtitle:
-        "Take a look at your policies and the new policy to see what is covered.",
+      subtitle: "Take a look at your policies and the new policy to see what is covered.",
     },
   };
 
@@ -56,7 +64,7 @@ const Header = () => {
     (isTicketPage
       ? pageData["/tickets"]
       : {
-          title: `Welcome ${userDetails.firstname}`,
+          title: `Hello ${userDetails.firstname}`,
           subtitle: "Control your profile and setup integrations",
         });
 
@@ -87,7 +95,7 @@ const Header = () => {
   }
 
   if (
-    /^\/dashboard\/[^/]+$/.test(location.pathname) ||
+    // /^\/dashboard\/[^/]+$/.test(location.pathname) ||
     /^\/all-events-draft\/[^/]+$/.test(location.pathname) ||
     (location.pathname === "/dashboard" && publishedEvents.length > 0) 
   ) {
@@ -102,10 +110,10 @@ const Header = () => {
         paddingX={"36px"}
         paddingY={"10px"}
         bg={"white"}
-        justifyContent={"space-between"}
+        justifyContent={"end"}
         alignItems={"center"}
       >
-        <SearchBar />
+        {/* <SearchBar /> */}
         <Flex gap={"12px"}>
           <Notifications />
           <Avatar
@@ -148,7 +156,7 @@ const Header = () => {
         )}
 
         {/* Show Today's Date on Dashboard */}
-        {location.pathname === "/dashboard" && publishedEvents.length > 0 && (
+        {location.pathname === `/dashboard/${currentEvent?._id}` && publishedEvents.length > 0 && (
           <Center
             width={"280px"}
             height={"74px"}
@@ -156,7 +164,7 @@ const Header = () => {
             gap={"12px"}
             bg={"white"}
             marginRight={"10"}
-            marginBottom={"2.5"}
+            marginTop={"2.5"}
             paddingY={"16px"}
             paddingX={"20px"}
             borderWidth={"thin"}
@@ -172,7 +180,7 @@ const Header = () => {
         )}
 
         {/* Show Buttons on Attendees Page */}
-        {location.pathname === "/attendees" && (
+        {location.pathname === `/attendees/${currentEvent?._id}` && (
           <Flex gap={"12px"} alignItems={"center"} marginX={"5"}>
             <Button
               variant={"outline"}
