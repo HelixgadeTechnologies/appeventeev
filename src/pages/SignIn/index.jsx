@@ -17,6 +17,7 @@ import {
   Stack,
   chakra,
   useToast,
+  Spinner,
 
 } from "@chakra-ui/react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
@@ -50,7 +51,7 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setButtonText("Loading...");
+    setButtonText(<Spinner></Spinner>);
 
     try {
       const response = await axios.post("https://eventeevapi.onrender.com/auth/login", formData);
@@ -108,7 +109,7 @@ const SignIn = () => {
       position="relative"
     >
       {/* Logo */}
-      <Box  position="absolute" top={height > 700 ? '-10px' : "-60px"} left="50%" transform="translateX(-50%)" zIndex="10">
+      <Box  position="absolute" top={height > 700 ? '-10px' : "-70px"} left="50%" transform="translateX(-50%)" zIndex="10">
         <Image
           src="https://res.cloudinary.com/dnou1zvji/image/upload/v1741567378/7da8bbfcdabdcf31233ff8e8a1e2135a_oclnkb.png"
           alt="Eventeev Logo"
@@ -116,7 +117,7 @@ const SignIn = () => {
         />
       </Box>
 
-      <Box bg="white" p={8} rounded="lg" shadow="xl" maxW="sm" w="full">
+      <Box bg="white" p={8} rounded="lg" shadow="xl" maxW="sm" w="full" maxH={"83vh"} position="relative">
         <Heading size="lg" textAlign="center">Sign in</Heading>
         <Text textAlign="center" color="gray.500" fontSize="sm" mt={1}>
           Enter your credentials to access your account
@@ -151,10 +152,10 @@ const SignIn = () => {
             </FormControl>
 
              <Flex justify="space-between" fontSize="sm" alignItems="center">
-              <Checkbox>
-              <chakra.span fontSize="sm">Remember me for 30 days</chakra.span>
+              <Checkbox colorScheme="orange">
+              <chakra.span fontSize="x-small">Remember me for 30 days</chakra.span>
              </Checkbox>
-             <Link color="orange.500" fontSize="sm" onClick={() => navigate('/forgot-password')}>Forgot Password?</Link>
+             <Link fontStyle={'small'} color="orange.500" fontSize="sm" onClick={() => navigate('/forgot-password')}>Forgot Password?</Link>
            </Flex>
 
 
@@ -177,15 +178,16 @@ const SignIn = () => {
           xl: height > 700 ?  "translate(-50%, -10vh)" :  "translate(-50%, -2.3vh)",
         }}
         bg="white"
-        p="3"
+        py="10px"
+        px={'3'}
         borderRadius="30px"
         justify="center"
         fontSize="sm"
         className="max-sm:w-4/6 max-sm:text-center "
         gap={'2px'}
       >
-        <Text fontSize={'sm'}>Don't have an account?</Text>
-        <Link fontSize={'sm'} ml={1} color="orange.500" onClick={() => navigate('/signUp')}>
+        <Text fontSize={'small'}>Don't have an account?</Text>
+        <Link fontSize={'small'} ml={1} color="orange.500" onClick={() => navigate('/signUp')}>
           Sign up!
         </Link>
       </Flex>
