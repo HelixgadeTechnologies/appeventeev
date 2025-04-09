@@ -34,11 +34,14 @@ const OrgForm = () => {
       if (response.status === 201 || response.status === 200) {
         console.log("Organization registration successful:", response.data);
         const userData = response.data.user;
+
+        
         setUserDetails(userData);
         localStorage.setItem("userDetails", JSON.stringify(userData));
         navigate("/all-events");
       }
       toast.success("Registration successful");
+      window.location.reload();
     } catch (error) {
       setButton("Try Again");
       console.error("Registration failed", error.response?.data?.message || "Unknown error");

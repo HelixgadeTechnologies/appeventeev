@@ -62,6 +62,7 @@ const CreateEventSecond = () => {
         position: "top-right",
       });
       navigate("/all-events");
+      window.location.reload();
       console.log(response.data);
     } catch (error) {
       console.error("Error Publishing Event:", error.response ? error.response.data : error.message);
@@ -101,6 +102,7 @@ const CreateEventSecond = () => {
         position: "top-right",
       });
       navigate("/all-events");
+      window.location.reload();
     } catch (error) {
       console.error("Error Publishing Event:", error);
       toast({

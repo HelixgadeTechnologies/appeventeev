@@ -7,7 +7,7 @@ import { UserAuthContext } from "../../contexts/UserAuthContext";
 
 const EmailVerification = () => {
 
-    const {token, setUserId } = useContext(UserAuthContext);
+    const {token, setUserId, } = useContext(UserAuthContext);
 
   const verify = async (e)=>{
      e.preventDefault();
@@ -21,7 +21,7 @@ const EmailVerification = () => {
       console.log(userId);
       setUserId(userId)
 
-      localStorage.setItem("userId", userId);
+      localStorage.setItem("userId", JSON.stringify(userId));
       
       
     }

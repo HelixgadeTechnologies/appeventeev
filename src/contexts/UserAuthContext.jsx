@@ -3,22 +3,26 @@ import { createContext, useState, useEffect } from "react";
 export const UserAuthContext = createContext(null);
 
 const UserAuthProvider = ({ children }) => {
-
-
-  // State to hold token and user details
+  // Load from localStorage
   const [token, setToken] = useState(() => localStorage.getItem("token") || "");
   const [userDetails, setUserDetails] = useState(() => {
-    const storedDetails = sessionStorage.getItem("userDetails");
-    return storedDetails ? JSON.parse(storedDetails) : null;
+    const storedDetails = localStorage.getItem("userDetails");
+    try {
+      return storedDetails && storedDetails !== "undefined"
+        ? JSON.parse(storedDetails)
+        : null;
+    } catch (err) {
+      console.error("Failed to parse userDetails from localStorage:", err);
+      return null;
+    }
   });
-  console.log(userDetails);
-  
-  const [isVerified, setIsVerified] = useState(false); // User verification status
-  const [userId, setUserId ] = useState(null)
 
-  console.log(token);
-  
-  // UseEffect to update localStorage with token if available
+
+
+  const [userId, setUserId] = useState(() => localStorage.getItem("userId") || null);
+  const [isVerified, setIsVerified] = useState(false);
+
+  // Sync token with localStorage
   useEffect(() => {
     if (token) {
       localStorage.setItem("token", token);
@@ -27,25 +31,41 @@ const UserAuthProvider = ({ children }) => {
     }
   }, [token]);
 
+  // Sync userDetails with localStorage
+  useEffect(() => {
+    if (userDetails) {
+      localStorage.setItem("userDetails", JSON.stringify(userDetails));
+    } else {
+      localStorage.removeItem("userDetails");
+    }
+  }, [userDetails]);
+
+  // Sync userId with localStorage
+  useEffect(() => {
+    if (userId) {
+      localStorage.setItem("userId", userId);
+    } else {
+      localStorage.removeItem("userId");
+    }
+  }, [userId]);
+
   // Logout function
   const logout = () => {
-    setToken(""); // Clear token
-    setUserDetails(null); // Clear user details
-    setIsVerified(false); // Reset verification status
-    localStorage.removeItem("token"); // Remove token from localStorage
-    sessionStorage.removeItem('userDetails'); // Remove user details from sessionStorage
+    setToken("");
+    setUserDetails(null);
+    setUserId(null);
+    setIsVerified(false);
+    localStorage.removeItem("token");
+    localStorage.removeItem("userDetails");
+    localStorage.removeItem("userId");
   };
 
-  // Sign-up or sign-in success handler (update token and user details)
+  // Auth success handler
   const handleAuthSuccess = (token, userDetails) => {
     setToken(token);
     setUserDetails(userDetails);
-    sessionStorage.setItem("userDetails", JSON.stringify(userDetails)); // Persist user details in sessionStorage
-    localStorage.setItem("token", token); // Persist token in localStorage
+    setUserId(userDetails?.id || null); // Adjust depending on your actual userDetails structure
   };
-
-  
-  
 
   return (
     <UserAuthContext.Provider
@@ -54,11 +74,12 @@ const UserAuthProvider = ({ children }) => {
         setToken,
         userDetails,
         setUserDetails,
+        userId,
+        setUserId,
         isVerified,
         setIsVerified,
         logout,
-        userId, setUserId,
-        handleAuthSuccess, // A method to call for sign-in or sign-up success
+        handleAuthSuccess,
       }}
     >
       {children}
