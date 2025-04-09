@@ -79,7 +79,7 @@ const SignIn = () => {
 
         navigate("/all-events");
       }
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
    //   toast.error(error.response?.data?.message || "Login failed. Please try again.");
       toast({
