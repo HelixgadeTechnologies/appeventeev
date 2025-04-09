@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Box,
   Flex,
@@ -10,9 +10,11 @@ import {
   CircularProgressLabel,
 } from "@chakra-ui/react";
 import { IoClose } from "react-icons/io5";
+import EventContext from "../../contexts/EventContext";
 
 const ImageDisplayBanner = ({ thirdPageData, removeImage }) => {
   const [imagePercentage, setImagePercentage] = useState(0);
+  const { todaysDate } = useContext(EventContext)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -50,6 +52,7 @@ const ImageDisplayBanner = ({ thirdPageData, removeImage }) => {
       })
     : "No time available";
 
+    console.log(new Date())
   const formatFileSize = (sizeInBytes) => {
     if (sizeInBytes < 1024) {
       return `${sizeInBytes} Bytes`; // Less than 1KB
@@ -92,6 +95,7 @@ const ImageDisplayBanner = ({ thirdPageData, removeImage }) => {
           >
             <Text>{formattedDate}</Text>
             <Text>{formattedTime}</Text>
+            {/* <Text>{todaysDate()}</Text> */}
             <div className="h-1 w-1 rounded-full bg-gray-400 mx-1"></div>
             <Text>{formatFileSize(fileSizeInBytes)}</Text>
           </Flex>
