@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Flex,
@@ -14,7 +14,7 @@ import EventContext from "../../contexts/EventContext";
 
 const ImageDisplayBanner = ({ thirdPageData, removeImage }) => {
   const [imagePercentage, setImagePercentage] = useState(0);
-  const { todaysDate } = useContext(EventContext)
+  // const { todaysDate } = useContext(EventContext)
 
   useEffect(() => {
     const interval = setInterval(() => {
