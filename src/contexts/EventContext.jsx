@@ -184,7 +184,7 @@ const EventProvider = ({ children }) => {
       setPublishedEvents((prevEvent) =>
         prevEvent.filter((event) => event._id !== id)
       );
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.error("Error deleting Event:", error);
       toast({
@@ -223,7 +223,7 @@ const EventProvider = ({ children }) => {
       setDraftedEvents((prevEvent) =>
         prevEvent.filter((event) => event._id !== id)
       );
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.error("Error deleting Event:", error);
       toast({
@@ -260,7 +260,7 @@ const EventProvider = ({ children }) => {
         isClosable: true,
         position: "top-right",
       });
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.error("Error updating Event:", error);
       toast({

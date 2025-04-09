@@ -41,7 +41,7 @@ const OrgForm = () => {
         navigate("/all-events");
       }
       toast.success("Registration successful");
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       setButton("Try Again");
       console.error("Registration failed", error.response?.data?.message || "Unknown error");
