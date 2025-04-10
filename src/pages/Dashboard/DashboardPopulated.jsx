@@ -404,7 +404,7 @@ const DashboardPopulated = () => {
             <Flex gap={"10px"} marginX={"2.5"} marginY={"2.5"}>
               <Button
                 onClick={() =>
-                  navigate(`/edit-event-step-one/${currentEvent._id}-1`)
+                  navigate(`/edit-event-step-one/${currentEvent._id}`)
                 }
                 variant={"outline"}
                 color={"#344054"}

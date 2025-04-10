@@ -44,6 +44,7 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
   return (
     <>
       <Box
+        onClick={() => handleCardClick(event._id)}
         borderWidth={"1px"}
         borderColor={"#B8C4CE"}
         height={"full"}
@@ -53,6 +54,8 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
         padding={"20px"}
         className="space-y-8"
         style={{ fontFamily: "Open Sans, sans-serif" }}
+        _hover={{ cursor: "pointer"}}
+        position={"relative"}
       >
         <Flex justifyContent={"space-between"} alignItems={"start"}>
           {event.thumbnail === "" ? (
@@ -76,6 +79,8 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
               width={"25px"}
               _hover={{ cursor: "pointer" }}
               position={"relative"}
+              // right={"0"}
+              // top={"2"}
               onClick={() => handleMenu()}
             >
               <IoIosMore />
@@ -130,7 +135,7 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
                       </Flex>
                   </Link>
                   ) : (
-                    <Link onClick={() => handleCardClick(event._id)}>
+                    <Link>
                       <Flex
                         alignItems={"center"}
                         gap={"1"}

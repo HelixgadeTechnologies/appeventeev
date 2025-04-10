@@ -321,13 +321,6 @@ const CreateEventSecond = () => {
               </FormErrorMessage>
             )}
           </FormControl>
-          <Text color={"#667185"} fontSize={"xs"}>
-            You can set up a{" "}
-            <Link color={"#8F2802"}>
-              custom domain or connect your email service provider
-            </Link>{" "}
-            to change this.
-          </Text>
           <Flex gap={"20px"}>
             <Button
               variant={"outline"}
