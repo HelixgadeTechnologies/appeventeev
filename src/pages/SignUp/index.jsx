@@ -31,7 +31,9 @@ const SignUp = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { setToken } = useContext(UserAuthContext);
+  const { setToken, 
+  } = useContext(UserAuthContext);
+
   const [button, setButton] = useState("Sign Up");
 
   const handleChange = (e) => {
@@ -50,10 +52,12 @@ const SignUp = () => {
       if (response.status === 201 || response.status === 200) {
         const data = response.data;
         const authToken = data.token;
+        console.log(response);
+        
         setToken(authToken);
 
         localStorage.setItem("token", JSON.stringify(authToken));
-
+      
         setTimeout(() => navigate("/verify"), 1000);
       }
     } catch (error) {

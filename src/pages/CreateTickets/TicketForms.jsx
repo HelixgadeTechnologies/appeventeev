@@ -1,7 +1,8 @@
 import { 
   Box, Button, Input, Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack, HStack, 
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, useDisclosure, 
-  useToast
+  useToast,
+  Spinner
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useContext, useState } from "react";
@@ -13,14 +14,12 @@ const AddTicket = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedTab, setSelectedTab] = useState(0);
 
-  
-
 
  
   return (
     <>
       {/* Button to Open Modal */}
-      <Button onClick={onOpen} bg="#F56630" color="white" px={5} py={2}>
+      <Button onClick={onOpen} bg="#F56630" color="white" px={5} py={2} fontSize={'sm'}>
         Add Ticket
       </Button>
 
@@ -71,6 +70,7 @@ const TicketForm = ({ onClose, ticketType }) => {
 
   const { id } = useParams();
   const toast = useToast()
+  const [button, setButton] = useState('Save')
 
   const [formData, setFormData] = useState({
     eventId: `${id}`,
@@ -91,6 +91,8 @@ const TicketForm = ({ onClose, ticketType }) => {
  
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setButton(<Spinner></Spinner>)
     
     if (!token) {
       console.error("Error: Token is missing.");
@@ -99,8 +101,11 @@ const TicketForm = ({ onClose, ticketType }) => {
   
     console.log("Form data:", formData);
     console.log("Token:", token);
+
+
   
     try {
+    
       const response = await axios.post(
         "https://eventeevapi.onrender.com/ticket/create",
         formData,
@@ -123,7 +128,8 @@ const TicketForm = ({ onClose, ticketType }) => {
       })
   
       console.log("Ticket added successfully:", response);
- 
+
+      setButton("Save")
       onClose();
 
     } catch (error) {
@@ -179,7 +185,7 @@ const TicketForm = ({ onClose, ticketType }) => {
             Cancel
           </Button>
           <Button w={'100%'} type="submit" bg="#F56630" color="white" px={5} py={2}>
-            Save
+            {button}
           </Button>
         </HStack>
       </VStack>

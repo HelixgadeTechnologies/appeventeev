@@ -27,7 +27,7 @@ import TicketPage from "./pages/CreateTickets/CreateTicketPage";
 import AddTicket from "./pages/CreateTickets/TicketForms";
 import AllEventsPage from "./pages/AllEventsPage";
 import Attendees from "./pages/Attendees";
-import ProfileSettings from "./pages/settings/SettingsPage";
+import ProfileSettings from "./pages/settings/UserProfileUpdate";
 import TicketWrapper from "./pages/CreateTickets/TicketWrapper";
 import DraftedEventDetails from "./pages/AllEventsPage/DraftedEventDetails";
 

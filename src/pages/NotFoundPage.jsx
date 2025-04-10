@@ -18,7 +18,7 @@ const NotFoundPage = () => {
               color={"red.600"}
               marginBottom={"2"}
             >
-              Page not found
+              Page Not found
             </Heading>
             <Text textAlign={"center"} fontSize={"14px"}>
               Seems the page you are looking for has been removed or is temporarily unavailable.

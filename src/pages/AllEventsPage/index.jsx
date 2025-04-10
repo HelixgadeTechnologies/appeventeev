@@ -19,11 +19,11 @@ import NoStatePage from "../../components/NoStatePage";
 const AllEventsPage = () => {
   const navigate = useNavigate();
 
-  const { publishedEvents } = useContext(EventContext);
+  const { publishedEvents, draftedEvents } = useContext(EventContext);
 
   return (
     <>
-      {publishedEvents.length > 0 ? (
+      {publishedEvents.length > 0 || draftedEvents.length > 0 ? (
         <Box paddingY={"20px"} position={"relative"}>
           <Flex justifyContent={"space-between"} alignItems={"start"}>
             <Box width={"full"}>
