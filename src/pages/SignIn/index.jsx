@@ -1,4 +1,4 @@
-import React, { useState, useContext, use, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import {
   Box,
   Button,
@@ -15,7 +15,6 @@ import {
   Image,
   Divider,
   Stack,
-  chakra,
   useToast,
   Spinner,
 
@@ -30,7 +29,7 @@ const SignIn = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [buttonText, setButtonText] = useState("Sign In");
   const [showPassword, setShowPassword] = useState(false);
-  const { setUserId, setIsVerified, userDetails, setUserDetails } = useContext(UserAuthContext);
+  const { setUserId, setIsVerified, setUserDetails } = useContext(UserAuthContext);
   const navigate = useNavigate();
   const toast = useToast()
 
