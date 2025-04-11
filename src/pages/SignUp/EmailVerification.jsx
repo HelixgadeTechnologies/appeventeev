@@ -1,20 +1,47 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useState } from "react";
+//import { useNavigate } from "react-router-dom";
+import VerifiedPage from "./Verified";
+import axios from "axios";
+import { UserAuthContext } from "../../contexts/UserAuthContext";
+
 
 const EmailVerification = () => {
 
-  const navigate = useNavigate()
+    const {token, setUserId, } = useContext(UserAuthContext);
 
-  const verify =()=>{
+  const verify = async (e)=>{
+     e.preventDefault();
 
-    // stuff happens
+  const response = await axios.get(`https://eventeevapi.onrender.com/auth/verify/${token}`)
+    if (response.status === 200) {
+      console.log(response);
 
-    // navigate to organization details form on successful verification
-    navigate('/OrganizationDetails')
+      const userId = response.data.userId
+      
+      console.log(userId);
+      setUserId(userId)
+
+      localStorage.setItem("userId", JSON.stringify(userId));
+      
+      
+    }
+     
+    // open gmail
+    const gmailURL = "https://mail.google.com/mail/u/0/#inbox";
+    window.open(gmailURL, "_blank");
+
+   setTimeout(()=>{
+    setView('verified')
+   }, 2000)
+
           
   }
+  
+
+  const [view, setView] = useState('verify');
   return (
-    <div className="flex  flex-col items-center h-screen bg-black bg-opacity-90">
+        <>     
+        {view === 'verify' ? ( <div className="flex  flex-col items-center h-screen bg-black bg-opacity-90">
 
 <div className="z-10">
           <img 
@@ -25,16 +52,19 @@ const EmailVerification = () => {
         </div>
 
 
-      <div className="bg-white p-6 rounded-2xl shadow-lg w-96 text-center">
-        <h1 className="text-xl font-bold mb-2">Verify your email</h1>
-        <p className="text-gray-600 mb-4">
-          We sent a mail to your email address, click on the link to verify your account.
+    
+      <div className="bg-white p-6 rounded-xl shadow-lg w-96 text-center relative z-10">
+        <h2 className="text-2xl font-semibold text-gray-900">Verify your email</h2>
+        <p className="text-gray-500 text-sm mb-6">
+          Please verify your email address to continue
         </p>
-        <button onClick={verify} className="bg-orange-500 text-white py-2 px-4 rounded-lg w-full hover:bg-orange-600">
-          Open email
+        <button className="w-full bg-orange-600 hover:bg-orange-700 text-white py-2 rounded-lg font-medium" onClick={verify}>
+          Verify Email
         </button>
       </div>
-    </div>
+
+    </div>) : (<VerifiedPage />)}
+        </>
   );
 };
 

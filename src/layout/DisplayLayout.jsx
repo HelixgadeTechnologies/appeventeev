@@ -1,7 +1,8 @@
 import React from "react";
 import { Box } from "@chakra-ui/react";
-import SideBar from "../ui/SideBar";
-import Header from "../ui/Header";
+import SideBar from "../components/ui/SideBar";
+import Header from "../components/ui/Header";
+import { Toaster } from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 
 const DisplayLayout = ({ children }) => {
@@ -11,9 +12,19 @@ const DisplayLayout = ({ children }) => {
       {/* sidebar */}
       <SideBar />
       {/* nav and main content */}
-      <Box className="w-full ml-[240px] bg-[#F9FAFB] h-full">
+      <Box className="w-full ml-[240px] bg-[#f9fafb] h-full">
         <Header />
-        <main className={`rounded-b-lg mx-5 ${location.pathname === `/dashboard` ? `bg-white` : `bg-transparent`}`}>{ children }</main>
+        <Toaster position="top-center" reverseOrder={false} />
+        <main
+          className={`${
+            /^\/all-events-draft\/[^/]+$/.test(location.pathname) ||
+            /^\/dashboard\/[^/]+$/.test(location.pathname)
+              ? "mx-0"
+              : "mx-5"
+          } rounded-b-lg h-full`}
+        >
+          {children}
+        </main>
       </Box>
     </Box>
   );

@@ -1,112 +1,206 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState, useContext, use, useEffect } from "react";
+import {
+  Box,
+  Button,
+  Checkbox,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Link,
+  Text,
+  Image,
+  Divider,
+  Stack,
+  chakra,
+  useToast,
+  Spinner,
+
+} from "@chakra-ui/react";
+import { FiEye, FiEyeOff } from "react-icons/fi";
+import axios from "axios";
+//import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { UserAuthContext } from "../../contexts/UserAuthContext";
 
 const SignIn = () => {
-
-  const [formData ,setFormData] = useState({email:'', password: ''})
-
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [buttonText, setButtonText] = useState("Sign In");
+  const [showPassword, setShowPassword] = useState(false);
+  const { setUserId, setIsVerified, userDetails, setUserDetails } = useContext(UserAuthContext);
   const navigate = useNavigate();
+  const toast = useToast()
 
+ 
+  // useEffect(()=>{
+
+  //   if(userDetails){
+  //     navigate('/all-events')
+
+  //   }
+
+  // },[])
+  
+  const height = window.innerHeight
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  
-  const handleSubmit = ()=>{
 
-    // verifications
-    
-    // return dashboard home
-    navigate('/verify')
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setButtonText(<Spinner></Spinner>);
 
-  }
+    try {
+      const response = await axios.post("https://eventeevapi.onrender.com/auth/login", formData);
+      if (response.status === 200 || response.status === 201) {
+     //   toast.success("Login successful! 🎉");
+     toast({
+      title:'Successful Login',
+      description: "you've successfully logged in",
+      status:"success",
+      duration:3000,
+      isClosable:true,
+      position:"top-right",
+     })
+
+        const userData = response.data.user;
+
+        const authToken = response.data.token;
+
+        setUserId(userData._id);
+        setIsVerified(userData.isVerified);
+        setUserDetails(userData)
+        localStorage.setItem("token", JSON.stringify(authToken));
+        localStorage.setItem("userId", JSON.stringify(userData._id));
+        localStorage.setItem("userDetails", JSON.stringify(userData));
+
+        console.log("Login successful:", response.data);
+        console.log("User ID:", userData._id);
+        
+
+        navigate("/all-events");
+      }
+      // window.location.reload();
+    } catch (error) {
+   //   toast.error(error.response?.data?.message || "Login failed. Please try again.");
+      toast({
+        title:`${error.message}`,
+        description: `${error.response?.data?.message || "Login failed. Please try again."}`,
+        status:"error",
+        duration:3000,
+        isClosable:true,
+        position:"top-right",
+       })
+      setButtonText("Try Again");
+
+      console.log(error);
+      
+    }finally{
+      setButtonText('Sign Up')
+    }
+  };
 
 
   return (
-    <div>
-         <div
-      className="screen overflow-hidden relative flex items-center justify-center bg-contain bg-center flex-col">
+    <Flex
+      minH="100vh"
+      align="center"
+      justify="center"
+      bgImage="url('https://res.cloudinary.com/dnou1zvji/image/upload/v1741467043/Log-In_jwspvw_tvgirp.png')"
+      bgSize="cover"
+      bgPos="center"
+      p={4}
+      position="relative"
+    >
+      {/* Logo */}
+      <Box  position="absolute" top={height > 700 ? '-10px' : "-70px"} left="50%" transform="translateX(-50%)" zIndex="10">
+        <Image
+          src="https://res.cloudinary.com/dnou1zvji/image/upload/v1741567378/7da8bbfcdabdcf31233ff8e8a1e2135a_oclnkb.png"
+          alt="Eventeev Logo"
+          w={{ base: "40", md: "48" }}
+        />
+      </Box>
 
-        {/*  background image  */}
-        <img src={'https://res.cloudinary.com/dnou1zvji/image/upload/v1741467043/Log-In_jwspvw_tvgirp.png'} className='absolute z-0 top-0 left-0 object-cover w-full h-full'  alt="" />
-
-
-                {/* Logo */}
-        <div className="absolute top-5 left-1/2 transform -translate-x-1/2">
-          <img 
-            src="https://res.cloudinary.com/dnou1zvji/image/upload/v1741567378/7da8bbfcdabdcf31233ff8e8a1e2135a_oclnkb.png" 
-            alt="Eventeev Logo"
-            className="w-48 h-auto"
-          />
-        </div>
-
-
-
-        {/* login options */}
-      <div className="bg-white relative p-8 rounded-2xl shadow-lg w-96 z-10">
-        <div className='flex flex-col gap-1'>
-        <h2 className="text-2xl font-semibold text-center">Sign in</h2>
-        <p className="text-gray-500 text-center mb-4">
+      <Box bg="white" p={8} rounded="lg" shadow="xl" maxW="sm" w="full" maxH={"83vh"} position="relative">
+        <Heading size="lg" textAlign="center">Sign in</Heading>
+        <Text textAlign="center" color="gray.500" fontSize="sm" mt={1}>
           Enter your credentials to access your account
-        </p>
-        </div>
-        <button className="w-full flex items-center justify-center gap-2 bg-white border border-gray-300 rounded-lg py-2 mb-4 shadow-sm hover:bg-gray-100">
-          <img src="/google-icon.png" alt="Google" className="w-5 h-5" />
+        </Text>
+
+        <Button w="full" variant="outline" mt={4} leftIcon={<Image src="https://res.cloudinary.com/dnou1zvji/image/upload/v1741679396/google-removebg-preview_uc9m89.png" w={5} />}>
           Continue with Google
-        </button>
-       
-       
-       <div className='flex w-full place-items-baseline'>
-        <hr className='w-1/2' />
-       <div className="text-center text-gray-400 mb-4">OR</div>
-       <hr className='w-1/2'/>
-       </div>
+        </Button>
+        <Flex align="center" my={4}>
+          <Divider flex={1} />
+          <Text px={2} color="gray.500">OR</Text>
+          <Divider flex={1} />
+        </Flex>
+
+        <form onSubmit={handleSubmit}>
+          <Stack spacing={3}>
+            <FormControl>
+              <FormLabel fontSize={'smaller'}>Email Address</FormLabel>
+              <Input focusBorderColor="#f56630" type="email" name="email" value={formData.email} onChange={handleChange} required />
+            </FormControl>
+
+            <FormControl>
+              <FormLabel fontSize={'smaller'}>Password</FormLabel>
+              <InputGroup>
+                <Input focusBorderColor="#f56630" type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange} required />
+                <InputRightElement>
+                  <Button variant="ghost" size="sm" onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? <FiEyeOff /> : <FiEye />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+            </FormControl>
+
+             <Flex justify="space-between" fontSize="sm" alignItems="center">
+              <Checkbox colorScheme="orange">
+              <chakra.span fontSize="x-small">Remember me for 30 days</chakra.span>
+             </Checkbox>
+             <Link fontStyle={'small'} color="orange.500" fontSize="sm" onClick={() => navigate('/forgot-password')}>Forgot Password?</Link>
+           </Flex>
 
 
-       <form  onSubmit={handleSubmit}>
-       <input
-          type="email"
-          placeholder="Email Address"
-          className="w-full p-2 border rounded-lg mb-3 focus:ring-2 focus:ring-orange-500"
-          value={formData.email}
-          name='email'
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Enter Password"
-          className="w-full p-2 border rounded-lg mb-3 focus:ring-2 focus:ring-orange-500"
-          value={formData.password}
-          name='password'
-          onChange={handleChange}
-          required
-        />
-        <div className="flex justify-between text-sm mb-4">
-          <label className="flex items-center">
-            <input type="checkbox" className="mr-2" /> Remember me for 30 days
-          </label>
-          <Link to={'/forgot-password'} className="text-orange-500 hover:underline">
-            Forgot Password?
-          </Link>
-        </div>
-        <button style={{background: "#EB5017"}} className="w-full  text-white py-2 rounded-lg hover:bg-orange-600">
-          Sign in
-        </button>
-       </form>
-       
-      </div>
+            <Button type="submit" bg="#EB5017" color="white" _hover={{ bg: "orange.600" }}>
+              {buttonText}
+            </Button>
+          </Stack>
+        </form>
+      </Box>
 
-     <div className='relative z-10 text-center text-sm mt-4 justify-center flex gap-1 bg-white px-4 py-4 rounded-3xl'>
-     <p className="">
-          Don't have an account?{' '}</p>
-          <Link to={'/signUp'} className="text-orange-500 hover:underline">
-            Sign up!
-          </Link>
-     </div>
-       
-    </div>
-    </div>
-  )
-}
+      {/* Don't have an account section */}
+            <Flex
+        position="absolute"
+        left="50%"
+        bottom="-10px"
+        transform={{
+          base: "translate(-50%, 3vh)", // Adjust for small screens
+          md: "translate(-50%, 15vh)",  // Adjust for medium screens
+          lg: "translate(-50%, 4vh)",  // Adjust for large screens
+          xl: height > 700 ?  "translate(-50%, -10vh)" :  "translate(-50%, -2.3vh)",
+        }}
+        bg="white"
+        py="10px"
+        px={'3'}
+        borderRadius="30px"
+        justify="center"
+        fontSize="sm"
+        className="max-sm:w-4/6 max-sm:text-center "
+        gap={'2px'}
+      >
+        <Text fontSize={'small'}>Don't have an account?</Text>
+        <Link fontSize={'small'} ml={1} color="orange.500" onClick={() => navigate('/signUp')}>
+          Sign up!
+        </Link>
+      </Flex>
 
-export default SignIn
+    </Flex>
+  );
+};
+
+export default SignIn;
