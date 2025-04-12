@@ -157,11 +157,11 @@ const SignIn = () => {
               </InputGroup>
             </FormControl>
 
-             <Flex justify="space-between" fontSize="sm" alignItems="center">
+             <Flex justify="space-between" alignItems="center">
               <Checkbox colorScheme="orange">
-              <chakra.span fontSize="x-small">Remember me for 30 days</chakra.span>
+              <span className="text-[14px]">Remember me for 30 days</span>
              </Checkbox>
-             <Link fontStyle={'small'} color="orange.500" fontSize="sm" onClick={() => navigate('/forgot-password')}>Forgot Password?</Link>
+             <Link  color="orange.500" fontSize="sm" onClick={() => navigate('/forgot-password')}>Forgot Password?</Link>
            </Flex>
 
 
