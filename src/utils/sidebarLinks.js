@@ -84,4 +84,4 @@ export const minimalSidebarRoutes = [
   "/Profile-settings",
   "/help",
   "/refer",
-]
+];

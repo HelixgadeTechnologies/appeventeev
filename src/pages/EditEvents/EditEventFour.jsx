@@ -157,7 +157,7 @@ const EditEventFour = () => {
             color={"white"}
             fontWeight={"medium"}
           >
-            Publish Event
+            Edit Event
           </Button>
         </Flex>
       </Box>

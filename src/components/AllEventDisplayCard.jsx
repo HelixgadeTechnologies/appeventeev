@@ -12,12 +12,12 @@ import {
 import { IoIosMore } from "react-icons/io";
 import "typeface-open-sans";
 import { AiTwotoneEdit, AiTwotoneDelete, AiTwotoneGold } from "react-icons/ai";
-import { IoIosCloseCircleOutline } from "react-icons/io";
+import { IoIosCloseCircleOutline, IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { UserAuthContext } from "../contexts/UserAuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { EventContext } from "../contexts/EventContext";
 
-const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute, isDrafted = false }) => {
+const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute, isDrafted = false, isCompleted = false }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { userDetails } = useContext(UserAuthContext);
@@ -42,10 +42,13 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
   // for confirming delete
   const [popUpMessage, setPopUpMessage] = useState(false);
 
+  // for completed event message
+  const [completedPopUp, setCompletedPopUp] = useState(false);
+
   return (
     <>
       <Box
-        onClick={() => isDrafted ? navigate(`/edit-draft-step-one/${event._id}`) : handleCardClick(event._id)}
+        onClick={() => isCompleted ? setCompletedPopUp(true) : isDrafted ? navigate(`/edit-draft-step-one/${event._id}`) : handleCardClick(event._id)}
         borderWidth={"1px"}
         borderColor={"#B8C4CE"}
         height={"full"}
@@ -80,8 +83,6 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
               width={"25px"}
               _hover={{ cursor: "pointer" }}
               position={"relative"}
-              // right={"0"}
-              // top={"2"}
               onClick={(e) => handleMenu(e)}
             >
               <IoIosMore />
@@ -218,6 +219,49 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
                 Delete Event
               </Button>
             </Flex>
+          </Box>
+        </Box>
+      )}
+
+      {/* completed modal */}
+      {completedPopUp && (
+        <Box className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <Box
+            bg={"white"}
+            paddingX={"6"}
+            paddingY={"4"}
+            height={"fit-content"}
+            width={"350px"}
+            borderRadius={"8px"}
+          >
+            <Center>
+              <IoIosCheckmarkCircleOutline className="text-9xl text-green-500"/>
+            </Center>
+            <Heading
+              fontSize={"20px"}
+              fontWeight={"semibold"}
+              color={"gray.800"}
+              textAlign={"center"}
+            >
+              Event Completed
+            </Heading>
+            <Text fontSize={"small"} textAlign={"center"} marginY={"2.5"} color={"gray.600"}>
+              Your Event "<strong className="capitalize">{event.name}</strong>" has been successfully completed!
+            </Text>
+            <Button
+              onClick={() => setCompletedPopUp(false)}
+              bg={"green.400"}
+              _hover={{ bg: "green.500" }}
+              fontSize={"small"}
+              variant={"solid"}
+              padding={"16px"}
+              width={"full"}
+              borderRadius={"lg"}
+              color={"white"}
+              fontWeight={"medium"}
+            >
+              Okay!
+            </Button>
           </Box>
         </Box>
       )}
