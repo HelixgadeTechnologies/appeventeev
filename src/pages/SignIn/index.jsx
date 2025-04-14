@@ -151,7 +151,7 @@ const SignIn = () => {
                 <Input focusBorderColor="#f56630" type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange} required />
                 <InputRightElement>
                   <Button variant="ghost" size="sm" onClick={() => setShowPassword(!showPassword)}>
-                    {showPassword ? <FiEyeOff /> : <FiEye />}
+                    {showPassword ? <FiEye /> : <FiEyeOff />}
                   </Button>
                 </InputRightElement>
               </InputGroup>
@@ -159,9 +159,9 @@ const SignIn = () => {
 
              <Flex justify="space-between" fontSize="sm" alignItems="center">
               <Checkbox colorScheme="orange">
-              <chakra.span fontSize="x-small">Remember me for 30 days</chakra.span>
+              <span className="text-xs">Remember me for 30 days</span>
              </Checkbox>
-             <Link fontStyle={'small'} color="orange.500" fontSize="sm" onClick={() => navigate('/forgot-password')}>Forgot Password?</Link>
+             <Link fontStyle={'small'} color="orange.500" fontSize="x-sm" onClick={() => navigate('/forgot-password')}>Forgot Password?</Link>
            </Flex>
 
 
