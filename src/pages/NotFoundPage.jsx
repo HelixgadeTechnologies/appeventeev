@@ -4,7 +4,7 @@ import { TbError404 } from "react-icons/tb";
 
 const NotFoundPage = () => {
   return (
-    <Center bg={"white"} height={"70vh"}>
+    <Center bg={"white"} height={"100vh"}>
       <Flex justifyContent={"center"} alignItems={"center"}>
         <Center flexDir={"column"} gap={"5"} marginY={"16"}>
           <TbError404 className="text-8xl text-red-600"/>
