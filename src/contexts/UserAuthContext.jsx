@@ -60,12 +60,6 @@ const UserAuthProvider = ({ children }) => {
     localStorage.removeItem("userId");
   };
 
-  // Auth success handler
-  const handleAuthSuccess = (token, userDetails) => {
-    setToken(token);
-    setUserDetails(userDetails);
-    setUserId(userDetails?.id || null); // Adjust depending on your actual userDetails structure
-  };
 
   return (
     <UserAuthContext.Provider
@@ -79,7 +73,7 @@ const UserAuthProvider = ({ children }) => {
         isVerified,
         setIsVerified,
         logout,
-        handleAuthSuccess,
+     
       }}
     >
       {children}

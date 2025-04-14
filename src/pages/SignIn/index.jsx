@@ -1,4 +1,4 @@
-import React, { useState, useContext, use, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import {
   Box,
   Button,
@@ -15,7 +15,6 @@ import {
   Image,
   Divider,
   Stack,
-  chakra,
   useToast,
   Spinner,
 
@@ -30,19 +29,19 @@ const SignIn = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [buttonText, setButtonText] = useState("Sign In");
   const [showPassword, setShowPassword] = useState(false);
-  const { setUserId, setIsVerified, handleAuthSuccess, userDetails } = useContext(UserAuthContext);
+  const { setUserId, setIsVerified, setUserDetails } = useContext(UserAuthContext);
   const navigate = useNavigate();
   const toast = useToast()
 
  
-  useEffect(()=>{
+  // useEffect(()=>{
 
-    if(userDetails){
-      navigate('/all-events')
+  //   if(userDetails){
+  //     navigate('/all-events')
 
-    }
+  //   }
 
-  },[])
+  // },[])
   
   const height = window.innerHeight
   const handleChange = (e) => {
@@ -70,12 +69,16 @@ const SignIn = () => {
 
         const authToken = response.data.token;
 
-     //   setUserDetails(userData);
         setUserId(userData._id);
         setIsVerified(userData.isVerified);
-   //     setToken(authToken);
-        handleAuthSuccess(authToken, userData); // Update context with user info
+        setUserDetails(userData)
         localStorage.setItem("token", JSON.stringify(authToken));
+        localStorage.setItem("userId", JSON.stringify(userData._id));
+        localStorage.setItem("userDetails", JSON.stringify(userData));
+
+        console.log("Login successful:", response.data);
+        console.log("User ID:", userData._id);
+        
 
         navigate("/all-events");
       }
@@ -94,6 +97,8 @@ const SignIn = () => {
 
       console.log(error);
       
+    }finally{
+      setButtonText('Sign Up')
     }
   };
 
