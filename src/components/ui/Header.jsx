@@ -139,7 +139,7 @@ const Header = () => {
           p={location.pathname === "/dashboard" ? 5 : 2}
           borderTopRadius={"lg"}
         >
-          <Heading fontWeight="bold" fontSize="24px" color="#000">
+          <Heading fontWeight="bold" fontSize="24px" color="#000" textTransform={"capitalize"}>
             {title}
           </Heading>
           <Text color="#667185" fontSize="small" fontWeight="normal">

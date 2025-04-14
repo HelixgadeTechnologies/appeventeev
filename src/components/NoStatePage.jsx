@@ -22,7 +22,7 @@ const NoStatePage = ({
   return (
     <Center bg={"white"}>
       <Flex justifyContent={"center"} alignItems={"center"}>
-        <Center flexDir={"column"} gap={"5"} marginY={"16"} height={"screen"}>
+        <Center flexDir={"column"} gap={"5"} marginY={"20"} height={"screen"}>
           <Image
             src={img}
             height={"90px"}

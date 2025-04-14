@@ -15,6 +15,7 @@ import {
   Divider,
   Button,
   Avatar,
+  useToast,
 } from "@chakra-ui/react";
 import statsIcon from "../../assets/icons/stats.svg";
 import { FaChevronRight } from "react-icons/fa6";
@@ -29,6 +30,7 @@ import { BiError } from "react-icons/bi";
 import SearchBar from "../../components/ui/SearchBar";
 import Notifications from "../../components/ui/Notifications";
 import signOut from "../../assets/icons/sign-out.svg";
+import axios from "axios";
 
 const DraftedEventDetails = () => {
   const {
@@ -38,10 +40,12 @@ const DraftedEventDetails = () => {
     formatDate,
     todaysDate,
     setCurrentEventId,
+    deletePublishedEvents,
   } = useContext(EventContext);
   //   importing user details from context
   const { userDetails } = useContext(UserAuthContext);
   const navigate = useNavigate();
+  const toast = useToast();
   const userData = {
     username: `${userDetails.firstname + " " + userDetails.lastname}`,
     email: `${userDetails.email}`,
@@ -90,6 +94,45 @@ const DraftedEventDetails = () => {
     return <Text>Event not found.</Text>;
   }
 
+    const handlePublish = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.post(
+          "https://eventeevapi.onrender.com/event/publishevent",
+          currentEvent,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response.data);
+  
+        toast({
+          title: "Event Published Successfully.",
+          description: "Your event has been created successfully!",
+          status: "success",
+          duration: 4000,
+          isClosable: true,
+          position: "top-right",
+        });
+        navigate("/all-events");
+        // window.location.reload();
+      } catch (error) {
+        console.error("Error Publishing Event:", error);
+        toast({
+          title: "An error occurred.",
+          description: "Event was not published.",
+          status: "error",
+          duration: 4000,
+          isClosable: true,
+          position: "top-right",
+        });
+      }
+    };
+  
+
   const percentage = 0;
   return (
     <>
@@ -125,7 +168,7 @@ const DraftedEventDetails = () => {
             padding={"5"}
             borderTopRadius={"lg"}
           >
-            <Heading fontWeight={"bold"} fontSize={"24px"} color="#000">
+            <Heading fontWeight={"bold"} fontSize={"24px"} color="#000" textTransform={"capitalize"}>
               Welcome {currentEvent.name}
             </Heading>
             <Text color={"#667185"} fontSize={"small"} fontWeight={"normal"}>
@@ -414,8 +457,9 @@ const DraftedEventDetails = () => {
                 borderRadius={"8px"}
                 color={"white"}
                 fontWeight={"medium"}
+                onClick={() => {handlePublish(), deletePublishedEvents(currentEvent._id)}}
               >
-                Copy Event Link
+                Publish Event Draft
               </Button>
             </Flex>
           </Box>

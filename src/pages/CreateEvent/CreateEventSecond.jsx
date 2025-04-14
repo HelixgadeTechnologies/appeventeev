@@ -321,6 +321,9 @@ const CreateEventSecond = () => {
               </FormErrorMessage>
             )}
           </FormControl>
+          <Text color={"#667185"} fontSize={"xs"}>
+            You can add dummy information and save to drafts if you don't wish to publish your event yet.
+          </Text>
           <Flex gap={"20px"}>
             <Button
               variant={"outline"}

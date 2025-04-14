@@ -76,48 +76,46 @@ const EditEventFour = () => {
           gap={"20px"}
         >
           <GridItem>
-            Event name: <strong>{thirdPageData.name}</strong>
+            <strong>Event name:</strong> {thirdPageData.name}
           </GridItem>
           <GridItem>
-            Event Description:{" "}
-            <strong>
+            <strong>Event Description:{" "}</strong>
               {countWords < 60
                 ? thirdPageData.description
                 : thirdPageData.description?.substring(0, 100) + "..."}
-            </strong>
           </GridItem>
-          <GridItem>Event Start Date: {thirdPageData.startDate}</GridItem>
-          <GridItem>Event End Date: {thirdPageData.endDate}</GridItem>
-          <GridItem>Event Start Time: {thirdPageData.startTime}</GridItem>
-          <GridItem>Event End Time: {thirdPageData.endTime}</GridItem>
-          <GridItem>Event Location: {thirdPageData.location}</GridItem>
-          <GridItem>Event Type: {thirdPageData.type}</GridItem>
-          <GridItem>Event Category: {thirdPageData.category}</GridItem>
+          <GridItem><strong>Event Start Date:</strong> {thirdPageData.startDate}</GridItem>
+          <GridItem><strong>Event End Date:</strong> {thirdPageData.endDate}</GridItem>
+          <GridItem><strong>Event Start Time:</strong> {thirdPageData.startTime}</GridItem>
+          <GridItem><strong>Event End Time:</strong> {thirdPageData.endTime}</GridItem>
+          <GridItem><strong>Event Location:</strong> {thirdPageData.location}</GridItem>
+          <GridItem><strong>Event Type:</strong> {thirdPageData.type}</GridItem>
+          <GridItem><strong>Event Category:</strong> {thirdPageData.category}</GridItem>
           <GridItem>
-            Website Link:{" "}
+            <strong>Website Link:{" "}</strong>
             {thirdPageData.website
               ? thirdPageData.website
               : "No Website link available"}
           </GridItem>
           <GridItem>
-            Facebook Link:{" "}
+            <strong>Facebook Link:{" "}</strong>
             {thirdPageData.facebook
               ? thirdPageData.facebook
               : "No Facebook link available"}
           </GridItem>
           <GridItem>
-            Instagram Link{" "}
+            <strong>Instagram Link{" "}</strong>
             {thirdPageData.instagram
               ? thirdPageData.instagram
               : "No Instagram link available"}
           </GridItem>
           <GridItem>
-            X (Formerly Twitter) Link:{" "}
+            <strong>X (Formerly Twitter) Link:{" "}</strong>
             {thirdPageData.twitter
               ? thirdPageData.twitter
               : "No X link available"}
           </GridItem>
-          <GridItem>Thumbnail:</GridItem>
+          <GridItem><strong>Thumbnail:</strong></GridItem>
         </Grid>
 
         <Flex justifyContent={"space-between"} marginTop={"5"} gap={"32px"}>

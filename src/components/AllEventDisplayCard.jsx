@@ -17,7 +17,7 @@ import { UserAuthContext } from "../contexts/UserAuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { EventContext } from "../contexts/EventContext";
 
-const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute, detailsRoute, isDrafted = false }) => {
+const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute, isDrafted = false }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { userDetails } = useContext(UserAuthContext);
@@ -27,8 +27,9 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
     username: `${userDetails.firstname + " " + userDetails.lastname}`,
   };
 
-  const handleMenu = () => {
+  const handleMenu = (e) => {
     setIsMenuOpen(!isMenuOpen);
+    e.stopPropagation();
   };
 
   const { setCurrentEventId } = useContext(EventContext);
@@ -44,7 +45,7 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
   return (
     <>
       <Box
-        onClick={() => handleCardClick(event._id)}
+        onClick={() => isDrafted ? navigate(`/edit-draft-step-one/${event._id}`) : handleCardClick(event._id)}
         borderWidth={"1px"}
         borderColor={"#B8C4CE"}
         height={"full"}
@@ -81,7 +82,7 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
               position={"relative"}
               // right={"0"}
               // top={"2"}
-              onClick={() => handleMenu()}
+              onClick={(e) => handleMenu(e)}
             >
               <IoIosMore />
               {isMenuOpen && (
@@ -99,7 +100,10 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
                   className="space-y-1.5 z-20 bg-white"
                 >
                   <Flex
-                    onClick={() => setPopUpMessage(true)}
+                     onClick={(e) => {
+                      e.stopPropagation();
+                      setPopUpMessage(true);
+                    }}
                     alignItems={"center"}
                     gap={"1"}
                     _hover={{ bg: "gray.100" }}
@@ -109,7 +113,7 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
                     <AiTwotoneDelete className="text-base" />
                     <Text fontSize={"10px"}>Delete event</Text>
                   </Flex>
-                  <Link to={editRoute}>
+                  <Link to={editRoute} onClick={(e) => e.stopPropagation()}>
                     <Flex
                       alignItems={"center"}
                       gap={"1"}
@@ -121,34 +125,6 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
                       <Text fontSize={"10px"}>Edit event</Text>
                     </Flex>
                   </Link>
-                  {isDrafted ? (
-                    <Link to={detailsRoute}>
-                      <Flex
-                        alignItems={"center"}
-                        gap={"1"}
-                        _hover={{ bg: "gray.100" }}
-                        paddingY={"4px"}
-                        paddingX={"5px"}
-                      >
-                        <AiTwotoneGold className="text-base" />
-                        <Text fontSize={"10px"}>View event</Text>
-                      </Flex>
-                  </Link>
-                  ) : (
-                    <Link>
-                      <Flex
-                        alignItems={"center"}
-                        gap={"1"}
-                        _hover={{ bg: "gray.100" }}
-                        paddingY={"4px"}
-                        paddingX={"5px"}
-                      >
-                        <AiTwotoneGold className="text-base" />
-                        <Text fontSize={"10px"}>View event</Text>
-                      </Flex>
-                    </Link>
-
-                  )}
                 </Box>
               )}
             </Center>
@@ -160,6 +136,7 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
             fontWeight={"bold"}
             fontSize={"16px"}
             lineHeight={"24px"}
+            textTransform={"capitalize"}
           >
             {event.name}
           </Heading>
@@ -210,7 +187,7 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
               Confirm Delete
             </Heading>
             <Text fontSize={"small"} textAlign={"center"} marginY={"2.5"} color={"gray.600"}>
-              Are you sure you wish to delete <br/> "<strong>{event.name}</strong>"?
+              Are you sure you wish to delete <br/> "<strong className="capitalize">{event.name}</strong>"?
             </Text>
             <Flex justifyContent={"space-between"} alignItems={"center"} marginTop={"2"} marginX={"2.5"} gap={"5"}>
               <Button
