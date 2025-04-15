@@ -116,6 +116,8 @@ const TicketForm = ({ onClose, ticketType }) => {
           },
         }
       );
+      console.log(token);
+      
 
 
       toast({
@@ -134,6 +136,8 @@ const TicketForm = ({ onClose, ticketType }) => {
 
     } catch (error) {
       console.error("Error adding ticket:", error.response?.data?.message || error.message);
+      console.log(token);
+      setButton('Failed... PLease Try Again')
     }
   };
   

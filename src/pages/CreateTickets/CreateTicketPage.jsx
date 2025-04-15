@@ -15,7 +15,7 @@ import { GiPresent } from "react-icons/gi";
 
 const TicketPage = () => {
   const { onOpen } = useDisclosure();
-  const { ticketData, } = useContext(TicketContext)
+  const { ticketData  } = useContext(TicketContext)
  
 
   const free = ticketData.filter(ticket => ticket.type === 'free')
@@ -26,7 +26,7 @@ const TicketPage = () => {
 
 
   return (
-    <Box className={`w-[100%]" overflow='hidden'  p={5}   bg="#F9FA FB" borderRadius="lg`} >
+    <Box className={`w-[100%] overflow='hidden'  p={5}   bg="#F9FA FB" borderRadius="lg`} >
      
      <Box className="flex justify-between items-center  ">
 

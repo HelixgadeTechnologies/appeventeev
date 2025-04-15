@@ -3,6 +3,8 @@ import { TicketContext } from '../../contexts/TicketContext';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import AddTicket from './TicketForms';
+import { Center, Text } from '@chakra-ui/react';
 
 const ExistingTicket = ({ handleEdit, type }) => {
   const { ticketData } = useContext(TicketContext);
@@ -11,7 +13,12 @@ const ExistingTicket = ({ handleEdit, type }) => {
   const getTicketsByType = (ticketType) => ticketData.filter((ticket) => ticket.type === ticketType);
   const tickets = getTicketsByType(type);
 
-  if (!tickets.length) return <p className="text-center py-10">No {type} tickets created</p>;
+  if (!tickets.length) return  <Center py={20} flexDirection="column" textAlign="center">
+  <Text fontSize="lg" fontWeight="medium" color="gray.600" mb={4}>
+    No {type} tickets created yet.
+  </Text>
+  <AddTicket />
+</Center>;
 
   const slidesToShow = Math.min(tickets.length, 3);
 

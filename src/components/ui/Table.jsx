@@ -37,7 +37,7 @@ const TableComponent = ({ type }) => {
   const ticketCount = ticketData.filter(ticket => ticket.type === type).length;
 
   const containerClass = `
-    ${ticketCount >= 3 ? 'max-w-[92%]' : 'max-w-[100%]'}
+    ${ticketCount >= 3 ? 'max-w-[100%]' : 'max-w-[100%]'}
     overflow-x-hidden h-full relative
   `;
   const toast = useToast();

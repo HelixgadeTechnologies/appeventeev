@@ -31,7 +31,7 @@ const SignIn = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [buttonText, setButtonText] = useState("Sign In");
   const [showPassword, setShowPassword] = useState(false);
-  const { setUserId, setIsVerified, setUserDetails } = useContext(UserAuthContext);
+  const { setUserId, setIsVerified, setUserDetails, setToken } = useContext(UserAuthContext);
   const navigate = useNavigate();
   const toast = useToast()
 
@@ -78,16 +78,20 @@ const SignIn = () => {
         setUserId(userData._id);
         setIsVerified(userData.isVerified);
         setUserDetails(userData);
+        setToken(authToken)
   
         localStorage.setItem("token", JSON.stringify(authToken));
         localStorage.setItem("userId", JSON.stringify(userData._id));
         localStorage.setItem("userDetails", JSON.stringify(userData));
+       
   
         console.log("🆔 User ID:", userData._id);
         console.log("🔐 Token:", authToken);
       }
   
-      navigate("/all-events");
+      setTimeout(() => {
+        navigate("/all-events");
+      }, 200);
     } catch (error) {
       console.log("🔴 Login failed:");
       console.log("Full Error Object:", error);

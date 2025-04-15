@@ -229,9 +229,9 @@ const Header = () => {
         )}
 
         {/* ✅ Tickets Page Button */}
-        {isTicketPage && (    
+        {isTicketPage && (
             <Box className="mr-10">
-              <AddTicket/>   
+              <AddTicket/>
             </Box>
         )}
       </Flex>
