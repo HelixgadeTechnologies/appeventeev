@@ -21,7 +21,7 @@ const DisplayLayout = ({ children }) => {
             /^\/dashboard\/[^/]+$/.test(location.pathname)
               ? "mx-0"
               : "mx-5"
-          } rounded-b-lg h-full`}
+          } rounded-b-lg h-screen`}
         >
           {children}
         </main>

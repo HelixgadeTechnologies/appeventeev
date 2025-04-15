@@ -28,7 +28,7 @@ const CompletedEvents = () => {
           <Grid templateColumns={"repeat(3,1fr)"} gap={"20px"} height={"full"}>
             {completedEvents.map((event) => (
               <GridItem key={event._id}>
-                <AllEventDisplayCard event={event} isMenuAvailble={false} />
+                <AllEventDisplayCard event={event} isMenuAvailble={false} isCompleted={true} />
               </GridItem>
             ))}
           </Grid>

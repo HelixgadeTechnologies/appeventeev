@@ -12,12 +12,12 @@ import {
 import { IoIosMore } from "react-icons/io";
 import "typeface-open-sans";
 import { AiTwotoneEdit, AiTwotoneDelete, AiTwotoneGold } from "react-icons/ai";
-import { IoIosCloseCircleOutline } from "react-icons/io";
+import { IoIosCloseCircleOutline, IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { UserAuthContext } from "../contexts/UserAuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { EventContext } from "../contexts/EventContext";
 
-const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute, detailsRoute, isDrafted = false }) => {
+const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute, isDrafted = false, isCompleted = false }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { userDetails } = useContext(UserAuthContext);
@@ -27,8 +27,9 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
     username: `${userDetails.firstname + " " + userDetails.lastname}`,
   };
 
-  const handleMenu = () => {
+  const handleMenu = (e) => {
     setIsMenuOpen(!isMenuOpen);
+    e.stopPropagation();
   };
 
   const { setCurrentEventId } = useContext(EventContext);
@@ -41,9 +42,13 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
   // for confirming delete
   const [popUpMessage, setPopUpMessage] = useState(false);
 
+  // for completed event message
+  const [completedPopUp, setCompletedPopUp] = useState(false);
+
   return (
     <>
       <Box
+        onClick={() => isCompleted ? setCompletedPopUp(true) : isDrafted ? navigate(`/edit-draft-step-one/${event._id}`) : handleCardClick(event._id)}
         borderWidth={"1px"}
         borderColor={"#B8C4CE"}
         height={"full"}
@@ -53,6 +58,8 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
         padding={"20px"}
         className="space-y-8"
         style={{ fontFamily: "Open Sans, sans-serif" }}
+        _hover={{ cursor: "pointer"}}
+        position={"relative"}
       >
         <Flex justifyContent={"space-between"} alignItems={"start"}>
           {event.thumbnail === "" ? (
@@ -76,7 +83,7 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
               width={"25px"}
               _hover={{ cursor: "pointer" }}
               position={"relative"}
-              onClick={() => handleMenu()}
+              onClick={(e) => handleMenu(e)}
             >
               <IoIosMore />
               {isMenuOpen && (
@@ -94,7 +101,10 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
                   className="space-y-1.5 z-20 bg-white"
                 >
                   <Flex
-                    onClick={() => setPopUpMessage(true)}
+                     onClick={(e) => {
+                      e.stopPropagation();
+                      setPopUpMessage(true);
+                    }}
                     alignItems={"center"}
                     gap={"1"}
                     _hover={{ bg: "gray.100" }}
@@ -104,7 +114,7 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
                     <AiTwotoneDelete className="text-base" />
                     <Text fontSize={"10px"}>Delete event</Text>
                   </Flex>
-                  <Link to={editRoute}>
+                  <Link to={editRoute} onClick={(e) => e.stopPropagation()}>
                     <Flex
                       alignItems={"center"}
                       gap={"1"}
@@ -116,34 +126,6 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
                       <Text fontSize={"10px"}>Edit event</Text>
                     </Flex>
                   </Link>
-                  {isDrafted ? (
-                    <Link to={detailsRoute}>
-                      <Flex
-                        alignItems={"center"}
-                        gap={"1"}
-                        _hover={{ bg: "gray.100" }}
-                        paddingY={"4px"}
-                        paddingX={"5px"}
-                      >
-                        <AiTwotoneGold className="text-base" />
-                        <Text fontSize={"10px"}>View event</Text>
-                      </Flex>
-                  </Link>
-                  ) : (
-                    <Link onClick={() => handleCardClick(event._id)}>
-                      <Flex
-                        alignItems={"center"}
-                        gap={"1"}
-                        _hover={{ bg: "gray.100" }}
-                        paddingY={"4px"}
-                        paddingX={"5px"}
-                      >
-                        <AiTwotoneGold className="text-base" />
-                        <Text fontSize={"10px"}>View event</Text>
-                      </Flex>
-                    </Link>
-
-                  )}
                 </Box>
               )}
             </Center>
@@ -155,6 +137,7 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
             fontWeight={"bold"}
             fontSize={"16px"}
             lineHeight={"24px"}
+            textTransform={"capitalize"}
           >
             {event.name}
           </Heading>
@@ -205,7 +188,7 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
               Confirm Delete
             </Heading>
             <Text fontSize={"small"} textAlign={"center"} marginY={"2.5"} color={"gray.600"}>
-              Are you sure you wish to delete <br/> "<strong>{event.name}</strong>"?
+              Are you sure you wish to delete <br/> "<strong className="capitalize">{event.name}</strong>"?
             </Text>
             <Flex justifyContent={"space-between"} alignItems={"center"} marginTop={"2"} marginX={"2.5"} gap={"5"}>
               <Button
@@ -236,6 +219,49 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
                 Delete Event
               </Button>
             </Flex>
+          </Box>
+        </Box>
+      )}
+
+      {/* completed modal */}
+      {completedPopUp && (
+        <Box className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <Box
+            bg={"white"}
+            paddingX={"6"}
+            paddingY={"4"}
+            height={"fit-content"}
+            width={"350px"}
+            borderRadius={"8px"}
+          >
+            <Center>
+              <IoIosCheckmarkCircleOutline className="text-9xl text-green-500"/>
+            </Center>
+            <Heading
+              fontSize={"20px"}
+              fontWeight={"semibold"}
+              color={"gray.800"}
+              textAlign={"center"}
+            >
+              Event Completed
+            </Heading>
+            <Text fontSize={"small"} textAlign={"center"} marginY={"2.5"} color={"gray.600"}>
+              Your Event "<strong className="capitalize">{event.name}</strong>" has been successfully completed!
+            </Text>
+            <Button
+              onClick={() => setCompletedPopUp(false)}
+              bg={"green.400"}
+              _hover={{ bg: "green.500" }}
+              fontSize={"small"}
+              variant={"solid"}
+              padding={"16px"}
+              width={"full"}
+              borderRadius={"lg"}
+              color={"white"}
+              fontWeight={"medium"}
+            >
+              Okay!
+            </Button>
           </Box>
         </Box>
       )}
