@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { TicketContext } from '../../contexts/TicketContext';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -9,16 +9,29 @@ import { Center, Text } from '@chakra-ui/react';
 const ExistingTicket = ({ handleEdit, type }) => {
   const { ticketData } = useContext(TicketContext);
   const colors = ['#ffece5', '#e7f6ec', '#fef6e7'];
+  const [width, setWidth] = useState(600);
 
   const getTicketsByType = (ticketType) => ticketData.filter((ticket) => ticket.type === ticketType);
   const tickets = getTicketsByType(type);
 
-  if (!tickets.length) return  <Center py={20} flexDirection="column" textAlign="center">
-  <Text fontSize="lg" fontWeight="medium" color="gray.600" mb={4}>
-    No {type} tickets created yet.
-  </Text>
-  <AddTicket />
-</Center>;
+  useEffect(() => {
+    if (tickets.length > 3) {
+      setWidth(960); // or calculate dynamically if needed
+    } else {
+      setWidth(600); // default width
+    }
+  }, [tickets.length]);
+
+  if (!tickets.length) {
+    return (
+      <Center py={20} flexDirection="column" textAlign="center">
+        <Text fontSize="lg" fontWeight="medium" color="gray.600" mb={4}>
+          No {type} tickets created yet.
+        </Text>
+        <AddTicket />
+      </Center>
+    );
+  }
 
   const slidesToShow = Math.min(tickets.length, 3);
 
@@ -26,7 +39,7 @@ const ExistingTicket = ({ handleEdit, type }) => {
     dots: false,
     infinite: tickets.length > 3,
     speed: 500,
-    slidesToShow,
+    slidesToShow: slidesToShow,
     slidesToScroll: slidesToShow,
     responsive: [
       {
@@ -47,8 +60,12 @@ const ExistingTicket = ({ handleEdit, type }) => {
   };
 
   return (
-    <div className={`w-full py-5 mx-auto ${tickets.length <= 2 ? 'w-[98%]' : ''}`}>
-      <Slider {...settings} className="flex gap-10 overflow-x-hidden">
+    <div className="w-full py-5 mx-auto">
+      <Slider
+        {...settings}
+        className="flex gap-10 overflow-x-hidden"
+        style={{ width: `${width}px` }}
+      >
         {tickets.map((ticket, index) => {
           const sold = ticket.remainingQuantity - ticket.quantity;
 
@@ -58,7 +75,9 @@ const ExistingTicket = ({ handleEdit, type }) => {
               className={`rounded-md p-1 ${tickets.length <= 2 ? 'w-[90%]' : ''}`}
             >
               <div
-                className={`rounded-md text-sm ${tickets.length === 1 ? 'py-10 oneTicketGrid px-3' : 'py-5 px-3 space-y-3'}`}
+                className={`rounded-md text-sm ${
+                  tickets.length === 1 ? 'py-10 oneTicketGrid px-3' : 'py-5 px-3 space-y-3'
+                }`}
                 style={{ backgroundColor: colors[index % 3] }}
               >
                 {/* Price & Edit */}

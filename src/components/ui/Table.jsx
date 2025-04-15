@@ -131,7 +131,7 @@ const TableComponent = ({ type }) => {
         <div className={type === 'paid' ? "max-w-[1085px] h-full" : "w-full h-full"}>
           { <ExistingTicket handleEdit={handleEditClick} type={type} /> }
 
-          <div className={type === 'paid' ? "overflow-x-auto h-full" : "overflow-x-auto h-full mt-7"}>
+          <div className={type === 'paid' ? "overflow-x-auto h-full" : "overflow-x-auto h-full mt-2"}>
             <Table variant="unstyled" mt={2} minW="full" borderRadius="lg">
               <Thead bg="#f9fafb">
                 <Tr>
