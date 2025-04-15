@@ -154,7 +154,7 @@ const SignIn = () => {
           <Stack spacing={3}>
             <FormControl>
               <FormLabel fontSize={'smaller'}>Email Address</FormLabel>
-              <Input focusBorderColor="#f56630" type="email" name="email" value={formData.email} onChange={handleChange} required />
+              <Input fontSize={'14px'} focusBorderColor="#f56630" type="email" name="email" value={formData.email} onChange={handleChange} required />
             </FormControl>
 
             <FormControl>

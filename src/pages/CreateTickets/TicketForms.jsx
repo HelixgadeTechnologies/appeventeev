@@ -65,12 +65,10 @@ const AddTicket = () => {
 };
 
 const TicketForm = ({ onClose, ticketType }) => {
-
-  const { token  } = useContext(UserAuthContext)
-
+  const { token } = useContext(UserAuthContext);
   const { id } = useParams();
-  const toast = useToast()
-  const [button, setButton] = useState('Save')
+  const toast = useToast();
+  const [button, setButton] = useState("Save");
 
   const [formData, setFormData] = useState({
     eventId: `${id}`,
@@ -88,37 +86,100 @@ const TicketForm = ({ onClose, ticketType }) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
- 
+
+  const isDateInPast = (date, time = "00:00") => {
+    const now = new Date();
+    const inputDate = new Date(`${date}T${time}`);
+    return inputDate < now;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setButton(<Spinner></Spinner>)
-    
+    // Basic validations
+    const nameRegex = /^[A-Za-z\s]+$/;
+    if (!nameRegex.test(formData.name)) {
+      toast({
+        title: "Invalid Name",
+        description: "Name should contain only alphabets.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      });
+      return;
+    }
+
+    if (isNaN(formData.quantity) || Number(formData.quantity) <= 0) {
+      toast({
+        title: "Invalid Quantity",
+        description: "Quantity must be a number greater than 0.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      });
+      return;
+    }
+
+    if (ticketType !== "free" && (isNaN(formData.price) || Number(formData.price) <= 0)) {
+      toast({
+        title: "Invalid Price",
+        description: "Price must be a number greater than 0.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      });
+      return;
+    }
+
+    if (isDateInPast(formData.startDate, formData.startTime)) {
+      toast({
+        title: "Invalid Start Date",
+        description: "Start date and time can't be in the past.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      });
+      return;
+    }
+
+    const startDateTime = new Date(`${formData.startDate}T${formData.startTime}`);
+    const endDateTime = new Date(`${formData.endDate}T${formData.endTime}`);
+
+    if (endDateTime < startDateTime) {
+      toast({
+        title: "Invalid End Date",
+        description: "End date and time must be after start date and time.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      });
+      return;
+    }
+
     if (!token) {
       console.error("Error: Token is missing.");
       return;
     }
-  
-    console.log("Form data:", formData);
-    console.log("Token:", token);
 
+    setButton(<Spinner />);
 
-  
     try {
-    
       const response = await axios.post(
         "https://eventeevapi.onrender.com/ticket/create",
         formData,
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, 
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-      console.log(token);
-      
-
+      console.log("Ticket added successfully:", response.data);
 
       toast({
         title: "Ticket Added",
@@ -127,68 +188,137 @@ const TicketForm = ({ onClose, ticketType }) => {
         duration: 3000,
         isClosable: true,
         position: "top-right",
-      })
-  
-      console.log("Ticket added successfully:", response);
+      });
 
-      setButton("Save")
+      setButton("Save");
       onClose();
-
     } catch (error) {
       console.error("Error adding ticket:", error.response?.data?.message || error.message);
-      console.log(token);
-      setButton('Failed... PLease Try Again')
+      setButton("Failed... Please Try Again");
     }
   };
-  
-  
 
   return (
     <form onSubmit={handleSubmit}>
       <VStack spacing={2} mt={3} align="stretch">
-        <Text fontWeight="normal" fontSize={'sm'}>Ticket name</Text>
-        <Input  focusBorderColor="orange.500"
-         name="name" value={formData.name} onChange={handleChange} placeholder="Regular" required />
+        <Text fontWeight="normal" fontSize={"sm"}>
+          Ticket name
+        </Text>
+        <Input
+          focusBorderColor="orange.500"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          placeholder="Regular"
+          required
+        />
 
-        <Text  fontWeight="normal" fontSize={'sm'}>Ticket quantity</Text>
-        <Input  focusBorderColor="orange.500" name="quantity" value={formData.quantity} onChange={handleChange} placeholder="150" required />
+        <Text fontWeight="normal" fontSize={"sm"}>
+          Ticket quantity
+        </Text>
+        <Input
+          focusBorderColor="orange.500"
+          name="quantity"
+          value={formData.quantity}
+          onChange={handleChange}
+          placeholder="150"
+          required
+        />
 
         {ticketType !== "free" && (
           <>
-            <Text  fontWeight="normal" fontSize={'sm'}>Price</Text>
-            <Input   focusBorderColor="orange.500" name="price" value={formData.price} onChange={handleChange} placeholder="$5.99" required />
+            <Text fontWeight="normal" fontSize={"sm"}>
+              Price
+            </Text>
+            <Input
+              focusBorderColor="orange.500"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              placeholder="$5.99"
+              required
+            />
           </>
         )}
 
         <HStack>
           <VStack align="stretch" flex={1}>
-            <Text  fontWeight="normal" fontSize={'sm'}>Start Date</Text>
-            <Input focusBorderColor="orange.500" name="startDate" value={formData.startDate} onChange={handleChange} type="date" required />
+            <Text fontWeight="normal" fontSize={"sm"}>
+              Start Date
+            </Text>
+            <Input
+              focusBorderColor="orange.500"
+              name="startDate"
+              value={formData.startDate}
+              onChange={handleChange}
+              type="date"
+              required
+            />
           </VStack>
 
           <VStack align="stretch" flex={1}>
-            <Text  fontWeight="normal" fontSize={'sm'}>Start Time</Text>
-            <Input focusBorderColor="orange.500" name="startTime" value={formData.startTime} onChange={handleChange} type="time" required />
+            <Text fontWeight="normal" fontSize={"sm"}>
+              Start Time
+            </Text>
+            <Input
+              focusBorderColor="orange.500"
+              name="startTime"
+              value={formData.startTime}
+              onChange={handleChange}
+              type="time"
+              required
+            />
           </VStack>
         </HStack>
 
         <HStack>
           <VStack align="stretch" flex={1}>
-            <Text  fontWeight="normal" fontSize={'sm'}>End Date</Text>
-            <Input focusBorderColor="orange.500" name="endDate" value={formData.endDate} onChange={handleChange} type="date" required />
+            <Text fontWeight="normal" fontSize={"sm"}>
+              End Date
+            </Text>
+            <Input
+              focusBorderColor="orange.500"
+              name="endDate"
+              value={formData.endDate}
+              onChange={handleChange}
+              type="date"
+              required
+            />
           </VStack>
 
           <VStack align="stretch" flex={1}>
-            <Text  fontWeight="normal" fontSize={'sm'}>End Time</Text>
-            <Input focusBorderColor="orange.500" name="endTime" value={formData.endTime} onChange={handleChange} type="time" required />
+            <Text fontWeight="normal" fontSize={"sm"}>
+              End Time
+            </Text>
+            <Input
+              focusBorderColor="orange.500"
+              name="endTime"
+              value={formData.endTime}
+              onChange={handleChange}
+              type="time"
+              required
+            />
           </VStack>
         </HStack>
 
         <HStack mt={5} justify="space-around" className="flex">
-          <Button w={'100%'} color={'#e8562e'} borderColor={'#e8562e'} border={'1px'} onClick={onClose}>
+          <Button
+            w={"100%"}
+            color={"#e8562e"}
+            borderColor={"#e8562e"}
+            border={"1px"}
+            onClick={onClose}
+          >
             Cancel
           </Button>
-          <Button w={'100%'} type="submit" bg="#F56630" color="white" px={5} py={2}>
+          <Button
+            w={"100%"}
+            type="submit"
+            bg="#F56630"
+            color="white"
+            px={5}
+            py={2}
+          >
             {button}
           </Button>
         </HStack>
