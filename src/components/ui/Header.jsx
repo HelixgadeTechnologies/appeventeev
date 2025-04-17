@@ -22,10 +22,11 @@ import { EventContext } from "../../contexts/EventContext";
 const Header = () => {
   const location = useLocation();
   const { id } = useParams();
-  const { publishedEvents } = useContext(EventContext);
+  const { publishedEvents, draftedEvents } = useContext(EventContext);
   const { userDetails } = useContext(UserAuthContext);
 
   const currentEvent = publishedEvents.find(event => event._id === id);
+  const currentDraftedEvent = draftedEvents.find(event => event._id === id)
 
   const userData = {
     username: `${userDetails.firstname} ${userDetails.lastname}`,
@@ -92,13 +93,30 @@ const Header = () => {
     return `${day}${getOrdinalSuffix(day)} ${month}, ${year}`;
   }
 
-  if (
-    /^\/all-events-draft\/[^/]+$/.test(location.pathname) ||
-    (location.pathname === "/dashboard" && publishedEvents.length > 0)
-  ) {
+  const allExistingRoutes = [
+    `/dashboard/${currentEvent?._id}`,
+    `/attendees/${currentEvent?._id}`,
+    `/tickets/${currentEvent?._id}`,
+    "/all-events",
+    "/Profile-settings",
+    "/create-event-setup-1",
+    "/create-event-setup-2",
+    "/create-event-setup-3",
+    "/create-event-setup-4",
+    `/edit-event-step-one/${currentEvent?._id}`,
+    `/edit-event-step-two/${currentEvent?._id}`,
+    `/edit-event-step-three/${currentEvent?._id}`,
+    `/edit-event-step-four/${currentEvent?._id}`,
+    `/edit-draft-step-one/${currentDraftedEvent?._id}`,
+    `/edit-draft-step-two/${currentDraftedEvent?._id}`,
+    `/edit-draft-step-three/${currentDraftedEvent?._id}`,
+    `/edit-draft-step-four/${currentDraftedEvent?._id}`,
+    "/create-ticket",
+  ];
+
+  if (!allExistingRoutes.includes(location.pathname)) {
     return null;
   }
-
   return (
     <Box>
       <Flex

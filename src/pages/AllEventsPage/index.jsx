@@ -29,7 +29,7 @@ const AllEventsPage = () => {
           <Box className="loader"></Box>
         </Center>
       ) : publishedEvents.length > 0 || draftedEvents.length > 0 ? (
-        <Box paddingY={"20px"} position={"relative"}>
+        <Box paddingY={"20px"} position={"relative"} bg={"#f9fafb"} height={"full"}marginX={"5"}>
           <Flex justifyContent={"space-between"} alignItems={"start"}>
             <Box width={"full"}>
               <Tabs colorScheme={"orange"}>
