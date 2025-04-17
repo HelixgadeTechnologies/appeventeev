@@ -93,7 +93,7 @@ const ProfileSettings = () => {
   };
 
   return (
-    <Box maxW="" mx="auto" mt={8} p={5} bg="white" borderRadius="md" boxShadow="md">
+    <Box  mx="auto" mt={8} p={5} bg="white" borderRadius="md" boxShadow="md">
       <Flex align="center" gap={3} mb={6}>
         <Icon as={CgProfile} boxSize={12} />
         <Box>
@@ -106,7 +106,7 @@ const ProfileSettings = () => {
         <Stack spacing={3}>
           <Flex gap={3}>
             <FormControl isRequired>
-              <FormLabel  requiredIndicator={null}  fontSize="xs">First Name</FormLabel>
+              <FormLabel  requiredIndicator={null} fontSize="xs">First Name</FormLabel>
               <Input name="firstName" value={formData.firstName} onChange={handleChange} size="sm" />
             </FormControl>
             <FormControl isRequired>
@@ -117,7 +117,7 @@ const ProfileSettings = () => {
 
           <Flex gap={3}>
             <FormControl>
-              <FormLabel  fontSize="xs">Email</FormLabel>
+              <FormLabel fontSize="xs">Email</FormLabel>
               <Input name="email" value={formData.email} isDisabled size="sm" />
             </FormControl>
             <FormControl>
