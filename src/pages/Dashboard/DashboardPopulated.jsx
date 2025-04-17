@@ -18,7 +18,6 @@ import {
 } from "@chakra-ui/react";
 import statsIcon from "../../assets/icons/stats.svg";
 import { FaChevronRight } from "react-icons/fa6";
-import { FiCalendar } from "react-icons/fi";
 import { LuClock3 } from "react-icons/lu";
 import { IoCalendarClearOutline } from "react-icons/io5";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
@@ -26,8 +25,6 @@ import Calendar from "../../components/ui/Calendar";
 import { attendees } from "../../utils/attendees";
 import AttendeeDisplay from "../../components/ui/AttendeeDisplay";
 import { BiError } from "react-icons/bi";
-import SearchBar from "../../components/ui/SearchBar";
-import Notifications from "../../components/ui/Notifications";
 import signOut from "../../assets/icons/sign-out.svg";
 import NoStatePage from "../../components/NoStatePage";
 
@@ -37,7 +34,6 @@ const DashboardPopulated = () => {
     publishedEventsLoading,
     publishedEventsError,
     formatDate,
-    todaysDate,
     setCurrentEventId,
     getAttendees,
   } = useContext(EventContext);
@@ -229,11 +225,7 @@ const DashboardPopulated = () => {
                 bg={service.bg}
                 transitionDuration={"500ms"}
                 transitionProperty={"colors"}
-                onClick={
-                  service.route === "/tickets"
-                    ? () => navigate(`/tickets/${id}`)
-                    : () => navigate(service.route)
-                }
+                onClick={() => navigate(`${service.route}/${id}`)}
                 _hover={{
                   cursor: "pointer",
                   borderWidth: "thin",
@@ -332,7 +324,7 @@ const DashboardPopulated = () => {
           <Flex gap={"10px"} marginX={"2.5"} marginY={"2.5"}>
             <Button
               onClick={() =>
-                navigate(`/edit-event-step-one/${currentEvent._id}-1`)
+                navigate(`/edit-event-step-one/${currentEvent._id}`)
               }
               variant={"outline"}
               color={"#344054"}

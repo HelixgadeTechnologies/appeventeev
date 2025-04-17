@@ -23,16 +23,23 @@ import { eventCategory, eventType } from "../../utils/create-event";
 import { useDropzone } from "react-dropzone";
 import { SlCloudUpload } from "react-icons/sl";
 import { IoClose } from "react-icons/io5";
+import { AiOutlineDelete } from "react-icons/ai";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
 const EditDraftsSecond = () => {
-  const { draftedEvents, draftedEventsLoading, draftedEventsError } =
-    useContext(EventContext);
+  const {
+    draftedEvents,
+    draftedEventsLoading,
+    draftedEventsError,
+    deleteDraftedEvents,
+  } = useContext(EventContext);
   const location = useLocation();
   const firstPageData = location.state || {};
   const navigate = useNavigate();
 
   const { id } = useParams();
   const currentEvent = draftedEvents.find((event) => event._id === id);
+  const [popUpMessage, setPopUpMessage] = useState(false);
 
   const onDrop = useCallback((acceptedFiles) => {
     const uploadedFile = acceptedFiles[0];
@@ -180,83 +187,216 @@ const EditDraftsSecond = () => {
     }
   };
 
-  return (
-    <Center>
-      <Box
-        bg={"white"}
-        rounded={"lg"}
-        padding={"5"}
-        width={"600px"}
-        marginY={"5"}
-      >
-        <form className="text-sm space-y-4">
-          <Box className="flex flex-col items-center gap-3 p-6 border-2 border-dashed rounded-2xl border-gray-300">
-            {!secondPageData.thumbnailPreview ? (
-              // Upload Box (only shows when no file is uploaded)
-              <Box
-                {...getRootProps()}
-                className="w-full flex flex-col items-center justify-center p-3 cursor-pointer"
-              >
-                <input {...getInputProps()} />
-                <Circle size={"50px"} bg={"#F0F2F5"}>
-                  <SlCloudUpload className="text-[#475367] text-xl" />
-                </Circle>
-                <Text className="text-gray-600 mt-2">
-                  <span className="text-orange-500 font-medium">
-                    Click to upload
-                  </span>{" "}
-                  or drag and drop
-                </Text>
-                <Text className="text-xs text-gray-400">
-                  SVG, PNG, JPG or GIF (max. 800×400px)
-                </Text>
-              </Box>
-            ) : (
-              // Image Preview
-              <Box className="w-full flex flex-col items-center">
-                <Image
-                  src={secondPageData.thumbnailPreview}
-                  alt="Uploaded preview"
-                  className="w-60 h-auto rounded-lg shadow-md"
-                />
-                <Text className="text-gray-500 mt-2">
-                  {secondPageData.thumbnail
-                    ? secondPageData.thumbnail.name
-                    : "Uploaded Image"}
-                </Text>
-                <Flex
-                  bg={"red.500"}
-                  color={"white"}
-                  size="md"
-                  mt={2}
-                  borderRadius={"full"}
-                  onClick={handleRemove}
-                  height={"40px"}
-                  width={"40px"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  _hover={{ cursor: "pointer", bg: "red.400" }}
-                >
-                  <IoClose className="text-xl" />
-                </Flex>
-              </Box>
-            )}
+  const handleDelete = () => {
+    deleteDraftedEvents(currentEvent._id);
+    navigate("/all-events");
+  };
 
-            {!secondPageData.thumbnailPreview && (
-              <Box
-                position="relative"
-                padding="2"
-                color={"gray.500"}
-                width={"full"}
+  return (
+    <>
+      <Center>
+        <Box
+          bg={"white"}
+          rounded={"lg"}
+          padding={"5"}
+          width={"600px"}
+          marginY={"5"}
+        >
+          <form className="text-sm space-y-4">
+            <Box className="flex flex-col items-center gap-3 p-6 border-2 border-dashed rounded-2xl border-gray-300">
+              {!secondPageData.thumbnailPreview ? (
+                // Upload Box (only shows when no file is uploaded)
+                <Box
+                  {...getRootProps()}
+                  className="w-full flex flex-col items-center justify-center p-3 cursor-pointer"
+                >
+                  <input {...getInputProps()} />
+                  <Circle size={"50px"} bg={"#F0F2F5"}>
+                    <SlCloudUpload className="text-[#475367] text-xl" />
+                  </Circle>
+                  <Text className="text-gray-600 mt-2">
+                    <span className="text-orange-500 font-medium">
+                      Click to upload
+                    </span>{" "}
+                    or drag and drop
+                  </Text>
+                  <Text className="text-xs text-gray-400">
+                    SVG, PNG, JPG or GIF (max. 800×400px)
+                  </Text>
+                </Box>
+              ) : (
+                // Image Preview
+                <Box className="w-full flex flex-col items-center">
+                  <Image
+                    src={secondPageData.thumbnailPreview}
+                    alt="Uploaded preview"
+                    className="w-60 h-auto rounded-lg shadow-md"
+                  />
+                  <Text className="text-gray-500 mt-2">
+                    {secondPageData.thumbnail
+                      ? secondPageData.thumbnail.name
+                      : "Uploaded Image"}
+                  </Text>
+                  <Flex
+                    bg={"red.500"}
+                    color={"white"}
+                    size="md"
+                    mt={2}
+                    borderRadius={"full"}
+                    onClick={handleRemove}
+                    height={"40px"}
+                    width={"40px"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    _hover={{ cursor: "pointer", bg: "red.400" }}
+                  >
+                    <IoClose className="text-xl" />
+                  </Flex>
+                </Box>
+              )}
+
+              {!secondPageData.thumbnailPreview && (
+                <Box
+                  position="relative"
+                  padding="2"
+                  color={"gray.500"}
+                  width={"full"}
+                >
+                  <Divider />
+                  <AbsoluteCenter bg="white" px="4">
+                    OR
+                  </AbsoluteCenter>
+                </Box>
+              )}
+              {!secondPageData.thumbnailPreview && (
+                <Button
+                  bg={"#EB5017"}
+                  size={"md"}
+                  _hover={{ bg: "#e84a11" }}
+                  variant={"solid"}
+                  paddingY={"16px"}
+                  paddingX={"24px"}
+                  borderRadius={"lg"}
+                  color={"white"}
+                  fontWeight={"medium"}
+                  onClick={() => document.querySelector("input").click()}
+                >
+                  Browse Files
+                </Button>
+              )}
+            </Box>
+            <FormControl isInvalid={typeError !== ""}>
+              <FormLabel
+                fontWeight={"medium"}
+                fontSize={"small"}
+                color={"#475367"}
               >
-                <Divider />
-                <AbsoluteCenter bg="white" px="4">
-                  OR
-                </AbsoluteCenter>
-              </Box>
-            )}
-            {!secondPageData.thumbnailPreview && (
+                Event Type
+              </FormLabel>
+              <Select
+                name="type"
+                color="#475367"
+                fontWeight="normal"
+                fontSize={"small"}
+                placeholder="Select type"
+                _placeholder={{ color: "#98A2B3", fontSize: "small" }}
+                focusBorderColor="#FA9874"
+                borderRadius={"6px"}
+                value={secondPageData.type}
+                onChange={handleChange}
+              >
+                {eventType.map((type, index) => (
+                  <option value={type.enum} key={index}>
+                    {type.text}
+                  </option>
+                ))}
+              </Select>
+              {typeError && (
+                <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
+                  {typeError}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+            <FormControl isInvalid={locationError !== ""}>
+              <FormLabel
+                fontWeight={"medium"}
+                fontSize={"small"}
+                color={"#475367"}
+              >
+                Event Location
+              </FormLabel>
+              <Input
+                name="location"
+                type="text"
+                placeholder="Helix-Ace Event centre 123 helix Avenue, Port Harcourt, River state, Nigeria"
+                _placeholder={{ color: "#98A2B3", fontSize: "small" }}
+                focusBorderColor="#FA9874"
+                fontSize={"small"}
+                textTransform={"capitalize"}
+                value={secondPageData.location}
+                onChange={handleChange}
+              />
+              {locationError && (
+                <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
+                  {locationError}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+            <FormControl isInvalid={categoryError !== ""}>
+              <FormLabel
+                fontWeight={"medium"}
+                fontSize={"small"}
+                color={"#475367"}
+              >
+                Event Category
+              </FormLabel>
+              <Select
+                name="category"
+                color="#475367"
+                fontWeight="normal"
+                fontSize={"small"}
+                _placeholder={{ color: "#98A2B3", fontSize: "small" }}
+                focusBorderColor="#FA9874"
+                borderRadius={"6px"}
+                placeholder="Select category"
+                value={secondPageData.category}
+                onChange={handleChange}
+              >
+                {eventCategory.map((type, index) => (
+                  <option value={type.enum} key={index}>
+                    {type.text}
+                  </option>
+                ))}
+              </Select>
+              {categoryError && (
+                <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
+                  {categoryError}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+            <Text color={"#667185"} fontSize={"xs"}>
+              You can set up a{" "}
+              <Link color={"#8F2802"}>
+                custom domain or connect your email service provider
+              </Link>{" "}
+              to change this.
+            </Text>
+            <Flex gap={"20px"}>
               <Button
+                variant={"outline"}
+                width={"40%"}
+                color={"#EB5017"}
+                borderColor={"#EB5017"}
+                _hover={{ bg: "orange.50" }}
+                onClick={() =>
+                  navigate(`/edit-draft-step-one/${currentEvent._id}`)
+                }
+              >
+                Back
+              </Button>
+              <Button
+                onClick={handleSubmit}
+                width={"60%"}
                 bg={"#EB5017"}
                 size={"md"}
                 _hover={{ bg: "#e84a11" }}
@@ -266,140 +406,93 @@ const EditDraftsSecond = () => {
                 borderRadius={"lg"}
                 color={"white"}
                 fontWeight={"medium"}
-                onClick={() => document.querySelector("input").click()}
               >
-                Browse Files
+                Proceed
               </Button>
-            )}
+              <Button
+                variant={"outline"}
+                color={"red.600"}
+                borderColor={"red.600"}
+                _hover={{ bg: "red.50" }}
+                onClick={() => setPopUpMessage(true)}
+              >
+                <AiOutlineDelete className="text-3xl" />
+              </Button>
+            </Flex>
+          </form>
+        </Box>
+      </Center>
+
+      {/* pop up confirmation */}
+      {popUpMessage && (
+        <Box className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <Box
+            bg={"white"}
+            paddingX={"6"}
+            paddingY={"4"}
+            height={"fit-content"}
+            width={"350px"}
+            borderRadius={"8px"}
+          >
+            <Center>
+              <IoIosCloseCircleOutline className="text-9xl text-red-500" />
+            </Center>
+            <Heading
+              fontSize={"20px"}
+              fontWeight={"semibold"}
+              color={"gray.800"}
+              textAlign={"center"}
+            >
+              Confirm Delete
+            </Heading>
+            <Text
+              fontSize={"small"}
+              textAlign={"center"}
+              marginY={"2.5"}
+              color={"gray.600"}
+            >
+              Are you sure you wish to delete <br /> "
+              <strong className="capitalize">{currentEvent?.name}</strong>"?
+            </Text>
+            <Flex
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              marginTop={"2"}
+              marginX={"2.5"}
+              gap={"5"}
+            >
+              <Button
+                onClick={() => setPopUpMessage(false)}
+                variant={"outline"}
+                color={"#344054"}
+                bg={"gray.50"}
+                fontWeight={"medium"}
+                borderRadius={"lg"}
+                fontSize={"small"}
+                padding={"16px"}
+                width={"full"}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => handleDelete()}
+                bg={"red.500"}
+                _hover={{ bg: "red.600" }}
+                fontSize={"small"}
+                variant={"solid"}
+                padding={"16px"}
+                width={"full"}
+                borderRadius={"lg"}
+                color={"white"}
+                fontWeight={"medium"}
+              >
+                Delete Event
+              </Button>
+            </Flex>
           </Box>
-          <FormControl isInvalid={typeError !== ""}>
-            <FormLabel
-              fontWeight={"medium"}
-              fontSize={"small"}
-              color={"#475367"}
-            >
-              Event Type
-            </FormLabel>
-            <Select
-              name="type"
-              color="#475367"
-              fontWeight="normal"
-              fontSize={"small"}
-              placeholder="Select type"
-              _placeholder={{ color: "#98A2B3", fontSize: "small" }}
-              focusBorderColor="#FA9874"
-              borderRadius={"6px"}
-              value={secondPageData.type}
-              onChange={handleChange}
-            >
-              {eventType.map((type, index) => (
-                <option value={type.enum} key={index}>
-                  {type.text}
-                </option>
-              ))}
-            </Select>
-            {typeError && (
-              <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
-                {typeError}
-              </FormErrorMessage>
-            )}
-          </FormControl>
-          <FormControl isInvalid={locationError !== ""}>
-            <FormLabel
-              fontWeight={"medium"}
-              fontSize={"small"}
-              color={"#475367"}
-            >
-              Event Location
-            </FormLabel>
-            <Input
-              name="location"
-              type="text"
-              placeholder="Helix-Ace Event centre 123 helix Avenue, Port Harcourt, River state, Nigeria"
-              _placeholder={{ color: "#98A2B3", fontSize: "small" }}
-              focusBorderColor="#FA9874"
-              fontSize={"small"}
-              textTransform={"capitalize"}
-              value={secondPageData.location}
-              onChange={handleChange}
-            />
-            {locationError && (
-              <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
-                {locationError}
-              </FormErrorMessage>
-            )}
-          </FormControl>
-          <FormControl isInvalid={categoryError !== ""}>
-            <FormLabel
-              fontWeight={"medium"}
-              fontSize={"small"}
-              color={"#475367"}
-            >
-              Event Category
-            </FormLabel>
-            <Select
-              name="category"
-              color="#475367"
-              fontWeight="normal"
-              fontSize={"small"}
-              _placeholder={{ color: "#98A2B3", fontSize: "small" }}
-              focusBorderColor="#FA9874"
-              borderRadius={"6px"}
-              placeholder="Select category"
-              value={secondPageData.category}
-              onChange={handleChange}
-            >
-              {eventCategory.map((type, index) => (
-                <option value={type.enum} key={index}>
-                  {type.text}
-                </option>
-              ))}
-            </Select>
-            {categoryError && (
-              <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
-                {categoryError}
-              </FormErrorMessage>
-            )}
-          </FormControl>
-          <Text color={"#667185"} fontSize={"xs"}>
-            You can set up a{" "}
-            <Link color={"#8F2802"}>
-              custom domain or connect your email service provider
-            </Link>{" "}
-            to change this.
-          </Text>
-          <Flex gap={"20px"}>
-            <Button
-              variant={"outline"}
-              width={"40%"}
-              color={"#EB5017"}
-              borderColor={"#EB5017"}
-              _hover={{ bg: "orange.50" }}
-              onClick={() =>
-                navigate(`/edit-draft-step-one/${currentEvent._id}`)
-              }
-            >
-              Back
-            </Button>
-            <Button
-              onClick={handleSubmit}
-              width={"60%"}
-              bg={"#EB5017"}
-              size={"md"}
-              _hover={{ bg: "#e84a11" }}
-              variant={"solid"}
-              paddingY={"16px"}
-              paddingX={"24px"}
-              borderRadius={"lg"}
-              color={"white"}
-              fontWeight={"medium"}
-            >
-              Proceed
-            </Button>
-          </Flex>
-        </form>
-      </Box>
-    </Center>
+        </Box>
+      )}
+    </>
   );
 };
 

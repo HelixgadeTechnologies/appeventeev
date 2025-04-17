@@ -1,4 +1,6 @@
-import React, { useState, useContext } from "react";
+
+import { useState, useContext } from "react";
+
 import {
   Box,
   Button,
@@ -29,19 +31,12 @@ const SignIn = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [buttonText, setButtonText] = useState("Sign In");
   const [showPassword, setShowPassword] = useState(false);
-  const { setUserId, setIsVerified, setUserDetails } = useContext(UserAuthContext);
+  const { setUserId, setIsVerified, setUserDetails, setToken } = useContext(UserAuthContext);
   const navigate = useNavigate();
   const toast = useToast()
 
  
-  // useEffect(()=>{
 
-  //   if(userDetails){
-  //     navigate('/all-events')
-
-  //   }
-
-  // },[])
   
   const height = window.innerHeight
   const handleChange = (e) => {
@@ -50,57 +45,74 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setButtonText(<Spinner></Spinner>);
-
+    setButtonText(<Spinner />);
+  
+    console.log("🟠 Submitting login with:", formData);
+  
     try {
-      const response = await axios.post("https://eventeevapi.onrender.com/auth/login", formData);
+      const response = await axios.post(
+        "https://eventeevapi.onrender.com/auth/login",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      console.log("🟢 Login successful:", response.data);
+  
       if (response.status === 200 || response.status === 201) {
-     //   toast.success("Login successful! 🎉");
-     toast({
-      title:'Successful Login',
-      description: "you've successfully logged in",
-      status:"success",
-      duration:3000,
-      isClosable:true,
-      position:"top-right",
-     })
-
+        toast({
+          title: "Successful Login",
+          description: "You've successfully logged in",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+        });
+  
         const userData = response.data.user;
-
         const authToken = response.data.token;
-
+  
         setUserId(userData._id);
         setIsVerified(userData.isVerified);
-        setUserDetails(userData)
+        setUserDetails(userData);
+        setToken(authToken)
+  
         localStorage.setItem("token", JSON.stringify(authToken));
         localStorage.setItem("userId", JSON.stringify(userData._id));
         localStorage.setItem("userDetails", JSON.stringify(userData));
-
-        console.log("Login successful:", response.data);
-        console.log("User ID:", userData._id);
-        
-
-        navigate("/all-events");
+       
+  
+        console.log("🆔 User ID:", userData._id);
+        console.log("🔐 Token:", authToken);
       }
-      // window.location.reload();
+  
+      setTimeout(() => {
+        navigate("/all-events");
+      }, 200);
     } catch (error) {
-   //   toast.error(error.response?.data?.message || "Login failed. Please try again.");
+      console.log("🔴 Login failed:");
+      console.log("Full Error Object:", error);
+      console.log("Response Data:", error.response?.data);
+      console.log("Status:", error.response?.status);
+  
       toast({
-        title:`${error.message}`,
+        title: `${error.message}`,
         description: `${error.response?.data?.message || "Login failed. Please try again."}`,
-        status:"error",
-        duration:3000,
-        isClosable:true,
-        position:"top-right",
-       })
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      });
+  
       setButtonText("Try Again");
-
-      console.log(error);
-      
-    }finally{
-      setButtonText('Sign Up')
+    } finally {
+      setButtonText("Sign In");
     }
   };
+  
 
 
   return (
@@ -142,7 +154,7 @@ const SignIn = () => {
           <Stack spacing={3}>
             <FormControl>
               <FormLabel fontSize={'smaller'}>Email Address</FormLabel>
-              <Input focusBorderColor="#f56630" type="email" name="email" value={formData.email} onChange={handleChange} required />
+              <Input fontSize={'14px'} focusBorderColor="#f56630" type="email" name="email" value={formData.email} onChange={handleChange} required />
             </FormControl>
 
             <FormControl>
@@ -157,11 +169,11 @@ const SignIn = () => {
               </InputGroup>
             </FormControl>
 
-             <Flex justify="space-between" fontSize="sm" alignItems="center">
+             <Flex justify="space-between" alignItems="center">
               <Checkbox colorScheme="orange">
-              <chakra.span fontSize="x-small">Remember me for 30 days</chakra.span>
+              <Text className="text-[12px]">Remember me for 30 days</Text>
              </Checkbox>
-             <Link fontStyle={'small'} color="orange.500" fontSize="sm" onClick={() => navigate('/forgot-password')}>Forgot Password?</Link>
+             <Link  color="orange.500" fontSize="12px" onClick={() => navigate('/forgot-password')}>Forgot Password?</Link>
            </Flex>
 
 

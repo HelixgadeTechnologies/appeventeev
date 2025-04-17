@@ -51,6 +51,7 @@
 .smallFont{
     font-size: 13px;
 }
+
 .settingsGrid{
     display: grid;
     grid-template-columns: 100%;
@@ -60,6 +61,8 @@
     display: grid;
     grid-template-columns: 30% 70%;
 }
+
+
 
 .dots {
   width: 3.5em;

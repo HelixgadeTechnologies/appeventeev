@@ -8,6 +8,7 @@ import {
   Tab,
   TabPanel,
   TabPanels,
+  Center,
 } from "@chakra-ui/react";
 import LiveEvents from "../../components/LiveEvents";
 import DraftedEvents from "../../components/DraftedEvents";
@@ -19,12 +20,16 @@ import NoStatePage from "../../components/NoStatePage";
 const AllEventsPage = () => {
   const navigate = useNavigate();
 
-  const { publishedEvents, draftedEvents } = useContext(EventContext);
+  const { publishedEvents, draftedEvents, publishedEventsLoading } = useContext(EventContext);
 
   return (
     <>
-      {publishedEvents.length > 0 || draftedEvents.length > 0 ? (
-        <Box paddingY={"20px"} position={"relative"}>
+      {publishedEventsLoading ? (
+        <Center height={"60vh"}>
+          <Box className="loader"></Box>
+        </Center>
+      ) : publishedEvents.length > 0 || draftedEvents.length > 0 ? (
+        <Box paddingY={"20px"} position={"relative"} bg={"#f9fafb"} height={"full"}marginX={"5"}>
           <Flex justifyContent={"space-between"} alignItems={"start"}>
             <Box width={"full"}>
               <Tabs colorScheme={"orange"}>

@@ -37,7 +37,7 @@ const DraftedEvents = () => {
                 onDelete={() => deleteDraftedEvents(event._id)}
                 editRoute={`/edit-draft-step-one/${event._id}`}
                 isDrafted={true}
-                detailsRoute={`/all-events-draft/${event._id}`}
+                // detailsRoute={`/all-events-draft/${event._id}`}
               />
             </GridItem>
           ))}

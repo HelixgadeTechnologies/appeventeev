@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
@@ -33,6 +33,27 @@ const SignUp = () => {
   const navigate = useNavigate();
   const { setToken, 
   } = useContext(UserAuthContext);
+
+  const [gap, setGap] = useState({gaps:'', margin:'', mt:2});
+
+  useEffect(() => {
+    const handleResize = () => {
+      const screenHeight = window.innerHeight;
+      if (screenHeight > 600) {
+        setGap({ gaps: '30px', margin: '270px', mt:8 });
+      } else {
+        setGap({ gaps: '4px', margin: '160px', mt:2 });
+      }
+    };
+  
+    handleResize(); // Run on mount
+    window.addEventListener('resize', handleResize);
+  
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+  
 
   const [button, setButton] = useState("Sign Up");
 
@@ -71,7 +92,7 @@ const SignUp = () => {
 
   return (
     <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} minH="100vh">
-      <Box position="absolute" top="-7" left="4" zIndex="10">
+      <Box position="absolute" top="-7" left="4" zIndex="10" className="max-sm:w-0">
         <Image
           src="https://res.cloudinary.com/dnou1zvji/image/upload/v1741567378/7da8bbfcdabdcf31233ff8e8a1e2135a_oclnkb.png"
           alt="Eventeev Logo"
@@ -95,18 +116,18 @@ const SignUp = () => {
           objectFit="cover"
           opacity="0.85"
         />
-        <VStack position="absolute" px="10" color="white" top="40">
-          <Heading size="2xl" textAlign="left">
+        <VStack position="absolute" px="10" color="white" top={gap.margin} display={'flex'} flexDirection={'column'} alignItems={'start'} gap={gap.gaps}>
+          <Heading fontSize={'55px'} textAlign="left">
             Elevate your Event Workflow with Eventeev
           </Heading>
-          <Text fontSize="sm" pr="52">
+          <Text fontSize="15px" width={'420px'} color={'#c0bcb8'} >
             Our comprehensive Event platform offers you an unparalleled range of
             event components, sparking creativity and boosting efficiency.
           </Text>
         </VStack>
       </Flex>
 
-      <Flex justify="center" p={{ base: 6, md: 10 }} h="100vh" overflow="hidden">
+      <Flex justify="center" p={{ base: 6, md: 10 }} h="100vh" overflow="hidden" mt={gap.mt}>
         <Box maxW="md" w="full">
           <Heading size="lg" mb="8">Sign up</Heading>
           <form onSubmit={handleSubmit}>
@@ -139,9 +160,9 @@ const SignUp = () => {
                 </InputRightElement>
               </InputGroup>
             </FormControl>
-            <Button type="submit" w="full" mt={4} colorScheme="orange" isLoading={button === "Loading..."}>{button}</Button>
+            <Button type="submit" w="full" mt={4} bg={'#eb5017'} color={'white'} isLoading={button === "Loading..."}>{button}</Button>
           </form>
-          <Text fontSize="sm" mt={2}>
+          <Text fontSize="sm" mt={gap.mt} textAlign={'center'} >
             Already have an account?{' '}
             <Link to="/" style={{ color: "#f56630", fontWeight: "bold" }}>Log in</Link>
           </Text>

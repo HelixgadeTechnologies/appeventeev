@@ -349,13 +349,9 @@ const CreateEventFirst = () => {
               </FormLabel>
               <Switch id="recurrent-event" colorScheme="orange" />
             </FormControl>
-            <Text color={"#667185"} fontSize={"xs"}>
-              You can set up a {""}
-              <Link color={"#8F2802"}>
-                custom domain or connect your email service provider
-              </Link>{" "}
-              to change this.
-            </Text>
+          <Text color={"#667185"} fontSize={"xs"}>
+            You can add dummy information and save to drafts if you don't wish to publish your event yet.
+          </Text>
           </Box>
           <Flex gap={"20px"}>
             <Button
