@@ -11,6 +11,7 @@ import {
   Flex,
   Icon,
   Grid,
+  Spinner,
 } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -24,14 +25,7 @@ const ProfileSettings = () => {
   const toast = useToast();
   const navigate = useNavigate();
 
-  const { _id } = userDetails;
-  const {
-    firstname,
-    lastname,
-    email,
-    organisationName,
-    organisationWebsite,
-  } = userDetails;
+  const { _id, firstname, lastname, email, organisationName, organisationWebsite } = userDetails;
 
   const [formData, setFormData] = useState({
     profilePhoto: "",
@@ -46,6 +40,8 @@ const ProfileSettings = () => {
     organizationSize: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -56,6 +52,7 @@ const ProfileSettings = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.put(
         `https://eventeevapi.onrender.com/user/updateuser/${_id}`,
@@ -67,142 +64,103 @@ const ProfileSettings = () => {
           },
         }
       );
-      console.log(response);
-      
 
-      toast({
-        title: "Update successful",
-        description: "User details have been updated",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-        position: "top-right",
-      });
-      navigate(-1);
+      if (response.status === 200 || response.status === 201) {
+        toast({
+          title: "Profile updated",
+          description: "Your profile information was successfully updated.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+        });
+        navigate(-1);
+      } else {
+        throw new Error("Unexpected server response");
+      }
     } catch (error) {
-      console.error(error.message);
       toast({
         title: "Update failed",
-        description: `${error.message || "Update failed. Please try again."}`,
+        description: error.message || "Something went wrong. Please try again.",
         status: "error",
-        duration: 5000,
+        duration: 4000,
         isClosable: true,
         position: "top-right",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <Box maxW="98%" mx="auto" mt={10} p={6} bg="white" borderRadius="md" boxShadow="md">
-      {/* Profile Header */}
-      <Flex align="center" gap={4} mb={6}>
-        <Icon as={CgProfile} boxSize={20} />
+    <Box maxW="" mx="auto" mt={8} p={5} bg="white" borderRadius="md" boxShadow="md">
+      <Flex align="center" gap={3} mb={6}>
+        <Icon as={CgProfile} boxSize={12} />
         <Box>
           <Text fontSize="md" fontWeight="semibold">{`${firstname} ${lastname}`}</Text>
           <Text fontSize="sm" color="gray.500">{email}</Text>
         </Box>
       </Flex>
 
-      {/* Form */}
       <form onSubmit={handleSubmit}>
-        <Stack spacing={4}>
-          <Flex gap={4}>
+        <Stack spacing={3}>
+          <Flex gap={3}>
             <FormControl isRequired>
-              <FormLabel fontSize="sm" requiredIndicator={null}>First Name</FormLabel>
-              <Input
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                focusBorderColor="#f56630"
-              />
+              <FormLabel  requiredIndicator={null}  fontSize="xs">First Name</FormLabel>
+              <Input name="firstName" value={formData.firstName} onChange={handleChange} size="sm" />
             </FormControl>
             <FormControl isRequired>
-              <FormLabel fontSize="sm" requiredIndicator={null} >Last Name</FormLabel>
-              <Input
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                focusBorderColor="#f56630"
-              />
+              <FormLabel  requiredIndicator={null}  fontSize="xs">Last Name</FormLabel>
+              <Input name="lastName" value={formData.lastName} onChange={handleChange} size="sm" />
             </FormControl>
           </Flex>
 
-          <Flex gap={4}>
+          <Flex gap={3}>
             <FormControl>
-              <FormLabel fontSize="sm">Email</FormLabel>
-              <Input name="email" value={formData.email} isDisabled />
+              <FormLabel  fontSize="xs">Email</FormLabel>
+              <Input name="email" value={formData.email} isDisabled size="sm" />
             </FormControl>
             <FormControl>
-              <FormLabel fontSize="sm">Gender</FormLabel>
-              <Input
-                name="gender"
-                value={formData.gender}
-                onChange={handleChange}
-                focusBorderColor="#f56630"
-              />
+              <FormLabel fontSize="xs">Gender</FormLabel>
+              <Select name="gender" value={formData.gender} onChange={handleChange} size="sm">
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </Select>
             </FormControl>
           </Flex>
 
-          <Flex gap={4}>
+          <Flex gap={3}>
             <FormControl>
-              <FormLabel fontSize="sm">Time Zone</FormLabel>
-              <Select
-                name="timeZone"
-                value={formData.timeZone}
-                onChange={handleChange}
-                focusBorderColor="#f56630"
-              >
-
+              <FormLabel fontSize="xs">Time Zone</FormLabel>
+              <Select name="timeZone" value={formData.timeZone} onChange={handleChange} size="sm">
                 <option value="">Select Time Zone</option>
                 {timeZones.map((tz) => (
-                  <option key={tz.value} value={tz.value}>
-                    {tz.label}
-                  </option>
+                  <option key={tz.value} value={tz.value}>{tz.label}</option>
                 ))}
               </Select>
             </FormControl>
-
             <FormControl>
-              <FormLabel fontSize="sm">Country</FormLabel>
-              <Input
-                name="country"
-                value={formData.country}
-                onChange={handleChange}
-                focusBorderColor="#f56630"
-              />
+              <FormLabel fontSize="xs">Country</FormLabel>
+              <Input name="country" value={formData.country} onChange={handleChange} size="sm" />
             </FormControl>
           </Flex>
 
-          <Flex gap={4}>
+          <Flex gap={3}>
             <FormControl>
-              <FormLabel fontSize="sm">Organization Name</FormLabel>
-              <Input
-                name="organization"
-                value={formData.organization}
-                onChange={handleChange}
-                focusBorderColor="#f56630"
-              />
+              <FormLabel fontSize="xs">Organization Name</FormLabel>
+              <Input name="organization" value={formData.organization} onChange={handleChange} size="sm" />
             </FormControl>
-
             <FormControl>
-              <FormLabel fontSize="sm">Organization Website</FormLabel>
-              <Input
-                name="website"
-                value={formData.website}
-                onChange={handleChange}
-                focusBorderColor="#f56630"
-              />
+              <FormLabel fontSize="xs">Organization Website</FormLabel>
+              <Input name="website" value={formData.website} onChange={handleChange} size="sm" />
             </FormControl>
           </Flex>
 
           <FormControl>
-            <FormLabel fontSize="sm">Organization Size</FormLabel>
-            <Select
-              name="organizationSize"
-              value={formData.organizationSize}
-              onChange={handleChange}
-              focusBorderColor="#f56630"
-            >
+            <FormLabel fontSize="xs">Organization Size</FormLabel>
+            <Select name="organizationSize" value={formData.organizationSize} onChange={handleChange} size="sm">
               <option value="">Select size</option>
               <option value="1 - 20">1 - 20</option>
               <option value="21 - 50">21 - 50</option>
@@ -211,12 +169,11 @@ const ProfileSettings = () => {
             </Select>
           </FormControl>
 
-          {/* Buttons */}
-          <Grid  justify="flex-end" gridTemplateColumns={'20% 80%'} gap={4} pt={4}>
-            <Button onClick={() => navigate(-1)} variant="outline" colorScheme="gray" fontSize={'small'}>
+          <Grid templateColumns="repeat(2, 1fr)" gap={3} pt={2}>
+            <Button onClick={() => navigate(-1)} variant="outline" colorScheme="gray" size="sm">
               Cancel
             </Button>
-            <Button type="submit" colorScheme="orange" flex="1" fontSize={'small'}>
+            <Button type="submit" colorScheme="orange" size="sm" isLoading={loading} loadingText="Saving...">
               Save Changes
             </Button>
           </Grid>
