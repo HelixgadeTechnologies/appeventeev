@@ -17,6 +17,7 @@ import { CgProfile } from "react-icons/cg";
 import axios from "axios";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
 import { timeZones } from "../../utils/utils";
+import countryList from "react-select-country-list";
 
 const ProfileSettings = () => {
   const { userDetails, token } = useContext(UserAuthContext);
@@ -47,6 +48,9 @@ const ProfileSettings = () => {
     organizationSize: "",
   });
 
+  const countryOptions = countryList().getData();
+  const genderOptions = ["Male", "Female"];
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -70,7 +74,6 @@ const ProfileSettings = () => {
       );
 
       console.log(response.data);
-      
 
       toast({
         title: "Update successful",
@@ -85,7 +88,7 @@ const ProfileSettings = () => {
       console.error(error.message);
       toast({
         title: "Update failed",
-        description: `${error.message || "Uzsd`pdate failed. Please try again."}`,
+        description: `${error.message || "Update failed. Please try again."}`,
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -164,19 +167,26 @@ const ProfileSettings = () => {
                 height="32px"
               />
             </FormControl>
+
             <FormControl>
               <FormLabel fontSize="xs" mb={1}>
                 Gender
               </FormLabel>
-              <Input
+              <Select
                 name="gender"
                 value={formData.gender}
                 onChange={handleChange}
                 focusBorderColor="#f56630"
                 fontSize="sm"
-                py={1}
                 height="32px"
-              />
+              >
+                <option value="">Select Gender</option>
+                {genderOptions.map((gender) => (
+                  <option key={gender} value={gender}>
+                    {gender}
+                  </option>
+                ))}
+              </Select>
             </FormControl>
           </Flex>
 
@@ -206,15 +216,21 @@ const ProfileSettings = () => {
               <FormLabel fontSize="xs" mb={1}>
                 Country
               </FormLabel>
-              <Input
+              <Select
                 name="country"
                 value={formData.country}
                 onChange={handleChange}
                 focusBorderColor="#f56630"
                 fontSize="sm"
-                py={1}
                 height="32px"
-              />
+              >
+                <option value="">Select Country</option>
+                {countryOptions.map((country) => (
+                  <option key={country.value} value={country.label}>
+                    {country.label}
+                  </option>
+                ))}
+              </Select>
             </FormControl>
           </Flex>
 
