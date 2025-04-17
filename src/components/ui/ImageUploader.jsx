@@ -54,7 +54,7 @@ const ImageUploader = ({ onFileChange, initialPreview = null }) => {
       {!preview ? (
         <Box
           {...getRootProps()}
-          className="w-full flex flex-col items-center justify-center p-3 cursor-pointer"
+          className="w-full flex flex-col items-center justify-center p-3 cursor-pointer h-[200px]"
         >
           <input {...getInputProps()} />
           <Circle size={"50px"} bg={"#F0F2F5"}>
@@ -69,14 +69,16 @@ const ImageUploader = ({ onFileChange, initialPreview = null }) => {
           </Text>
         </Box>
       ) : (
-        <Box className="w-full flex flex-col items-center">
+        <Box className="w-full flex flex-col items-center h-[250px]">
           {/* Check if preview exists before rendering the image */}
           {preview && (
             <Image
-              src={preview}
-              alt="Uploaded preview"
-              className="w-40 h-40 object-cover rounded-lg shadow-md"
-            />
+            src={preview}
+            alt="Uploaded preview"
+            objectFit="cover"
+            height="100%"
+            width="100%"
+          />
           )}
           <Text className="text-gray-500 mt-2">{file?.name || "Uploaded Image"}</Text>
           <Flex

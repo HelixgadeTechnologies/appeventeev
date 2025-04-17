@@ -15,8 +15,11 @@ import {
   Center,
   Text,
   FormErrorMessage,
+  Heading,
 } from "@chakra-ui/react";
 import { BiError } from "react-icons/bi";
+import { AiOutlineDelete } from "react-icons/ai";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
 const EditDraftsFirst = () => {
   const {
@@ -24,12 +27,16 @@ const EditDraftsFirst = () => {
     draftedEventsLoading,
     draftedEventsError,
     convertTo24HourFormat,
+    deleteDraftedEvents,
     formatDate,
     formatTime,
   } = useContext(EventContext);
   const navigate = useNavigate();
   const { id } = useParams();
   const currentEvent = draftedEvents.find((event) => event._id === id);
+
+  // for confirming delete
+  const [popUpMessage, setPopUpMessage] = useState(false);
 
   const [firstPageData, setFirstPageData] = useState({
     name: "",
@@ -192,220 +199,319 @@ const EditDraftsFirst = () => {
       }
     }
   };
-  return (
-    <Center>
-      <Box
-        bg={"white"}
-        rounded={"lg"}
-        padding={"5"}
-        width={"600px"}
-        marginY={"5"}
-      >
-        <form action="" className="space-y-6 text-sm">
-          <FormControl isInvalid={nameError !== ""}>
-            <FormLabel
-              fontWeight={"medium"}
-              fontSize={"small"}
-              color={"#475367"}
-            >
-              Event Name
-            </FormLabel>
-            <Input
-              name="name"
-              type="text"
-              placeholder="Enter Subject"
-              _placeholder={{ color: "#98A2B3", fontSize: "small" }}
-              focusBorderColor="#FA9874"
-              fontSize={"small"}
-              textTransform={"capitalize"}
-              value={firstPageData.name}
-              onChange={handleChange}
-            />
-            {nameError && (
-              <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
-                {nameError}
-              </FormErrorMessage>
-            )}
-          </FormControl>
-          <FormControl isInvalid={descriptionError !== ""}>
-            <FormLabel
-              fontWeight={"medium"}
-              fontSize={"small"}
-              color={"#475367"}
-            >
-              Event Description
-            </FormLabel>
-            <Textarea
-              name="description"
-              resize={"none"}
-              size={"md"}
-              placeholder="Enter text here..."
-              _placeholder={{ color: "#98A2B3", fontSize: "small" }}
-              focusBorderColor="#FA9874"
-              fontSize={"small"}
-              value={firstPageData.description}
-              onChange={handleChange}
-            />
-            {descriptionError && (
-              <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
-                {descriptionError}
-              </FormErrorMessage>
-            )}
-          </FormControl>
 
-          <Grid
-            templateColumns={"repeat(2,1fr)"}
-            templateRows={"repeat(2,1fr)"}
-            gap={"20px"}
-            paddingBottom={"2"}
+  const handleDelete = () => {
+    deleteDraftedEvents(currentEvent._id)
+    navigate("/all-events");
+  };
+
+  return (
+    <>
+      <Center>
+        <Box
+          bg={"white"}
+          rounded={"lg"}
+          padding={"5"}
+          width={"600px"}
+          marginY={"5"}
+        >
+          <form action="" className="space-y-6 text-sm">
+            <FormControl isInvalid={nameError !== ""}>
+              <FormLabel
+                fontWeight={"medium"}
+                fontSize={"small"}
+                color={"#475367"}
+              >
+                Event Name
+              </FormLabel>
+              <Input
+                name="name"
+                type="text"
+                placeholder="Enter Subject"
+                _placeholder={{ color: "#98A2B3", fontSize: "small" }}
+                focusBorderColor="#FA9874"
+                fontSize={"small"}
+                textTransform={"capitalize"}
+                value={firstPageData.name}
+                onChange={handleChange}
+              />
+              {nameError && (
+                <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
+                  {nameError}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+            <FormControl isInvalid={descriptionError !== ""}>
+              <FormLabel
+                fontWeight={"medium"}
+                fontSize={"small"}
+                color={"#475367"}
+              >
+                Event Description
+              </FormLabel>
+              <Textarea
+                name="description"
+                resize={"none"}
+                size={"md"}
+                placeholder="Enter text here..."
+                _placeholder={{ color: "#98A2B3", fontSize: "small" }}
+                focusBorderColor="#FA9874"
+                fontSize={"small"}
+                value={firstPageData.description}
+                onChange={handleChange}
+              />
+              {descriptionError && (
+                <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
+                  {descriptionError}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+
+            <Grid
+              templateColumns={"repeat(2,1fr)"}
+              templateRows={"repeat(2,1fr)"}
+              gap={"20px"}
+              paddingBottom={"2"}
+            >
+              <GridItem>
+                <FormControl isInvalid={startDateError !== ""}>
+                  <FormLabel
+                    fontWeight={"medium"}
+                    fontSize={"small"}
+                    color={"#475367"}
+                  >
+                    Event Start Date
+                  </FormLabel>
+                  <Input
+                    name="startDate"
+                    min={today}
+                    type={"date"}
+                    placeholder="01 September 2024"
+                    _placeholder={{ color: "#98A2B3", fontSize: "small" }}
+                    focusBorderColor="#FA9874"
+                    fontSize={"small"}
+                    textTransform={"capitalize"}
+                    value={firstPageData.startDate}
+                    onChange={handleChange}
+                  />
+                  {startDateError && (
+                    <FormErrorMessage
+                      fontSize={"x-small"}
+                      fontWeight={"normal"}
+                    >
+                      {startDateError}
+                    </FormErrorMessage>
+                  )}
+                </FormControl>
+              </GridItem>
+              <GridItem>
+                <FormControl isInvalid={endDateError !== ""}>
+                  <FormLabel
+                    fontWeight={"medium"}
+                    fontSize={"small"}
+                    color={"#475367"}
+                  >
+                    Event End Date
+                  </FormLabel>
+                  <Input
+                    name="endDate"
+                    min={today}
+                    type={"date"}
+                    placeholder="01 September 2024"
+                    _placeholder={{ color: "#98A2B3", fontSize: "small" }}
+                    focusBorderColor="#FA9874"
+                    fontSize={"small"}
+                    textTransform={"capitalize"}
+                    value={firstPageData.endDate}
+                    onChange={handleChange}
+                  />
+                  {endDateError && (
+                    <FormErrorMessage
+                      fontSize={"x-small"}
+                      fontWeight={"normal"}
+                    >
+                      {endDateError}
+                    </FormErrorMessage>
+                  )}
+                </FormControl>
+              </GridItem>
+              <GridItem>
+                <FormControl isInvalid={startTimeError !== ""}>
+                  <FormLabel
+                    fontWeight={"medium"}
+                    fontSize={"small"}
+                    color={"#475367"}
+                  >
+                    Event Start Time
+                  </FormLabel>
+                  <Input
+                    name="startTime"
+                    type={"time"}
+                    min={
+                      firstPageData.startDate === today
+                        ? getCurrentTime()
+                        : undefined
+                    }
+                    placeholder="01:00 AM"
+                    _placeholder={{ color: "#98A2B3", fontSize: "small" }}
+                    focusBorderColor="#FA9874"
+                    fontSize={"small"}
+                    textTransform={"capitalize"}
+                    value={firstPageData.startTime}
+                    onChange={handleChange}
+                  />
+                  {startTimeError && (
+                    <FormErrorMessage
+                      fontSize={"x-small"}
+                      fontWeight={"normal"}
+                    >
+                      {startTimeError}
+                    </FormErrorMessage>
+                  )}
+                </FormControl>
+              </GridItem>
+              <GridItem>
+                <FormControl isInvalid={endTimeError !== ""}>
+                  <FormLabel
+                    fontWeight={"medium"}
+                    fontSize={"small"}
+                    color={"#475367"}
+                  >
+                    Event End Time
+                  </FormLabel>
+                  <Input
+                    name="endTime"
+                    type="time"
+                    placeholder="01:00 PM"
+                    _placeholder={{ color: "#98A2B3", fontSize: "small" }}
+                    focusBorderColor="#FA9874"
+                    fontSize={"small"}
+                    textTransform={"capitalize"}
+                    value={firstPageData.endTime}
+                    onChange={handleChange}
+                  />
+                  {endTimeError && (
+                    <FormErrorMessage
+                      fontSize={"x-small"}
+                      fontWeight={"normal"}
+                    >
+                      {endTimeError}
+                    </FormErrorMessage>
+                  )}
+                </FormControl>
+              </GridItem>
+            </Grid>
+            <Divider />
+            <Flex gap={"20px"}>
+              <Button
+                variant={"outline"}
+                width={"40%"}
+                color={"#EB5017"}
+                borderColor={"#EB5017"}
+                _hover={{ bg: "orange.50" }}
+                onClick={() => navigate("/all-events")}
+              >
+                Back
+              </Button>
+              <Button
+                onClick={() => handleSubmit()}
+                width={"60%"}
+                bg={"#EB5017"}
+                size={"md"}
+                _hover={{ bg: "#e84a11" }}
+                variant={"solid"}
+                paddingY={"16px"}
+                paddingX={"24px"}
+                borderRadius={"lg"}
+                color={"white"}
+                fontWeight={"medium"}
+              >
+                Proceed
+              </Button>
+              <Button
+                variant={"outline"}
+                color={"red.600"}
+                borderColor={"red.600"}
+                _hover={{ bg: "red.50" }}
+                onClick={() => setPopUpMessage(true)}
+              >
+                <AiOutlineDelete className="text-3xl" />
+              </Button>
+            </Flex>
+          </form>
+        </Box>
+      </Center>
+
+      {/* pop up confirmation */}
+      {popUpMessage && (
+        <Box className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <Box
+            bg={"white"}
+            paddingX={"6"}
+            paddingY={"4"}
+            height={"fit-content"}
+            width={"350px"}
+            borderRadius={"8px"}
           >
-            <GridItem>
-              <FormControl isInvalid={startDateError !== ""}>
-                <FormLabel
-                  fontWeight={"medium"}
-                  fontSize={"small"}
-                  color={"#475367"}
-                >
-                  Event Start Date
-                </FormLabel>
-                <Input
-                  name="startDate"
-                  min={today}
-                  type={"date"}
-                  placeholder="01 September 2024"
-                  _placeholder={{ color: "#98A2B3", fontSize: "small" }}
-                  focusBorderColor="#FA9874"
-                  fontSize={"small"}
-                  textTransform={"capitalize"}
-                  value={firstPageData.startDate}
-                  onChange={handleChange}
-                />
-                {startDateError && (
-                  <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
-                    {startDateError}
-                  </FormErrorMessage>
-                )}
-              </FormControl>
-            </GridItem>
-            <GridItem>
-              <FormControl isInvalid={endDateError !== ""}>
-                <FormLabel
-                  fontWeight={"medium"}
-                  fontSize={"small"}
-                  color={"#475367"}
-                >
-                  Event End Date
-                </FormLabel>
-                <Input
-                  name="endDate"
-                  min={today}
-                  type={"date"}
-                  placeholder="01 September 2024"
-                  _placeholder={{ color: "#98A2B3", fontSize: "small" }}
-                  focusBorderColor="#FA9874"
-                  fontSize={"small"}
-                  textTransform={"capitalize"}
-                  value={firstPageData.endDate}
-                  onChange={handleChange}
-                />
-                {endDateError && (
-                  <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
-                    {endDateError}
-                  </FormErrorMessage>
-                )}
-              </FormControl>
-            </GridItem>
-            <GridItem>
-              <FormControl isInvalid={startTimeError !== ""}>
-                <FormLabel
-                  fontWeight={"medium"}
-                  fontSize={"small"}
-                  color={"#475367"}
-                >
-                  Event Start Time
-                </FormLabel>
-                <Input
-                  name="startTime"
-                  type={"time"}
-                  min={
-                    firstPageData.startDate === today
-                      ? getCurrentTime()
-                      : undefined
-                  }
-                  placeholder="01:00 AM"
-                  _placeholder={{ color: "#98A2B3", fontSize: "small" }}
-                  focusBorderColor="#FA9874"
-                  fontSize={"small"}
-                  textTransform={"capitalize"}
-                  value={firstPageData.startTime}
-                  onChange={handleChange}
-                />
-                {startTimeError && (
-                  <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
-                    {startTimeError}
-                  </FormErrorMessage>
-                )}
-              </FormControl>
-            </GridItem>
-            <GridItem>
-              <FormControl isInvalid={endTimeError !== ""}>
-                <FormLabel
-                  fontWeight={"medium"}
-                  fontSize={"small"}
-                  color={"#475367"}
-                >
-                  Event End Time
-                </FormLabel>
-                <Input
-                  name="endTime"
-                  type="time"
-                  placeholder="01:00 PM"
-                  _placeholder={{ color: "#98A2B3", fontSize: "small" }}
-                  focusBorderColor="#FA9874"
-                  fontSize={"small"}
-                  textTransform={"capitalize"}
-                  value={firstPageData.endTime}
-                  onChange={handleChange}
-                />
-                {endTimeError && (
-                  <FormErrorMessage fontSize={"x-small"} fontWeight={"normal"}>
-                    {endTimeError}
-                  </FormErrorMessage>
-                )}
-              </FormControl>
-            </GridItem>
-          </Grid>
-          <Divider />
-          <Flex gap={"20px"}>
-            <Button
-              variant={"outline"}
-              width={"40%"}
-              color={"#EB5017"}
-              borderColor={"#EB5017"}
-              _hover={{ bg: "orange.50" }}
-              onClick={() => navigate("/all-events")}
+            <Center>
+              <IoIosCloseCircleOutline className="text-9xl text-red-500" />
+            </Center>
+            <Heading
+              fontSize={"20px"}
+              fontWeight={"semibold"}
+              color={"gray.800"}
+              textAlign={"center"}
             >
-              Back
-            </Button>
-            <Button
-              onClick={() => handleSubmit()}
-              width={"60%"}
-              bg={"#EB5017"}
-              size={"md"}
-              _hover={{ bg: "#e84a11" }}
-              variant={"solid"}
-              paddingY={"16px"}
-              paddingX={"24px"}
-              borderRadius={"lg"}
-              color={"white"}
-              fontWeight={"medium"}
+              Confirm Delete
+            </Heading>
+            <Text
+              fontSize={"small"}
+              textAlign={"center"}
+              marginY={"2.5"}
+              color={"gray.600"}
             >
-              Proceed
-            </Button>
-          </Flex>
-        </form>
-      </Box>
-    </Center>
+              Are you sure you wish to delete <br /> "
+              <strong className="capitalize">{currentEvent?.name}</strong>"?
+            </Text>
+            <Flex
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              marginTop={"2"}
+              marginX={"2.5"}
+              gap={"5"}
+            >
+              <Button
+                onClick={() => setPopUpMessage(false)}
+                variant={"outline"}
+                color={"#344054"}
+                bg={"gray.50"}
+                fontWeight={"medium"}
+                borderRadius={"lg"}
+                fontSize={"small"}
+                padding={"16px"}
+                width={"full"}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => handleDelete()}
+                bg={"red.500"}
+                _hover={{ bg: "red.600" }}
+                fontSize={"small"}
+                variant={"solid"}
+                padding={"16px"}
+                width={"full"}
+                borderRadius={"lg"}
+                color={"white"}
+                fontWeight={"medium"}
+              >
+                Delete Event
+              </Button>
+            </Flex>
+          </Box>
+        </Box>
+      )}
+    </>
   );
 };
 

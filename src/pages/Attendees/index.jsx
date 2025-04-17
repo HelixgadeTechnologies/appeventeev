@@ -41,11 +41,9 @@ const Attendees = () => {
     setIsDropDownOpen(!isDropDownOpen);
   };
 
-  const { ticketData } = useContext(TicketContext);
-  console.log(ticketData);
-
-  const { getAttendees } = useContext(EventContext);
   const { id } = useParams();
+  const { publishedEvents } = useContext(EventContext)
+  const currentEvent = publishedEvents.find((event) => event._id === id);
   
   // if (!ticketData) {
   //   return (
@@ -122,6 +120,7 @@ const Attendees = () => {
       bg={"white"}
     >
       {/* tools and filters */}
+      {/* {currentEvent.name} */}
       <Flex justifyContent={"space-between"} alignItems={"center"}>
         <Flex gap={"8px"}>
           {/* search */}

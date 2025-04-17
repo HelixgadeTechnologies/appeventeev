@@ -29,7 +29,7 @@ import AllEventsPage from "./pages/AllEventsPage";
 import Attendees from "./pages/Attendees";
 import ProfileSettings from "./pages/settings/UserProfileUpdate";
 import TicketWrapper from "./pages/CreateTickets/TicketWrapper";
-import DraftedEventDetails from "./pages/AllEventsPage/DraftedEventDetails";
+// import DraftedEventDetails from "./pages/AllEventsPage/DraftedEventDetails";
 
 // Edit Events
 import EditEventFirst from "./pages/EditEvents/EditEventFirst";
@@ -63,7 +63,7 @@ const App = () => {
           <Route path="/create-event-setup-4" element={<CreateEventFourth />} />
 
           <Route path="/all-events" element={<AllEventsPage />} />
-          <Route path="/all-events-draft/:id" element={<DraftedEventDetails />} />
+          {/* <Route path="/all-events-draft/:id" element={<DraftedEventDetails />} /> */}
 
           <Route path="/edit-event-step-one/:id" element={<EditEventFirst />} />
           <Route path="/edit-event-step-two/:id" element={<EditEventSecond />} />

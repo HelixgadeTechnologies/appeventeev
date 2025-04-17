@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserAuthContext } from "../contexts/UserAuthContext";
 import toast from "react-hot-toast";
-import { Box, Button, FormControl, FormLabel, Input, Select, Text, VStack, Image, Flex } from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, Input, Select, Text, VStack, Image, Flex, Spinner } from "@chakra-ui/react";
 
 const OrgForm = () => {
   const { userId, setUserDetails } = useContext(UserAuthContext);
@@ -23,7 +23,7 @@ const OrgForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setButton("Loading....");
+    setButton(<Spinner></Spinner>);
 
     try {
       const response = await axios.put(
@@ -73,10 +73,10 @@ const OrgForm = () => {
       {/* Right Side - Form */}
       <Flex w={{ base: "100%", lg: "50%" }} align="center" justify="center" p={6}>
         <Box maxW="400px" width="full">
-          <Text fontSize="2xl" fontWeight="bold" mb={1}>
+          <Text fontSize="3xl" fontWeight="bold" mb={1}>
             Organisation details!
           </Text>
-          <Text color="gray.600" mb={8}  fontSize={'sm'}>
+          <Text color="#645d5d" mb={8}  fontSize={'sm'} >
             Please tell us about your organisation
           </Text>
 
@@ -86,7 +86,6 @@ const OrgForm = () => {
                 <FormLabel requiredIndicator={null}  fontSize={'sm'}>Organisation Name</FormLabel>
                 <Input
                   type="text"
-                  placeholder="Enter organisation name"
                   name="organisationName"
                   value={formData.organisationName}
                   onChange={handleChange}
@@ -98,7 +97,6 @@ const OrgForm = () => {
                 <FormLabel requiredIndicator={null}  fontSize={'sm'}>Organisation Website</FormLabel>
                 <Input
                   type="url"
-                  placeholder="Enter website URL"
                   name="organisationWebsite"
                   value={formData.organisationWebsite}
                   onChange={handleChange}
@@ -111,7 +109,7 @@ const OrgForm = () => {
               <FormControl isRequired>
                 <FormLabel  requiredIndicator={null}  fontSize={'sm'}>Organisation Industry</FormLabel>
                 <Select name="organisationIndustry" onChange={handleChange}  focusBorderColor="#f56630">
-                  <option value="">Select Industry</option>
+                  <option value=""></option>
                   <option value="Technology">Technology</option>
                   <option value="Finance">Finance</option>
                   <option value="Healthcare">Healthcare</option>

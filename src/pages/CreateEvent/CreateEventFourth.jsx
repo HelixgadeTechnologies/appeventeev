@@ -19,7 +19,6 @@ const CreateEventSecond = () => {
   const toast = useToast();
 
   const thirdPageData = location.state || {};
-  // console.log("Data being sent:", thirdPageData);
 
   const [isImageDisplay, setIsImageDisplay] = useState(false);
 
@@ -37,7 +36,6 @@ const CreateEventSecond = () => {
     }
   }, [thirdPageData.thumbnail, thirdPageData.thumbnailPreview]); 
 
-  console.log("Data being sent:", thirdPageData);
 
   const handleDraft = async () => {
     try {

@@ -36,14 +36,60 @@ export const flexData = [
 ];
 
 export const services = [
-  { text: "Tickets", img: ticket, bg: "#E7F6EC", borderColor: "green.500", route:'/tickets'},
-  { text: "Check-ins", img: checkIns, bg: "#E3EFFC", borderColor: "blue.500", route: '' },
-  { text: "Speakers", img: speakers, bg: "#FEF6E7", borderColor: "orange.500", route: ''  },
-  { text: "Chat Room", img: chatRoom, bg: "#FFECE5", borderColor: "red.500", route: ''  },
-  { text: "Games", img: games, bg: "#FEF6E7", borderColor: "orange.500", route: ''  },
-  { text: "Analytics", img: analytics, bg: "#FFECE5", borderColor: "red.500", route: ''  },
-  { text: "Polls", img: polls, bg: "#E7F6EC", borderColor: "green.500", route: ''  },
-  { text: "Matchmaking", img: matchmaking, bg: "#E3EFFC", borderColor: "blue.500", route: ''  },
+  {
+    text: "Tickets",
+    img: ticket,
+    bg: "#E7F6EC",
+    borderColor: "green.500",
+    route: "/tickets",
+  },
+  {
+    text: "Check-ins",
+    img: checkIns,
+    bg: "#E3EFFC",
+    borderColor: "blue.500",
+    route: "/check-ins",
+  },
+  {
+    text: "Speakers",
+    img: speakers,
+    bg: "#FEF6E7",
+    borderColor: "orange.500",
+    route: "/speakers",
+  },
+  {
+    text: "Chat Room",
+    img: chatRoom,
+    bg: "#FFECE5",
+    borderColor: "red.500",
+    route: "/chat",
+  },
+  {
+    text: "Games",
+    img: games,
+    bg: "#FEF6E7",
+    borderColor: "orange.500",
+    route: "/games",
+  },
+  {
+    text: "Analytics",
+    img: analytics,
+    bg: "#FFECE5",
+    borderColor: "red.500",
+    route: "/analytics",
+  },
+  {
+    text: "Polls",
+    img: polls,
+    bg: "#E7F6EC",
+    borderColor: "green.500",
+    route: "/polls",
+  },
+  {
+    text: "Matchmaking",
+    img: matchmaking,
+    bg: "#E3EFFC",
+    borderColor: "blue.500",
+    route: "/network",
+  },
 ];
-
-
