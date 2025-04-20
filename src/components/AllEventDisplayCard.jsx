@@ -21,7 +21,8 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { userDetails } = useContext(UserAuthContext);
-  const { formatDate } = useContext(EventContext);
+  const { formatDate, publishedEvents } = useContext(EventContext);
+  console.log(publishedEvents)
 
   const userData = {
     username: `${userDetails.firstname + " " + userDetails.lastname}`,

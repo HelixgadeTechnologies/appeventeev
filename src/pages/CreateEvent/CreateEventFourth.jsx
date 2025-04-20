@@ -19,6 +19,7 @@ const CreateEventSecond = () => {
   const toast = useToast();
 
   const thirdPageData = location.state || {};
+  console.log(thirdPageData)
 
   const [isImageDisplay, setIsImageDisplay] = useState(false);
 
@@ -29,7 +30,7 @@ const CreateEventSecond = () => {
   };
 
   useEffect(() => {
-    if (thirdPageData.thumbnail && thirdPageData.thumbnailPreview) {
+    if (thirdPageData.thumbnail || thirdPageData.thumbnailPreview) {
       setIsImageDisplay(true);
     } else {
       setIsImageDisplay(false);
@@ -267,7 +268,7 @@ const CreateEventSecond = () => {
         {/* buttons */}
         <Flex justifyContent={"space-between"} marginTop={"5"} gap={"32px"}>
           <Button
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate("/all-events")}
             variant={"outline"}
             color={"#EB5017"}
             width={"full"}
