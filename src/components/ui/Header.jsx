@@ -202,7 +202,7 @@ const Header = () => {
       </Flex>
 
       {/* Divider after dashboard */}
-      {location.pathname === "/all-events" && (
+      {location.pathname === "/all-events" && publishedEvents.length < 0 && (
         <Center mx="10">
           <Divider />
         </Center>

@@ -19,7 +19,6 @@ import {
 import { eventType, eventCategory } from "../../utils/create-event";
 import { useNavigate, useLocation } from "react-router-dom";
 import { SlCloudUpload } from "react-icons/sl";
-import { IoClose } from "react-icons/io5";
 import { useDropzone } from "react-dropzone";
 
 const CreateEventSecond = () => {
@@ -44,30 +43,6 @@ const CreateEventSecond = () => {
   const [typeError, setTypeError] = useState("");
   const [locationError, setLocationError] = useState("");
   const [categoryError, setCategoryError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  const uploadImageToCloudinary = async (file) => {
-    const cloudName = "dnou1zvji";
-    const uploadPreset = "eventeev";
-  
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", uploadPreset);
-  
-    try {
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
-        method: "POST",
-        body: formData,
-      });
-  
-      const data = await res.json();
-      return data;
-    } catch (err) {
-      console.error("Cloudinary Upload Error:", err);
-      throw err;
-    }
-  };
-  
 
   const validateForm = () => {
     let isValid = true;
@@ -90,9 +65,7 @@ const CreateEventSecond = () => {
       !secondPageData.category ||
       secondPageData.category === "Select category"
     ) {
-      setCategoryError(
-        "Please select a category."
-      );
+      setCategoryError("Please select a category.");
       isValid = false;
     } else {
       setCategoryError("");
@@ -114,29 +87,22 @@ const CreateEventSecond = () => {
     setCategoryError("");
   };
 
-
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (validateForm()) {
-      setIsLoading(true);
-
-      let cloudinaryResponse = null;
-
-      if (secondPageData.thumbnail) {
-        cloudinaryResponse = await uploadImageToCloudinary(secondPageData.thumbnail);
-      }
-
-      
       try {
         // Create a new object with the file details before navigating
-        const uploadTimestamp = new Date().toISOString();
-
         const dataToSubmit = {
           ...secondPageData,
-          thumbnail: cloudinaryResponse?.secure_url,
-          uploadTime: uploadTimestamp,
-          thumbnailName: cloudinaryResponse?.original_filename || secondPageData.thumbnail?.name || null,
-          thumbnailSize: cloudinaryResponse?.bytes || secondPageData.thumbnail?.size || null,
-          thumbnailType: cloudinaryResponse?.format || secondPageData.thumbnail?.type || null,
+          // If you need specific file details:
+          thumbnailName: secondPageData.thumbnail
+            ? secondPageData.thumbnail.name
+            : null,
+          thumbnailSize: secondPageData.thumbnail
+            ? secondPageData.thumbnail.size
+            : null,
+          thumbnailType: secondPageData.thumbnail
+            ? secondPageData.thumbnail.type
+            : null,
         };
 
         navigate("/create-event-setup-3", { state: dataToSubmit });
@@ -215,21 +181,20 @@ const CreateEventSecond = () => {
                     ? secondPageData.thumbnail.name
                     : "Uploaded Image"}
                 </Text>
-                <Flex
+                <Button
                   bg={"red.500"}
+                  size={"md"}
+                  variant={"solid"}
+                  paddingY={"16px"}
+                  paddingX={"24px"}
+                  borderRadius={"lg"}
                   color={"white"}
-                  size="md"
-                  mt={2}
-                  borderRadius={"full"}
+                  fontWeight={"medium"}
                   onClick={handleRemove}
-                  height={"40px"}
-                  width={"40px"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
                   _hover={{ cursor: "pointer", bg: "red.400" }}
                 >
-                  <IoClose className="text-xl" />
-                </Flex>
+                  Remove Image
+                </Button>
               </Box>
             )}
 
@@ -353,7 +318,8 @@ const CreateEventSecond = () => {
             )}
           </FormControl>
           <Text color={"#667185"} fontSize={"xs"}>
-            You can add dummy information and save to drafts if you don't wish to publish your event yet.
+            You can add dummy information and save to drafts if you don't wish
+            to publish your event yet.
           </Text>
           <Flex gap={"20px"}>
             <Button
@@ -378,7 +344,6 @@ const CreateEventSecond = () => {
               borderRadius={"lg"}
               color={"white"}
               fontWeight={"medium"}
-              isLoading={isLoading}
             >
               Next Step
             </Button>

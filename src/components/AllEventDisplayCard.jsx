@@ -17,12 +17,11 @@ import { UserAuthContext } from "../contexts/UserAuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { EventContext } from "../contexts/EventContext";
 
-const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute, isDrafted = false, isCompleted = false }) => {
+const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute, isDrafted = false, isCompleted = false, isLoading = false }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { userDetails } = useContext(UserAuthContext);
-  const { formatDate, publishedEvents } = useContext(EventContext);
-  console.log(publishedEvents)
+  const { formatDate } = useContext(EventContext);
 
   const userData = {
     username: `${userDetails.firstname + " " + userDetails.lastname}`,
@@ -70,7 +69,7 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
               src={event.thumbnail || null}
               height={"60px"}
               width={"60px"}
-              objectFit={"cover"}
+              objectFit={"contain"}
               rounded={"full"}
             />
           )}
@@ -216,6 +215,7 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
                 borderRadius={"lg"}
                 color={"white"}
                 fontWeight={"medium"}
+                isLoading={isLoading}
               >
                 Delete Event
               </Button>
@@ -226,7 +226,7 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
 
       {/* completed modal */}
       {completedPopUp && (
-        <Box className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+        <Box onClick={() => setCompletedPopUp(false)} className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
           <Box
             bg={"white"}
             paddingX={"6"}

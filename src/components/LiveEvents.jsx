@@ -11,8 +11,10 @@ const LiveEvents = () => {
     publishedEventsLoading,
     publishedEventsError,
     deletePublishedEvents,
+    isPublishedDeletedLoading,
   } = useContext(EventContext);
 
+  console.log(publishedEvents)
   return (
     <div>
       {publishedEventsLoading ? (
@@ -38,6 +40,7 @@ const LiveEvents = () => {
                   onDelete={() => deletePublishedEvents(event._id)}
                   editRoute={`/edit-event-step-one/${event._id}`}
                   detailsRoute={`/dashboard/${event._id}`}
+                  isLoading={isPublishedDeletedLoading}
                 />
               </GridItem>
             ))}

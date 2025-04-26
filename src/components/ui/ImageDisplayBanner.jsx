@@ -14,7 +14,7 @@ import EventContext from "../../contexts/EventContext";
 
 const ImageDisplayBanner = ({ thirdPageData, removeImage }) => {
   const [imagePercentage, setImagePercentage] = useState(0);
-
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setImagePercentage((prev) => {
@@ -29,38 +29,31 @@ const ImageDisplayBanner = ({ thirdPageData, removeImage }) => {
     return () => clearInterval(interval);
   }, []);
 
-  // const lastModifiedDate = thirdPageData?.thumbnail?.lastModifiedDate
-  //   ? new Date(thirdPageData.thumbnail.lastModifiedDate)
-  //   : null;
+    // const today = new Date();
+    // const formattedToday = today.toLocaleDateString("en-US", {
+    //   day: "2-digit",
+    //   month: "short",
+    //   year: "numeric",
+    // });
 
-    const today = new Date();
-    const formattedToday = today.toLocaleDateString("en-US", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
-    
-    const formattedNowTime = today.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
+      const readableUploadTime = new Date().toLocaleString("en-US", {
+      dateStyle: "medium",
+      timeStyle: "short",
     });
 
+  const formatFileSize = (sizeInBytes) => {
+    if (sizeInBytes < 1024) {
+      return `${sizeInBytes} Bytes`; // Less than 1KB
+    } else if (sizeInBytes < 1024 * 1024) {
+      return `${(sizeInBytes / 1024).toFixed(2)} KB`; // Less than 1MB
+    } else if (sizeInBytes < 1024 * 1024 * 1024) {
+      return `${(sizeInBytes / (1024 * 1024)).toFixed(2)} MB`; // Less than 1GB
+    } else {
+      return `${(sizeInBytes / (1024 * 1024 * 1024)).toFixed(2)} GB`; // 1GB or more
+    }
+  };
 
-  // const fileSizeInBytes = thirdPageData?.imageSize ?? 0;
-    
-  // const formatFileSize = (sizeInBytes) => {
-  //   if (sizeInBytes < 1024) {
-  //     return `${sizeInBytes} Bytes`; // Less than 1KB
-  //   } else if (sizeInBytes < 1024 * 1024) {
-  //     return `${(sizeInBytes / 1024).toFixed(2)} KB`; // Less than 1MB
-  //   } else if (sizeInBytes < 1024 * 1024 * 1024) {
-  //     return `${(sizeInBytes / (1024 * 1024)).toFixed(2)} MB`; // Less than 1GB
-  //   } else {
-  //     return `${(sizeInBytes / (1024 * 1024 * 1024)).toFixed(2)} GB`; // 1GB or more
-  //   }
-  // };
-
+  const fileSizeInBytes = thirdPageData?.thumbnail?.size ?? 0;
   return (
     <Center padding={"40px"}>
       <Flex
@@ -68,13 +61,12 @@ const ImageDisplayBanner = ({ thirdPageData, removeImage }) => {
         height={"72px"}
         width={"450px"}
         alignItems={"center"}
-        justifyContent={"space-evenly"}
-        gap={"5"}
-        px={"8"}
+        gap={"2"}
+        justifyContent={"space-between"}
       >
         {/* <Image src={thirdPageData.thumbnail.name} /> */}
         <Image
-          src={thirdPageData.thumbnail}
+          src="https://res.cloudinary.com/dnou1zvji/image/upload/v1742209370/file_type_sdm0vo.png"
           height={"48px"}
           width={"48px"}
         />
@@ -89,10 +81,10 @@ const ImageDisplayBanner = ({ thirdPageData, removeImage }) => {
             gap={"1"}
             alignItems={"center"}
           >
-            <Text>{formattedToday}</Text>
-            <Text>{formattedNowTime}</Text>
-            {/* <div className="h-1 w-1 rounded-full bg-gray-400 mx-1"></div>
-            <Text>{formatFileSize(fileSizeInBytes)}</Text> */}
+            {/* <Text>{formattedToday}</Text> */}
+            <Text>{readableUploadTime}</Text>
+            <div className="h-1 w-1 rounded-full bg-gray-400 mx-1"></div>
+            <Text>{formatFileSize(fileSizeInBytes)}</Text>
           </Flex>
         </Box>
         <CircularProgress value={imagePercentage} color="#F56630">
