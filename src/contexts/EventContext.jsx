@@ -305,9 +305,8 @@ const EventProvider = ({ children }) => {
     }
   };
   
-  
   // function to get attendees
-    const getAttendees = async (id) => {
+  const getAttendees = async (id) => {
       setAttendeesError(false);
       setAttendeesLoading(true);
       try {
@@ -341,7 +340,7 @@ const EventProvider = ({ children }) => {
       } finally {
         setAttendeesLoading(false);
       }
-    };
+  };
   // for date format
   const formatDate = (dateStr) => {
     if (!dateStr) return "";
@@ -419,6 +418,7 @@ const convertTo24HourFormat = (timeStr) => {
   
   return timeStr;
 };
+
 
 
   return (

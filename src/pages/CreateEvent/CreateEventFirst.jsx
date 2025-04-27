@@ -38,9 +38,6 @@ const CreateEventFirst = () => {
   const [endTimeError, setEndTimeError] = useState("");
 
   const date = new Date().toISOString().split("T")[0];
-  // console.log("Today's date:", date)
-  // console.log("End date:", firstPageData.endDate)
-  // console.log("Start date:", firstPageData.startDate)
 
   const validateForm = () => {
     let isValid = true;

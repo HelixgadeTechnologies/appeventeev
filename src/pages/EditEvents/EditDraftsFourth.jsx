@@ -21,7 +21,6 @@ const EditDraftsFourth = () => {
     draftedEvents,
     draftedEventsLoading,
     draftedEventsError,
-    deletePublishedEvents,
     deleteDraftedEvents,
     formatDate,
     formatTime,
@@ -58,12 +57,12 @@ const EditDraftsFourth = () => {
     );
   }
 
-  const handlePublish = async () => {
+  const handleDraftToLive = async (id) => {
     setIsLoading(true);
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "https://eventeevapi.onrender.com/event/publishevent",
+        `https://eventeevapi.onrender.com/event//drafttolive/${id}`,
         currentEvent,
         {
           headers: {
@@ -75,8 +74,8 @@ const EditDraftsFourth = () => {
       console.log(response.data);
 
       toast({
-        title: "Event Published Successfully.",
-        description: "Your event is live!",
+        title: "Success!",
+        description: "Your event has been added to live successfully!",
         status: "success",
         duration: 4000,
         isClosable: true,
@@ -88,7 +87,7 @@ const EditDraftsFourth = () => {
       console.error("Error Publishing Event:", error);
       toast({
         title: "An error occurred.",
-        description: "Event was not published.",
+        description: "Event was not added.",
         status: "error",
         duration: 4000,
         isClosable: true,
@@ -252,7 +251,7 @@ const EditDraftsFourth = () => {
             </Button>
             <Button
               onClick={() => {
-                handlePublish(), deletePublishedEvents(currentEvent._id);
+                handleDraftToLive(currentEvent._id);
               }}
               bg={"#EB5017"}
               size={"md"}
