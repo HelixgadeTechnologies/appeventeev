@@ -14,8 +14,7 @@ import EventContext from "../../contexts/EventContext";
 
 const ImageDisplayBanner = ({ thirdPageData, removeImage }) => {
   const [imagePercentage, setImagePercentage] = useState(0);
-  // const { todaysDate } = useContext(EventContext)
-
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setImagePercentage((prev) => {
@@ -30,29 +29,18 @@ const ImageDisplayBanner = ({ thirdPageData, removeImage }) => {
     return () => clearInterval(interval);
   }, []);
 
-  const lastModifiedDate = thirdPageData?.thumbnail?.lastModifiedDate
-    ? new Date(thirdPageData.thumbnail.lastModifiedDate)
-    : null;
+    // const today = new Date();
+    // const formattedToday = today.toLocaleDateString("en-US", {
+    //   day: "2-digit",
+    //   month: "short",
+    //   year: "numeric",
+    // });
 
-  // Format Date (e.g., "11 Sep, 2025")
-  const formattedDate = lastModifiedDate
-    ? lastModifiedDate.toLocaleDateString("en-US", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      })
-    : "No date available";
+      const readableUploadTime = new Date().toLocaleString("en-US", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    });
 
-  // Format Time (e.g., "10:00 AM")
-  const formattedTime = lastModifiedDate
-    ? lastModifiedDate.toLocaleTimeString("en-US", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true, // Ensures AM/PM format
-      })
-    : "No time available";
-
-    console.log(new Date())
   const formatFileSize = (sizeInBytes) => {
     if (sizeInBytes < 1024) {
       return `${sizeInBytes} Bytes`; // Less than 1KB
@@ -93,9 +81,8 @@ const ImageDisplayBanner = ({ thirdPageData, removeImage }) => {
             gap={"1"}
             alignItems={"center"}
           >
-            <Text>{formattedDate}</Text>
-            <Text>{formattedTime}</Text>
-            {/* <Text>{todaysDate()}</Text> */}
+            {/* <Text>{formattedToday}</Text> */}
+            <Text>{readableUploadTime}</Text>
             <div className="h-1 w-1 rounded-full bg-gray-400 mx-1"></div>
             <Text>{formatFileSize(fileSizeInBytes)}</Text>
           </Flex>

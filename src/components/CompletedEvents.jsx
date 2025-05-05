@@ -8,6 +8,7 @@ import NoStatePage from "./NoStatePage";
 const CompletedEvents = () => {
   const { completedEvents, completedEventsError, completedEventsLoading } =
     useContext(EventContext);
+    console.log(completedEvents)
   return (
     <div>
       {completedEventsLoading ? (

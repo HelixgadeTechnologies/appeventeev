@@ -179,7 +179,7 @@ const DashboardPopulated = () => {
           </Flex>
           <Box
             height={"140px"}
-            width={"690px"}
+            // width={"90%"}
             borderRadius={"10px"}
             borderWidth={"thin"}
             borderColor={"#F0F2F5"}
@@ -211,7 +211,7 @@ const DashboardPopulated = () => {
             Services
           </Heading>
           <Grid
-            templateColumns={"repeat(4, 1fr)"}
+            templateColumns={{"lg": "repeat(4, 1fr)", "md": "repeat(3, 1fr)", "sm": "repeat(2, 1fr)"}}
             templateRows={"repeat(2, 1fr)"}
             gap={"15px"}
             marginY={"5"}

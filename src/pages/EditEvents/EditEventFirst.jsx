@@ -47,6 +47,8 @@ const EditEventFirst = () => {
   const [startTimeError, setStartTimeError] = useState("");
   const [endTimeError, setEndTimeError] = useState("");
 
+  const date = new Date().toISOString().split("T")[0];
+
   // Function to convert date from API format to input field format (YYYY-MM-DD)
   const formatDateForInput = (dateStr) => {
     if (!dateStr) return "";
@@ -145,12 +147,18 @@ const EditEventFirst = () => {
     if (!firstPageData.startDate) {
       setStartDateError("Please enter the start date for your event.");
       isValid = false;
+    } else if (firstPageData.startDate < date) {
+      setEndDateError("Start date cannot be in the past.");
+      isValid = false;
     } else {
       setStartDateError("");
     }
 
     if (!firstPageData.endDate) {
       setEndDateError("Enter the same day if it's a one day event.");
+      isValid = false;
+    } else if (firstPageData.startDate > firstPageData.endDate) {
+      setEndDateError("End date must be after start date.");
       isValid = false;
     } else {
       setEndDateError("");
@@ -159,6 +167,9 @@ const EditEventFirst = () => {
     if (!firstPageData.startTime) {
       setStartTimeError("Enter the start time of your event.");
       isValid = false;
+    } else if (firstPageData.startTime === firstPageData.endTime) {
+      setStartTimeError("Start time must be before end time.");
+      isValid = false;
     } else {
       setStartTimeError("");
     }
@@ -166,8 +177,17 @@ const EditEventFirst = () => {
     if (!firstPageData.endTime) {
       setEndTimeError("Enter the end time of your event.");
       isValid = false;
+    } else if (firstPageData.startTime === firstPageData.endTime) {
+      setEndTimeError("Start time and end time cannot be the same.");
+      isValid = false;
     } else {
       setEndTimeError("");
+    }
+
+    // if dates are the same, check if start time is before end time
+    if (firstPageData.startDate === firstPageData.endDate && firstPageData.startTime > firstPageData.endTime) {
+      setEndTimeError("End time cannot be earlier than start time on the same day.");
+      isValid = false;
     }
 
     return isValid;

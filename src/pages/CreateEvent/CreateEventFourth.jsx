@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CreateEventLayout from "../../layout/CreateEventLayout";
 import {
   Box,
@@ -12,13 +12,18 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ImageDisplayBanner from "../../components/ui/ImageDisplayBanner";
+import { EventContext } from "../../contexts/EventContext";
 
 const CreateEventSecond = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const toast = useToast();
+  const [isPublishedLoading, setIsPublishedLoading] = useState(false);
+  const [isDraftedLoading, setIsDraftedLoading] = useState(false);
+  const { uploadImageToCloudinary } = useContext(EventContext);
 
   const thirdPageData = location.state || {};
+  console.log(thirdPageData)
 
   const [isImageDisplay, setIsImageDisplay] = useState(false);
 
@@ -29,7 +34,7 @@ const CreateEventSecond = () => {
   };
 
   useEffect(() => {
-    if (thirdPageData.thumbnail && thirdPageData.thumbnailPreview) {
+    if (thirdPageData.thumbnail || thirdPageData.thumbnailPreview) {
       setIsImageDisplay(true);
     } else {
       setIsImageDisplay(false);
@@ -38,11 +43,26 @@ const CreateEventSecond = () => {
 
 
   const handleDraft = async () => {
+    setIsDraftedLoading(true);
     try {
+      let cloudinaryUrl = null;
+
+      if (thirdPageData.thumbnail) {
+        cloudinaryUrl = await uploadImageToCloudinary(thirdPageData.thumbnail);
+      }
+
+      const dataToSubmit = {
+        ...thirdPageData,
+        thumbnail: cloudinaryUrl,
+        thumbnailPreview: undefined,
+        thumbnailName: thirdPageData.thumbnail?.name || null,
+        thumbnailSize: thirdPageData.thumbnail?.size || null,
+        thumbnailType: thirdPageData.thumbnail?.type || null,
+      };
       const token = localStorage.getItem("token");
       const response = await axios.post(
         "https://eventeevapi.onrender.com/event/draftevent",
-        thirdPageData,
+        dataToSubmit,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -72,16 +92,33 @@ const CreateEventSecond = () => {
         isClosable: true,
         position: "top-right",
       });
+    } finally {
+      setIsDraftedLoading(false);
     }
     
   };
 
   const handlePublish = async () => {
+    setIsPublishedLoading(true);
     try {
+      let cloudinaryUrl = null;
+
+      if (thirdPageData.thumbnail) {
+        cloudinaryUrl = await uploadImageToCloudinary(thirdPageData.thumbnail);
+      }
+
+      const dataToSubmit = {
+        ...thirdPageData,
+        thumbnail: cloudinaryUrl,
+        thumbnailPreview: undefined,
+        thumbnailName: thirdPageData.thumbnail?.name || null,
+        thumbnailSize: thirdPageData.thumbnail?.size || null,
+        thumbnailType: thirdPageData.thumbnail?.type || null,
+      };
       const token = localStorage.getItem("token");
       const response = await axios.post(
         "https://eventeevapi.onrender.com/event/publishevent",
-        thirdPageData,
+        dataToSubmit,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -111,6 +148,8 @@ const CreateEventSecond = () => {
         isClosable: true,
         position: "top-right",
       });
+    } finally {
+      setIsPublishedLoading(false);
     }
   };
 
@@ -267,7 +306,7 @@ const CreateEventSecond = () => {
         {/* buttons */}
         <Flex justifyContent={"space-between"} marginTop={"5"} gap={"32px"}>
           <Button
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate("/all-events")}
             variant={"outline"}
             color={"#EB5017"}
             width={"full"}
@@ -283,6 +322,7 @@ const CreateEventSecond = () => {
             width={"full"}
             borderColor={"#EB5017"}
             _hover={{ bg: "orange.50" }}
+            isLoading={isDraftedLoading}
           >
             Save
           </Button>
@@ -298,6 +338,7 @@ const CreateEventSecond = () => {
             borderRadius={"lg"}
             color={"white"}
             fontWeight={"medium"}
+            isLoading={isPublishedLoading}
           >
             Publish Event
           </Button>
