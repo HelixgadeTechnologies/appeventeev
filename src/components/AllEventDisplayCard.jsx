@@ -11,22 +11,27 @@ import {
 } from "@chakra-ui/react";
 import { IoIosMore } from "react-icons/io";
 import "typeface-open-sans";
-import { AiTwotoneEdit, AiTwotoneDelete, AiTwotoneGold } from "react-icons/ai";
-import { IoIosCloseCircleOutline, IoIosCheckmarkCircleOutline } from "react-icons/io";
-import { UserAuthContext } from "../contexts/UserAuthContext";
+import {
+  AiTwotoneEdit,
+  AiTwotoneDelete,
+  AiTwotoneContainer,
+} from "react-icons/ai";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { EventContext } from "../contexts/EventContext";
 
-const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute, isDrafted = false, isCompleted = false }) => {
+const AllEventDisplayCard = ({
+  event,
+  onDelete,
+  isMenuAvailble = true,
+  editRoute,
+  isDrafted = false,
+  isCompleted = false,
+  isLoading = false,
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const { userDetails } = useContext(UserAuthContext);
   const { formatDate } = useContext(EventContext);
-
-  const userData = {
-    username: `${userDetails.firstname + " " + userDetails.lastname}`,
-  };
-
   const handleMenu = (e) => {
     setIsMenuOpen(!isMenuOpen);
     e.stopPropagation();
@@ -45,10 +50,19 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
   // for completed event message
   const [completedPopUp, setCompletedPopUp] = useState(false);
 
+  // for drafting to live event
+  const [draftToLivePopUp, setDraftToLivePopUp] = useState(false);
+
   return (
     <>
       <Box
-        onClick={() => isCompleted ? setCompletedPopUp(true) : isDrafted ? navigate(`/edit-draft-step-one/${event._id}`) : handleCardClick(event._id)}
+        onClick={() =>
+          isCompleted
+            ? setCompletedPopUp(true)
+            : isDrafted
+            ? navigate(`/edit-draft-step-one/${event._id}`)
+            : handleCardClick(event._id)
+        }
         borderWidth={"1px"}
         borderColor={"#B8C4CE"}
         height={"full"}
@@ -58,18 +72,18 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
         padding={"20px"}
         className="space-y-8"
         style={{ fontFamily: "Open Sans, sans-serif" }}
-        _hover={{ cursor: "pointer"}}
+        _hover={{ cursor: "pointer" }}
         position={"relative"}
       >
         <Flex justifyContent={"space-between"} alignItems={"start"}>
-          {event.thumbnail === "" ? (
-            <Avatar name={userData.username} />
+          {event.thumbnail === "" || event.thumbnail === null ? (
+            <Avatar name={event.name} />
           ) : (
             <Image
               src={event.thumbnail || null}
               height={"60px"}
               width={"60px"}
-              objectFit={"cover"}
+              objectFit={"contain"}
               rounded={"full"}
             />
           )}
@@ -100,8 +114,9 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
                   paddingX={"5px"}
                   className="space-y-1.5 z-20 bg-white"
                 >
+                  {/* delete button */}
                   <Flex
-                     onClick={(e) => {
+                    onClick={(e) => {
                       e.stopPropagation();
                       setPopUpMessage(true);
                     }}
@@ -114,6 +129,7 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
                     <AiTwotoneDelete className="text-base" />
                     <Text fontSize={"10px"}>Delete event</Text>
                   </Flex>
+                  {/* edit button */}
                   <Link to={editRoute} onClick={(e) => e.stopPropagation()}>
                     <Flex
                       alignItems={"center"}
@@ -126,6 +142,23 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
                       <Text fontSize={"10px"}>Edit event</Text>
                     </Flex>
                   </Link>
+                  {/* publish draft to live btn */}
+                  {/* {isDrafted && (
+                    <Flex
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setDraftToLivePopUp(true);
+                      }}
+                      alignItems={"center"}
+                      gap={"1"}
+                      _hover={{ bg: "gray.100" }}
+                      paddingY={"4px"}
+                      paddingX={"5px"}
+                    >
+                      <AiTwotoneContainer className="text-base" />
+                      <Text fontSize={"10px"}>Publish to live</Text>
+                    </Flex>
+                  )} */}
                 </Box>
               )}
             </Center>
@@ -177,7 +210,7 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
             borderRadius={"8px"}
           >
             <Center>
-              <IoIosCloseCircleOutline className="text-9xl text-red-500"/>
+              <IoIosCloseCircleOutline className="text-9xl text-red-500" />
             </Center>
             <Heading
               fontSize={"20px"}
@@ -187,10 +220,22 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
             >
               Confirm Delete
             </Heading>
-            <Text fontSize={"small"} textAlign={"center"} marginY={"2.5"} color={"gray.600"}>
-              Are you sure you wish to delete <br/> "<strong className="capitalize">{event.name}</strong>"?
+            <Text
+              fontSize={"small"}
+              textAlign={"center"}
+              marginY={"2.5"}
+              color={"gray.600"}
+            >
+              Are you sure you wish to delete <br /> "
+              <strong className="capitalize">{event.name}</strong>"?
             </Text>
-            <Flex justifyContent={"space-between"} alignItems={"center"} marginTop={"2"} marginX={"2.5"} gap={"5"}>
+            <Flex
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              marginTop={"2"}
+              marginX={"2.5"}
+              gap={"5"}
+            >
               <Button
                 onClick={() => setPopUpMessage(false)}
                 variant={"outline"}
@@ -215,6 +260,7 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
                 borderRadius={"lg"}
                 color={"white"}
                 fontWeight={"medium"}
+                isLoading={isLoading}
               >
                 Delete Event
               </Button>
@@ -225,7 +271,10 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
 
       {/* completed modal */}
       {completedPopUp && (
-        <Box className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+        <Box
+          onClick={() => setCompletedPopUp(false)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30"
+        >
           <Box
             bg={"white"}
             paddingX={"6"}
@@ -234,9 +283,10 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
             width={"350px"}
             borderRadius={"8px"}
           >
-            <Center>
+            {/* <Center my={"2"}>
               <IoIosCheckmarkCircleOutline className="text-9xl text-green-500"/>
-            </Center>
+            <Avatar name={event.name} size={"2xl"}/>
+            </Center> */}
             <Heading
               fontSize={"20px"}
               fontWeight={"semibold"}
@@ -245,13 +295,19 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
             >
               Event Completed
             </Heading>
-            <Text fontSize={"small"} textAlign={"center"} marginY={"2.5"} color={"gray.600"}>
-              Your Event "<strong className="capitalize">{event.name}</strong>" has been successfully completed!
+            <Text
+              fontSize={"small"}
+              textAlign={"center"}
+              marginY={"2.5"}
+              color={"gray.600"}
+            >
+              Your Event "<strong className="capitalize">{event.name}</strong>"
+              has been successfully completed!
             </Text>
             <Button
               onClick={() => setCompletedPopUp(false)}
-              bg={"green.400"}
-              _hover={{ bg: "green.500" }}
+              bg={"orange.500"}
+              _hover={{ bg: "orange.600" }}
               fontSize={"small"}
               variant={"solid"}
               padding={"16px"}
@@ -262,6 +318,77 @@ const AllEventDisplayCard = ({ event, onDelete, isMenuAvailble = true, editRoute
             >
               Okay!
             </Button>
+          </Box>
+        </Box>
+      )}
+
+      {/* draft to live modal */}
+      {draftToLivePopUp && (
+        <Box className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <Box
+            bg={"white"}
+            paddingX={"6"}
+            paddingY={"4"}
+            height={"fit-content"}
+            width={"350px"}
+            borderRadius={"8px"}
+          >
+            <Center>
+              <Image src={"https://res.cloudinary.com/dnou1zvji/image/upload/v1742481874/emptystate_bmtwlz.png"} alt="Publish to live" />
+            </Center>
+            <Heading
+              fontSize={"20px"}
+              fontWeight={"semibold"}
+              color={"gray.800"}
+              textAlign={"center"}
+            >
+              Publish Event
+            </Heading>
+            <Text
+              fontSize={"small"}
+              textAlign={"center"}
+              marginY={"2.5"}
+              color={"gray.600"}
+            >
+              Are you sure you wish to publish <br /> "
+              <strong className="capitalize">{event.name}</strong>" to live?
+            </Text>
+            <Flex
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              marginTop={"2"}
+              marginX={"2.5"}
+              gap={"5"}
+            >
+              <Button
+                onClick={() => setDraftToLivePopUp(false)}
+                variant={"outline"}
+                color={"#344054"}
+                bg={"gray.50"}
+                fontWeight={"medium"}
+                borderRadius={"lg"}
+                fontSize={"small"}
+                padding={"16px"}
+                width={"full"}
+              >
+                Cancel
+              </Button>
+              <Button
+                // onClick={() => onDelete()}
+                bg={"orange.500"}
+                _hover={{ bg: "orange.600" }}
+                fontSize={"small"}
+                variant={"solid"}
+                padding={"16px"}
+                width={"full"}
+                borderRadius={"lg"}
+                color={"white"}
+                fontWeight={"medium"}
+                isLoading={isLoading}
+              >
+                Publish Event
+              </Button>
+            </Flex>
           </Box>
         </Box>
       )}

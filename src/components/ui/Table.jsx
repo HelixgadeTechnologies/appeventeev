@@ -3,7 +3,7 @@ import {
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, ModalCloseButton,
   Table, Thead, Tbody, Tr, Th, Td, Checkbox, useDisclosure, useToast, Flex
 } from "@chakra-ui/react";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { TicketContext } from "../../contexts/TicketContext";
 import axios from "axios";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
@@ -12,7 +12,7 @@ import ExistingTicket from "../../pages/CreateTickets/ExistingTIcket";
 import { boughtTicketData } from "../../utils/tickets";
 import { CgProfile } from "react-icons/cg";
 
-const TableComponent = ({ type }) => {
+const TableComponent = ({ typeOfTicket }) => {
   const { token } = useContext(UserAuthContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedTickets, setSelectedTickets] = useState(new Set());
@@ -21,21 +21,53 @@ const TableComponent = ({ type }) => {
   const [editTicketId, setEditTicketId] = useState(null);
   const { refreshTickets, ticketData } = useContext(TicketContext);
   const { id } = useParams();
+
+  // use ticketdata with id to select the ticket and display the prefilled data in the modal for editing tickets
+
+  const selectedTicket = ticketData.find(ticket => ticket._id === editTicketId);
+
+  // Guard values from undefined errors
+  const {
+    name = '',
+    quantity = '',
+    price = '',
+    startDate = '',
+    startTime = '',
+    endDate = '',
+    endTime = '',
+    type = '',
+  } = selectedTicket || {};
+  
   const [editTicket, setEditTicket] = useState({
-    eventId: `${id}`,
-    name: "",
-    type: type,
-    quantity: "",
-    price: "",
-    startDate: "",
-    startTime: "",
-    endDate: "",
-    endTime: "",
+    eventId: id,
+    name,
+    type,
+    quantity,
+    price,
+    startDate,
+    startTime,
+    endDate,
+    endTime,
   });
+  
+  // Optional: useEffect to update `editTicket` when `selectedTicket` changes
+  useEffect(() => {
+    if (selectedTicket) {
+      setEditTicket({
+        eventId: id,
+        name: selectedTicket.name || '',
+        type: selectedTicket.type || '',
+        quantity: selectedTicket.quantity || '',
+        price: selectedTicket.price || '',
+        startDate: selectedTicket.startDate || '',
+        startTime: selectedTicket.startTime || '',
+        endDate: selectedTicket.endDate || '',
+        endTime: selectedTicket.endTime || '',
+      });
+    }
+  }, [selectedTicket, id]);
 
-
-
-  const ticketCount = ticketData.filter(ticket => ticket.type === type).length;
+  const ticketCount = ticketData.filter(ticket => ticket.type === typeOfTicket ).length;
 
   const containerClass = `
     ${ticketCount >= 3 ? 'max-w-[100%]' : 'max-w-[100%]'}
@@ -129,10 +161,10 @@ const TableComponent = ({ type }) => {
           <Box className="loader"></Box>
         </Flex>
       ) : (
-        <div className={type === 'paid' ? "max-w-[1085px] h-full" : "w-full h-full"}>
-          { <ExistingTicket handleEdit={handleEditClick} type={type} /> }
+        <div className={typeOfTicket === 'paid' ? "max-w-[1085px] h-full" : "w-full h-full"}>
+          { <ExistingTicket handleEdit={handleEditClick} type={typeOfTicket} /> }
 
-          <div className={type === 'paid' ? "overflow-x-auto h-full" : "overflow-x-auto h-full mt-2"}>
+          <div className={typeOfTicket === 'paid' ? "overflow-x-auto h-full" : "overflow-x-auto h-full mt-2"}>
             <Table variant="unstyled" mt={2} minW="full" borderRadius="lg">
               <Thead bg="#f9fafb" fontSize={'small'}>
                 <Tr>
@@ -147,7 +179,7 @@ const TableComponent = ({ type }) => {
               </Thead>
               <Tbody bg="white">
                 {boughtTicketData
-                  .filter(ticket => ticket.ticketType === type)
+                  .filter(ticket => ticket.ticketType === typeOfTicket)
                   .map((ticket, index) => (
                     <Tr key={index} borderBottom="1px solid" borderColor="gray.200">
                       <Td px={4} py={3}>
@@ -211,7 +243,7 @@ const TableComponent = ({ type }) => {
                         required
                       />
 
-                      {type !== "Free" && (
+                      {typeOfTicket !== "Free" && (
                         <>
                           <Text fontWeight="normal" fontSize="sm">Price</Text>
                           <Input

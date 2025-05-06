@@ -21,13 +21,14 @@ const EditDraftsFourth = () => {
     draftedEvents,
     draftedEventsLoading,
     draftedEventsError,
-    deletePublishedEvents,
     deleteDraftedEvents,
     formatDate,
     formatTime,
   } = useContext(EventContext);
   const location = useLocation();
   const thirdPageData = location.state || {};
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDeletedLoading, setIsDeletedLoading] = useState(false);
 
   const { id } = useParams();
   const currentEvent = draftedEvents.find((event) => event._id === id);
@@ -56,11 +57,12 @@ const EditDraftsFourth = () => {
     );
   }
 
-  const handlePublish = async () => {
+  const handleDraftToLive = async (id) => {
+    setIsLoading(true);
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "https://eventeevapi.onrender.com/event/publishevent",
+        `https://eventeevapi.onrender.com/event//drafttolive/${id}`,
         currentEvent,
         {
           headers: {
@@ -72,8 +74,8 @@ const EditDraftsFourth = () => {
       console.log(response.data);
 
       toast({
-        title: "Event Published Successfully.",
-        description: "Your event is live!",
+        title: "Success!",
+        description: "Your event has been added to live successfully!",
         status: "success",
         duration: 4000,
         isClosable: true,
@@ -85,18 +87,34 @@ const EditDraftsFourth = () => {
       console.error("Error Publishing Event:", error);
       toast({
         title: "An error occurred.",
-        description: "Event was not published.",
+        description: "Event was not added.",
         status: "error",
         duration: 4000,
         isClosable: true,
         position: "top-right",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleDelete = () => {
-    deleteDraftedEvents(currentEvent._id);
-    navigate("/all-events");
+    setIsDeletedLoading(true);
+    try {
+      deleteDraftedEvents(currentEvent._id);
+      navigate("/all-events");
+    } catch (error) {
+      toast({
+        title: "An error occurred.",
+        description: error.response?.data?.message || "Error deleting draft..",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+        position: "top-right",
+      });
+    } finally {
+      setIsDeletedLoading(false);
+    }
   };
 
   const countWords = (text) => {
@@ -233,7 +251,7 @@ const EditDraftsFourth = () => {
             </Button>
             <Button
               onClick={() => {
-                handlePublish(), deletePublishedEvents(currentEvent._id);
+                handleDraftToLive(currentEvent._id);
               }}
               bg={"#EB5017"}
               size={"md"}
@@ -245,6 +263,7 @@ const EditDraftsFourth = () => {
               borderRadius={"lg"}
               color={"white"}
               fontWeight={"medium"}
+              isLoading={isLoading}
             >
               Publish Event
             </Button>
@@ -324,6 +343,7 @@ const EditDraftsFourth = () => {
                 borderRadius={"lg"}
                 color={"white"}
                 fontWeight={"medium"}
+                isLoading={isDeletedLoading}
               >
                 Delete Event
               </Button>

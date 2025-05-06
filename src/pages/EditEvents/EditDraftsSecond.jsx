@@ -204,7 +204,7 @@ const EditDraftsSecond = () => {
         >
           <form className="text-sm space-y-4">
             <Box className="flex flex-col items-center gap-3 p-6 border-2 border-dashed rounded-2xl border-gray-300">
-              {!secondPageData.thumbnailPreview ? (
+              {!secondPageData.thumbnail ? (
                 // Upload Box (only shows when no file is uploaded)
                 <Box
                   {...getRootProps()}
@@ -228,7 +228,7 @@ const EditDraftsSecond = () => {
                 // Image Preview
                 <Box className="w-full flex flex-col items-center">
                   <Image
-                    src={secondPageData.thumbnailPreview}
+                    src={secondPageData.thumbnail}
                     alt="Uploaded preview"
                     className="w-60 h-auto rounded-lg shadow-md"
                   />
@@ -255,7 +255,7 @@ const EditDraftsSecond = () => {
                 </Box>
               )}
 
-              {!secondPageData.thumbnailPreview && (
+              {!secondPageData.thumbnail && (
                 <Box
                   position="relative"
                   padding="2"
@@ -268,7 +268,7 @@ const EditDraftsSecond = () => {
                   </AbsoluteCenter>
                 </Box>
               )}
-              {!secondPageData.thumbnailPreview && (
+              {!secondPageData.thumbnail && (
                 <Button
                   bg={"#EB5017"}
                   size={"md"}

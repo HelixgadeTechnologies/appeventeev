@@ -115,7 +115,7 @@ const TicketPage = () => {
                 {tickets.length < 1 ? (
                   <EmptyState type={tab.type} onClose={onOpen} />
                 ) : (
-                  <Table type={tab.type} />
+                  <Table typeOfTicket={tab.type} />
                 )}
               </TabPanel>
             );

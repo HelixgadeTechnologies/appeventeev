@@ -22,11 +22,11 @@ import { EventContext } from "../../contexts/EventContext";
 const Header = () => {
   const location = useLocation();
   const { id } = useParams();
-  const { publishedEvents, draftedEvents } = useContext(EventContext);
+  const { publishedEvents, draftedEvents, completedEvents, todaysDate } = useContext(EventContext);
   const { userDetails } = useContext(UserAuthContext);
-
   const currentEvent = publishedEvents.find(event => event._id === id);
-  const currentDraftedEvent = draftedEvents.find(event => event._id === id)
+
+  const generalEventState = publishedEvents.length === 0 && draftedEvents.length === 0 && completedEvents.length === 0;
 
   const userData = {
     username: `${userDetails.firstname} ${userDetails.lastname}`,
@@ -76,47 +76,7 @@ const Header = () => {
     subtitle = "Follow the steps to make modifications to your existing event.";
   }
 
-  function todaysDate() {
-    const date = new Date();
-    const day = date.getDate();
-    const month = date.toLocaleString("en-US", { month: "long" });
-    const year = date.getFullYear();
-    const getOrdinalSuffix = (day) => {
-      if (day > 3 && day < 21) return "th";
-      switch (day % 10) {
-        case 1: return "st";
-        case 2: return "nd";
-        case 3: return "rd";
-        default: return "th";
-      }
-    };
-    return `${day}${getOrdinalSuffix(day)} ${month}, ${year}`;
-  }
 
-  const allExistingRoutes = [
-    `/dashboard/${currentEvent?._id}`,
-    `/attendees/${currentEvent?._id}`,
-    `/tickets/${currentEvent?._id}`,
-    "/all-events",
-    "/Profile-settings",
-    "/create-event-setup-1",
-    "/create-event-setup-2",
-    "/create-event-setup-3",
-    "/create-event-setup-4",
-    `/edit-event-step-one/${currentEvent?._id}`,
-    `/edit-event-step-two/${currentEvent?._id}`,
-    `/edit-event-step-three/${currentEvent?._id}`,
-    `/edit-event-step-four/${currentEvent?._id}`,
-    `/edit-draft-step-one/${currentDraftedEvent?._id}`,
-    `/edit-draft-step-two/${currentDraftedEvent?._id}`,
-    `/edit-draft-step-three/${currentDraftedEvent?._id}`,
-    `/edit-draft-step-four/${currentDraftedEvent?._id}`,
-    "/create-ticket",
-  ];
-
-  if (!allExistingRoutes.includes(location.pathname)) {
-    return null;
-  }
   return (
     <Box>
       <Flex
@@ -143,14 +103,14 @@ const Header = () => {
       <Flex justifyContent={"space-between"} alignItems={"end"} w="100%">
         <Box
           bg={
-            location.pathname === "/dashboard" && publishedEvents.length === 0
+            location.pathname === "/all-events" && generalEventState
               ? "white"
               : "#F9FAFB"
           }
           w="full"
           mx="5"
           mt="3.5"
-          p={location.pathname === "/dashboard" ? 5 : 2}
+          p={location.pathname === "/all-events" ? 5 : 2}
           borderTopRadius={"lg"}
         >
           <Heading fontWeight="bold" fontSize="24px" color="#000">
@@ -227,7 +187,7 @@ const Header = () => {
       </Flex>
 
       {/* Divider after dashboard */}
-      {location.pathname === "/dashboard" && (
+      {location.pathname === "/all-events" && generalEventState && (
         <Center mx="10">
           <Divider />
         </Center>
