@@ -10,6 +10,7 @@ import { UserAuthContext } from "../../contexts/UserAuthContext";
 import { useParams } from "react-router-dom";
 import ExistingTicket from "../../pages/CreateTickets/ExistingTIcket";
 import { boughtTicketData } from "../../utils/tickets";
+import { CgProfile } from "react-icons/cg";
 
 const TableComponent = ({ type }) => {
   const { token } = useContext(UserAuthContext);
@@ -133,14 +134,14 @@ const TableComponent = ({ type }) => {
 
           <div className={type === 'paid' ? "overflow-x-auto h-full" : "overflow-x-auto h-full mt-2"}>
             <Table variant="unstyled" mt={2} minW="full" borderRadius="lg">
-              <Thead bg="#f9fafb">
+              <Thead bg="#f9fafb" fontSize={'small'}>
                 <Tr>
                   <Th px={4} py={2}><Checkbox colorScheme="orange" /></Th>
                   <Th px={4} py={2} fontSize="smaller" fontWeight="medium">Name</Th>
                   <Th px={4} py={2} fontSize="smaller" fontWeight="medium">Email</Th>
                   <Th px={4} py={2} fontSize="smaller" fontWeight="medium">Ticket Name</Th>
                   <Th px={4} py={2} fontSize="smaller" fontWeight="medium">Ticket ID</Th>
-                  <Th px={4} py={2} fontSize="smaller" fontWeight="medium">Date</Th>
+                  <Th px={4} py={2} fontSize="smaller" fontWeight="medium">Date Registered</Th>
                   <Th px={4} py={2} fontSize="smaller" fontWeight="medium">Amount</Th>
                 </Tr>
               </Thead>
@@ -155,7 +156,7 @@ const TableComponent = ({ type }) => {
                           onChange={() => handleCheckboxChange(ticket.ticketID)}
                         />
                       </Td>
-                      <Td px={3} py={3} className="smallFont font-medium">{ticket.name}</Td>
+                      <Td px={3} py={3} className="smallFont font-medium flex items-center gap-3"><CgProfile color="gray" size={30} /> {ticket.name}</Td>
                       <Td px={3} py={3} className="smallFont">{ticket.email}</Td>
                       <Td px={4} py={3} className="smallFont">{ticket.ticketName}</Td>
                       <Td px={4} py={3} className="smallFont">{ticket.ticketID}</Td>
