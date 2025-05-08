@@ -103,7 +103,7 @@ const EmptyState = ({ onClose, type }) => {
       Create a ticket that people have to pay for.
       Click “Add Ticket” to get started with your first ticket.
     </Text>
-    <div className="flex gap-5">
+    <div className="flex gap-5 ll">
       <Button colorScheme="black" variant="outline" >Learn More</Button>
       <AddTicket onClose={onClose} />
     </div>
