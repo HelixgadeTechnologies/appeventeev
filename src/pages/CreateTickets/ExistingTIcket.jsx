@@ -14,13 +14,20 @@ const ExistingTicket = ({ handleEdit, type }) => {
   const getTicketsByType = (ticketType) => ticketData.filter((ticket) => ticket.type === ticketType);
   const tickets = getTicketsByType(type);
 
+
   useEffect(() => {
     if (tickets.length > 3) {
       setWidth(960); // or calculate dynamically if needed
-    } else {
+      console.log(width);
+      
+    }  
+    else {
       setWidth(600); // default width
     }
   }, [tickets.length]);
+
+  console.log(width);
+  
 
   if (!tickets.length) {
     return (
@@ -98,17 +105,19 @@ const ExistingTicket = ({ handleEdit, type }) => {
                 {/* Quantity */}
                 <div className={`flex justify-between items-center mt-2 smallFont ${tickets.length === 1 ? 'px-5' : ''}`}>
                   <p className="smallFont text-orange-600">{ticket.quantity} Available</p>
-                  <span
-                    className="text-sm px-2 py-[2px] rounded-full"
+                  <p
+                    className={tickets.length > 1 ? "smallFont px-2 py-[2px] rounded-full" : "smallFont px-2 py-[2px] rounded-full relative right-9"}
                     style={{ backgroundColor: '#ffcab7', color: '#f56630' }}
                   >
                     {ticket.quantity}
-                  </span>
+                  </p>
                 </div>
 
                 {/* Sold & Revenue */}
                 <div className="flex justify-between items-center mt-2 smallFont font-semibold">
                   <p className="text-orange-600 smallFont">{sold} Sold</p>
+
+
                   <p className="smallFont">Revenue: ${sold * ticket.price}</p>
                   {tickets.length === 1 && (
                     <button
