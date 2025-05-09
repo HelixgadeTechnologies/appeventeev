@@ -3,15 +3,16 @@ import {
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, ModalCloseButton,
   Table, Thead, Tbody, Tr, Th, Td, Checkbox, useDisclosure, useToast, Flex
 } from "@chakra-ui/react";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { TicketContext } from "../../contexts/TicketContext";
 import axios from "axios";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
 import { useParams } from "react-router-dom";
 import ExistingTicket from "../../pages/CreateTickets/ExistingTIcket";
 import { boughtTicketData } from "../../utils/tickets";
+import { CgProfile } from "react-icons/cg";
 
-const TableComponent = ({ type }) => {
+const TableComponent = ({ typeOfTicket }) => {
   const { token } = useContext(UserAuthContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedTickets, setSelectedTickets] = useState(new Set());
@@ -21,22 +22,37 @@ const TableComponent = ({ type }) => {
   const { refreshTickets, ticketData } = useContext(TicketContext);
   const { id } = useParams();
 
-  
+
   const [editTicket, setEditTicket] = useState({
-    eventId: `${id}`,
-    name: "",
-    type: type,
+    eventId: id,
+    name : '',
+    type : '',
     quantity: "",
-    price: "",
+    price :"",
     startDate: "",
     startTime: "",
     endDate: "",
     endTime: "",
   });
+  
+  // Optional: useEffect to update `editTicket` when `selectedTicket` changes
+  // useEffect(() => {
+  //   if (selectedTicket) {
+  //     setEditTicket({
+  //       eventId: id,
+  //       name: selectedTicket.name || '',
+  //       type: selectedTicket.type || '',
+  //       quantity: selectedTicket.quantity || '',
+  //       price: selectedTicket.price || '',
+  //       startDate: selectedTicket.startDate || '',
+  //       startTime: selectedTicket.startTime || '',
+  //       endDate: selectedTicket.endDate || '',
+  //       endTime: selectedTicket.endTime || '',
+  //     });
+  //   }
+  // }, [selectedTicket, id]);
 
-
-
-  const ticketCount = ticketData.filter(ticket => ticket.type === type).length;
+  const ticketCount = ticketData.filter(ticket => ticket.type === typeOfTicket ).length;
 
   const containerClass = `
     ${ticketCount >= 3 ? 'max-w-[100%]' : 'max-w-[100%]'}
@@ -130,25 +146,25 @@ const TableComponent = ({ type }) => {
           <Box className="loader"></Box>
         </Flex>
       ) : (
-        <div className={type === 'paid' ? "max-w-[1085px] h-full" : "w-full h-full"}>
-          { <ExistingTicket handleEdit={handleEditClick} type={type} /> }
+        <div className={typeOfTicket === 'paid' ? "max-w-[1085px] h-full" : "w-full h-full"}>
+          { <ExistingTicket handleEdit={handleEditClick} type={typeOfTicket} /> }
 
-          <div className={type === 'paid' ? "overflow-x-auto h-full" : "overflow-x-auto h-full mt-2"}>
+          <div className={typeOfTicket === 'paid' ? "overflow-x-auto h-full" : "overflow-x-auto h-full mt-2"}>
             <Table variant="unstyled" mt={2} minW="full" borderRadius="lg">
-              <Thead bg="#f9fafb">
+              <Thead bg="#f9fafb" fontSize={'small'}>
                 <Tr>
                   <Th px={4} py={2}><Checkbox colorScheme="orange" /></Th>
                   <Th px={4} py={2} fontSize="smaller" fontWeight="medium">Name</Th>
                   <Th px={4} py={2} fontSize="smaller" fontWeight="medium">Email</Th>
                   <Th px={4} py={2} fontSize="smaller" fontWeight="medium">Ticket Name</Th>
                   <Th px={4} py={2} fontSize="smaller" fontWeight="medium">Ticket ID</Th>
-                  <Th px={4} py={2} fontSize="smaller" fontWeight="medium">Date</Th>
+                  <Th px={4} py={2} fontSize="smaller" fontWeight="medium">Date Registered</Th>
                   <Th px={4} py={2} fontSize="smaller" fontWeight="medium">Amount</Th>
                 </Tr>
               </Thead>
               <Tbody bg="white">
                 {boughtTicketData
-                  .filter(ticket => ticket.ticketType === type)
+                  .filter(ticket => ticket.ticketType === typeOfTicket)
                   .map((ticket, index) => (
                     <Tr key={index} borderBottom="1px solid" borderColor="gray.200">
                       <Td px={4} py={3}>
@@ -157,7 +173,7 @@ const TableComponent = ({ type }) => {
                           onChange={() => handleCheckboxChange(ticket.ticketID)}
                         />
                       </Td>
-                      <Td px={3} py={3} className="smallFont font-medium">{ticket.name}</Td>
+                      <Td px={3} py={3} className="smallFont font-medium flex items-center gap-3"><CgProfile color="gray" size={30} /> {ticket.name}</Td>
                       <Td px={3} py={3} className="smallFont">{ticket.email}</Td>
                       <Td px={4} py={3} className="smallFont">{ticket.ticketName}</Td>
                       <Td px={4} py={3} className="smallFont">{ticket.ticketID}</Td>
@@ -212,7 +228,7 @@ const TableComponent = ({ type }) => {
                         required
                       />
 
-                      {type !== "Free" && (
+                      {typeOfTicket !== "Free" && (
                         <>
                           <Text fontWeight="normal" fontSize="sm">Price</Text>
                           <Input
