@@ -20,6 +20,8 @@ const TableComponent = ({ type }) => {
   const [editTicketId, setEditTicketId] = useState(null);
   const { refreshTickets, ticketData } = useContext(TicketContext);
   const { id } = useParams();
+
+  
   const [editTicket, setEditTicket] = useState({
     eventId: `${id}`,
     name: "",
