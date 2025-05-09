@@ -22,7 +22,7 @@ const TableComponent = ({ typeOfTicket }) => {
   const { refreshTickets, ticketData } = useContext(TicketContext);
   const { id } = useParams();
 
-  // use ticketdata with id to select the ticket and display the prefilled data in the modal for editing tickets
+
 
   const selectedTicket = ticketData.find(ticket => ticket._id === editTicketId);
 
@@ -50,7 +50,7 @@ const TableComponent = ({ typeOfTicket }) => {
     endTime,
   });
   
-  // Optional: useEffect to update `editTicket` when `selectedTicket` changes
+  
   useEffect(() => {
     if (selectedTicket) {
       setEditTicket({
