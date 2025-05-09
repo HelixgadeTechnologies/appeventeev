@@ -16,7 +16,8 @@ const ExistingTicket = ({ handleEdit, type }) => {
 
   useEffect(() => {
     if (tickets.length > 3) {
-      setWidth(960); 
+      setWidth(960); // or calculate dynamically if needed
+    } else {
       setWidth(600); // default width
     }
   }, [tickets.length]);
