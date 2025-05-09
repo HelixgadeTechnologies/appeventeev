@@ -14,13 +14,20 @@ const ExistingTicket = ({ handleEdit, type }) => {
   const getTicketsByType = (ticketType) => ticketData.filter((ticket) => ticket.type === ticketType);
   const tickets = getTicketsByType(type);
 
+
   useEffect(() => {
     if (tickets.length > 3) {
       setWidth(960); // or calculate dynamically if needed
-    } else {
+      console.log(width);
+      
+    }  
+    else {
       setWidth(600); // default width
     }
   }, [tickets.length]);
+
+  console.log(width);
+  
 
   if (!tickets.length) {
     return (

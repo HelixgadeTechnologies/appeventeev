@@ -161,7 +161,7 @@ const TableComponent = ({ typeOfTicket }) => {
           <Box className="loader"></Box>
         </Flex>
       ) : (
-        <div className={typeOfTicket === 'paid' ? "max-w-[1085px] h-full" : "w-full h-full"}>
+        <div className={typeOfTicket === 'paid' ? "w-full h-full" : "w-full h-full"}>
           { <ExistingTicket handleEdit={handleEditClick} type={typeOfTicket} /> }
 
           <div className={typeOfTicket === 'paid' ? "overflow-x-auto h-full" : "overflow-x-auto h-full mt-2"}>
