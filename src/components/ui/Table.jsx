@@ -22,35 +22,50 @@ const TableComponent = ({ typeOfTicket }) => {
   const { refreshTickets, ticketData } = useContext(TicketContext);
   const { id } = useParams();
 
+  // use ticketdata with id to select the ticket and display the prefilled data in the modal for editing tickets
 
+  const selectedTicket = ticketData.find(ticket => ticket._id === editTicketId);
+
+  // Guard values from undefined errors
+  const {
+    name = '',
+    quantity = '',
+    price = '',
+    startDate = '',
+    startTime = '',
+    endDate = '',
+    endTime = '',
+    type = '',
+  } = selectedTicket || {};
+  
   const [editTicket, setEditTicket] = useState({
     eventId: id,
-    name : '',
-    type : '',
-    quantity: "",
-    price :"",
-    startDate: "",
-    startTime: "",
-    endDate: "",
-    endTime: "",
+    name,
+    type,
+    quantity,
+    price,
+    startDate,
+    startTime,
+    endDate,
+    endTime,
   });
   
   // Optional: useEffect to update `editTicket` when `selectedTicket` changes
-  // useEffect(() => {
-  //   if (selectedTicket) {
-  //     setEditTicket({
-  //       eventId: id,
-  //       name: selectedTicket.name || '',
-  //       type: selectedTicket.type || '',
-  //       quantity: selectedTicket.quantity || '',
-  //       price: selectedTicket.price || '',
-  //       startDate: selectedTicket.startDate || '',
-  //       startTime: selectedTicket.startTime || '',
-  //       endDate: selectedTicket.endDate || '',
-  //       endTime: selectedTicket.endTime || '',
-  //     });
-  //   }
-  // }, [selectedTicket, id]);
+  useEffect(() => {
+    if (selectedTicket) {
+      setEditTicket({
+        eventId: id,
+        name: selectedTicket.name || '',
+        type: selectedTicket.type || '',
+        quantity: selectedTicket.quantity || '',
+        price: selectedTicket.price || '',
+        startDate: selectedTicket.startDate || '',
+        startTime: selectedTicket.startTime || '',
+        endDate: selectedTicket.endDate || '',
+        endTime: selectedTicket.endTime || '',
+      });
+    }
+  }, [selectedTicket, id]);
 
   const ticketCount = ticketData.filter(ticket => ticket.type === typeOfTicket ).length;
 
