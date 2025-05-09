@@ -19,7 +19,6 @@ import {
 import { eventType, eventCategory } from "../../utils/create-event";
 import { useNavigate, useLocation } from "react-router-dom";
 import { SlCloudUpload } from "react-icons/sl";
-import { IoClose } from "react-icons/io5";
 import { useDropzone } from "react-dropzone";
 
 const CreateEventSecond = () => {
@@ -66,9 +65,7 @@ const CreateEventSecond = () => {
       !secondPageData.category ||
       secondPageData.category === "Select category"
     ) {
-      setCategoryError(
-        "Please select a category."
-      );
+      setCategoryError("Please select a category.");
       isValid = false;
     } else {
       setCategoryError("");
@@ -184,21 +181,20 @@ const CreateEventSecond = () => {
                     ? secondPageData.thumbnail.name
                     : "Uploaded Image"}
                 </Text>
-                <Flex
+                <Button
                   bg={"red.500"}
+                  size={"md"}
+                  variant={"solid"}
+                  paddingY={"16px"}
+                  paddingX={"24px"}
+                  borderRadius={"lg"}
                   color={"white"}
-                  size="md"
-                  mt={2}
-                  borderRadius={"full"}
+                  fontWeight={"medium"}
                   onClick={handleRemove}
-                  height={"40px"}
-                  width={"40px"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
                   _hover={{ cursor: "pointer", bg: "red.400" }}
                 >
-                  <IoClose className="text-xl" />
-                </Flex>
+                  Remove Image
+                </Button>
               </Box>
             )}
 
@@ -322,7 +318,8 @@ const CreateEventSecond = () => {
             )}
           </FormControl>
           <Text color={"#667185"} fontSize={"xs"}>
-            You can add dummy information and save to drafts if you don't wish to publish your event yet.
+            You can add dummy information and save to drafts if you don't wish
+            to publish your event yet.
           </Text>
           <Flex gap={"20px"}>
             <Button

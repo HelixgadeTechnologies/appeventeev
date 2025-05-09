@@ -15,14 +15,12 @@ import {
   AbsoluteCenter,
   FormErrorMessage,
   Center,
-  Heading,
 } from "@chakra-ui/react";
 import { EventContext } from "../../contexts/EventContext";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { eventCategory, eventType } from "../../utils/create-event";
 import { useDropzone } from "react-dropzone";
 import { SlCloudUpload } from "react-icons/sl";
-import { IoClose } from "react-icons/io5";
 
 const EditEventSecond = () => {
   const { publishedEvents, publishedEventsLoading, publishedEventsError } =
@@ -76,7 +74,6 @@ const EditEventSecond = () => {
     location: "",
     category: "",
     thumbnail: "",
-    thumbnailPreview: "",
   });
 
   const [typeError, setTypeError] = useState("");
@@ -87,6 +84,7 @@ const EditEventSecond = () => {
     if (currentEvent) {
       setSecondPageData((prev) => ({
         ...prev,
+        thumbnail: currentEvent?.thumbnail || null,
         type: currentEvent.type || "",
         location: currentEvent.location || "",
         category: currentEvent.category || "",
@@ -154,6 +152,7 @@ const EditEventSecond = () => {
       [name]: value,
     }));
   };
+  console.log(secondPageData.thumbnail)
 
   const handleSubmit = () => {
     if (validateForm()) {
@@ -191,7 +190,7 @@ const EditEventSecond = () => {
       >
         <form className="text-sm space-y-4">
           <Box className="flex flex-col items-center gap-3 p-6 border-2 border-dashed rounded-2xl border-gray-300">
-            {!secondPageData.thumbnailPreview ? (
+            {!secondPageData.thumbnail ? (
               // Upload Box (only shows when no file is uploaded)
               <Box
                 {...getRootProps()}
@@ -215,34 +214,28 @@ const EditEventSecond = () => {
               // Image Preview
               <Box className="w-full flex flex-col items-center">
                 <Image
-                  src={secondPageData.thumbnailPreview}
+                  src={secondPageData.thumbnailPreview || secondPageData.thumbnail}
                   alt="Uploaded preview"
-                  className="w-60 h-auto rounded-lg shadow-md"
+                  className="w-60 h-auto rounded-lg shadow-md mb-5"
                 />
-                <Text className="text-gray-500 mt-2">
-                  {secondPageData.thumbnail
-                    ? secondPageData.thumbnail.name
-                    : "Uploaded Image"}
-                </Text>
-                <Flex
+                <Button
                   bg={"red.500"}
+                  size={"md"}
+                  variant={"solid"}
+                  paddingY={"16px"}
+                  paddingX={"24px"}
+                  borderRadius={"lg"}
                   color={"white"}
-                  size="md"
-                  mt={2}
-                  borderRadius={"full"}
+                  fontWeight={"medium"}
                   onClick={handleRemove}
-                  height={"40px"}
-                  width={"40px"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
                   _hover={{ cursor: "pointer", bg: "red.400" }}
                 >
-                  <IoClose className="text-xl" />
-                </Flex>
+                  Remove Image
+                </Button>
               </Box>
             )}
 
-            {!secondPageData.thumbnailPreview && (
+            {!secondPageData.thumbnail && (
               <Box
                 position="relative"
                 padding="2"
@@ -255,7 +248,7 @@ const EditEventSecond = () => {
                 </AbsoluteCenter>
               </Box>
             )}
-            {!secondPageData.thumbnailPreview && (
+            {!secondPageData.thumbnail && (
               <Button
                 bg={"#EB5017"}
                 size={"md"}

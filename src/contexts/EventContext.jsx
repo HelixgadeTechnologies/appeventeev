@@ -13,9 +13,11 @@ const EventProvider = ({ children }) => {
 
   const [publishedEventsLoading, setPublishedEventsLoading] = useState(true);
   const [publishedEventsError, setPublishedEventsError] = useState(false);
+  const [isPublishedDeletedLoading, setIsPublishedDeletedLoading] = useState(false);
 
   const [draftedEventsLoading, setDraftedEventsLoading] = useState(true);
   const [draftedEventsError, setDraftedEventsError] = useState(false);
+  const [isDraftedDeletedLoading, setIsDraftedDeletedLoading] = useState(false);
 
   const [completedEventsLoading, setCompletedEventsLoading] = useState(true);
   const [completedEventsError, setCompletedEventsError] = useState(false);
@@ -34,6 +36,29 @@ const EventProvider = ({ children }) => {
   }, [currentEventId]);
 
   const toast = useToast();
+
+  // for uploading image to cloud
+  const uploadImageToCloudinary = async (file) => {
+    const cloudName = "dnou1zvji";
+    const uploadPreset = "eventeev";
+  
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", uploadPreset);
+  
+    try {
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+        method: "POST",
+        body: formData,
+      });
+  
+      const data = await res.json();
+      return data.secure_url; // 👈 this is the hosted image URL
+    } catch (err) {
+      console.error("Cloudinary Upload Error:", err);
+      throw err;
+    }
+  };
 
   // get published events
   useEffect(() => {
@@ -161,6 +186,7 @@ const EventProvider = ({ children }) => {
 
   // delete published event
   const deletePublishedEvents = async (id) => {
+    setIsPublishedDeletedLoading(true);
     try {
       const token = localStorage.getItem("token");
       await axios.delete(
@@ -195,11 +221,14 @@ const EventProvider = ({ children }) => {
         isClosable: true,
         position: "top-right",
       });
+    } finally {
+      setIsPublishedDeletedLoading(false);
     }
   };
 
   // delete drafted events
   const deleteDraftedEvents = async (id) => {
+    setIsDraftedDeletedLoading(true);
     try {
       const token = localStorage.getItem("token");
       await axios.delete(
@@ -234,48 +263,50 @@ const EventProvider = ({ children }) => {
         isClosable: true,
         position: "top-right",
       });
+    } finally {
+      setIsDraftedDeletedLoading(false);
     }
   };
 
   // reusable update function
-  const updatePublishedEvent = async (id, updatedEventData) => {
+  const updatePublishedEvent = async (id, updatedEventData, status) => {
     try {
+      let thumbnailUrl = updatedEventData.thumbnail;
+  
+      // Check if the thumbnail is a File (i.e., new upload)
+      if (updatedEventData.thumbnail instanceof File) {
+        thumbnailUrl = await uploadImageToCloudinary(updatedEventData.thumbnail);
+      }
+  
+      const dataToSubmit = {
+        ...updatedEventData,
+        thumbnail: thumbnailUrl,
+        status: updatedEventData.status || `${status}`
+      };
+  
+      // Remove client-side only fields
+      delete dataToSubmit.thumbnailPreview;
+      delete dataToSubmit.thumbnailName;
+      delete dataToSubmit.thumbnailSize;
+      delete dataToSubmit.thumbnailType;
+  
       const token = localStorage.getItem("token");
       await axios.put(
         `https://eventeevapi.onrender.com/event/editevent/${id}`,
-        updatedEventData,
+        dataToSubmit,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
           },
         }
       );
-      
-      toast({
-        title: "Event Edited Successfully.",
-        description: "Your event has been edited successfully!",
-        status: "success",
-        duration: 4000,
-        isClosable: true,
-        position: "top-right",
-      });
-      // window.location.reload();
     } catch (error) {
-      console.error("Error updating Event:", error);
-      toast({
-        title: "Could not update event.",
-        description: "Please check your internet connection or try again later.",
-        status: "error",
-        duration: 4000,
-        isClosable: true,
-        position: "top-right",
-      });
+      console.error("Failed to update event:", error);
     }
   };
   
   // function to get attendees
-    const getAttendees = async (id) => {
+  const getAttendees = async (id) => {
       setAttendeesError(false);
       setAttendeesLoading(true);
       try {
@@ -309,7 +340,7 @@ const EventProvider = ({ children }) => {
       } finally {
         setAttendeesLoading(false);
       }
-    };
+  };
   // for date format
   const formatDate = (dateStr) => {
     if (!dateStr) return "";
@@ -389,6 +420,7 @@ const convertTo24HourFormat = (timeStr) => {
 };
 
 
+
   return (
     <EventContext.Provider
       value={{
@@ -414,6 +446,9 @@ const convertTo24HourFormat = (timeStr) => {
         currentEventId,
         setCurrentEventId,
         getAttendees,
+        isPublishedDeletedLoading,
+        isDraftedDeletedLoading,
+        uploadImageToCloudinary,
       }}
     >
       {children}
