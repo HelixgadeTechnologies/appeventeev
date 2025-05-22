@@ -41,6 +41,7 @@ import EditDraftsSecond from "./pages/EditEvents/EditDraftsSecond";
 import EditDraftsThird from "./pages/EditEvents/EditDraftsThird";
 import EditDraftsFourth from "./pages/EditEvents/EditDraftsFourth";
 import NotFoundPage from "./pages/NotFoundPage";
+import ViewProfile from "./pages/settings/ViewProfile";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -85,7 +86,8 @@ const App = () => {
           />
           <Route path="/create-ticket" element={<AddTicket />} />
           <Route path="/attendees/:id" element={<Attendees />} />
-          <Route path="/Profile-settings" element={<ProfileSettings />} />
+          <Route path="/edit-profile" element={<ProfileSettings />} />
+          <Route path="/View-profile" element={<ViewProfile />} />
             
           {/* not found */}
           <Route path="*" element={<NotFoundPage />} />

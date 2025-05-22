@@ -66,7 +66,7 @@ const id = pathParts[pathParts.length - 1];
 // ];
 
 export const sidebarBottomLinks = [
-  { route: "/Profile-settings", icon: settings, text: "Settings" },
+  { route: "/View-profile", icon: settings, text: "Settings" },
   { route: "/help", icon: headset, text: "Help Center" },
   { route: "/refer", icon: gift, text: "Refer family & friends" },
   
