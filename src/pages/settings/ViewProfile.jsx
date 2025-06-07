@@ -1,63 +1,76 @@
-// ViewProfile.js
 import {
   Box,
   Flex,
   Text,
-  Icon,
+  Avatar,
   Divider,
   Button,
   Stack,
+  Card,
+  CardBody,
+  CardHeader,
+  Heading,
 } from "@chakra-ui/react";
-import { CgProfile } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserAuthContext } from "../../contexts/UserAuthContext";
 
 const ViewProfile = () => {
-
-    const { userDetails } = useContext(UserAuthContext);
+  const { userDetails } = useContext(UserAuthContext);
   const userUpdateDetails = JSON.parse(localStorage.getItem("UpdatedUserDetails"));
-
-
-    const updatedUserDetails = userUpdateDetails || userDetails;
-
-
-
-
-
-
-
-
+  const updatedUserDetails = userUpdateDetails || userDetails;
   const navigate = useNavigate();
 
   return (
-    <Box mx="auto" mt={8} p={4}  borderRadius="md" boxShadow="sm">
-      <Flex align="center" gap={3} mb={4}>
-        <Icon as={CgProfile} boxSize={12} />
-        <Box>
-          <Text fontWeight="semibold" fontSize="sm">{updatedUserDetails.firstname} {updatedUserDetails.lastname}</Text>
-          <Text fontSize="xs" color="gray.500">{updatedUserDetails.email}</Text>
-        </Box>
-      </Flex>
+    <Box maxW="full" mx="auto" mt={10} px={4}>
+      <Card boxShadow="lg" borderRadius="xl">
+        <CardHeader>
+          <Flex align="center" gap={4}>
+            <Avatar
+              name={`${updatedUserDetails.firstname} ${updatedUserDetails.lastname}`}
+              size="md"
+              bg="gray.400"
+              color="white"
+            />
+            <Box>
+              <Heading size="md">
+                {updatedUserDetails.firstname} {updatedUserDetails.lastname}
+              </Heading>
+              <Text fontSize="sm" color="gray.500">
+                {updatedUserDetails.email}
+              </Text>
+            </Box>
+          </Flex>
+        </CardHeader>
 
-      <Divider my={4} />
+        <Divider />
 
-      <Stack spacing={2} fontSize="sm">
-        <Text><strong>Organization name:</strong> {updatedUserDetails.organisationName || "N/A"}</Text>
-        <Text><strong>Organization Website:</strong> {updatedUserDetails.organisationWebsite || "N/A"}</Text>
-        <Text><strong>Country:</strong> {updatedUserDetails.country || "N/A"}</Text>
-        <Text><strong>Time Zone:</strong> {updatedUserDetails.timeZone || "N/A"}</Text>
-        <Text><strong>Gender:</strong> {updatedUserDetails.gender || "N/A"}</Text>
-        <Text><strong>Organization Size:</strong> {updatedUserDetails.organizationSize || "N/A"}</Text>
-      </Stack>
+        <CardBody>
+          <Stack spacing={3} fontSize="sm">
+            <Detail label="Organization name" value={updatedUserDetails.organisationName} />
+            <Detail label="Organization website" value={updatedUserDetails.organisationWebsite} />
+            <Detail label="Country" value={updatedUserDetails.country || userDetails.country} />
+            <Detail label="Organization Industry" value={updatedUserDetails.organisationIndustry || userDetails.organisationIndustry} />
+            <Detail label="Gender" value={updatedUserDetails.gender} />
+            {/* <Detail label="Organization size" value={updatedUserDetails.organizationSize} /> */}
+          </Stack>
 
-      <Flex justify="flex-end" mt={6}>
-        <Button colorScheme="orange" size="sm" onClick={() => navigate("/edit-profile")}>
-          Edit Profile
-        </Button>
-      </Flex>
+          <Flex justify="flex-end" mt={6}>
+            <Button colorScheme="orange" size="sm" onClick={() => navigate("/edit-profile")}>
+              Edit Profile
+            </Button>
+          </Flex>
+        </CardBody>
+      </Card>
     </Box>
   );
 };
+
+const Detail = ({ label, value }) => (
+  <Flex justify="space-between">
+    <Text fontWeight="medium">{label}:</Text>
+    <Text color="gray.600">{value || "N/A"}</Text>
+  </Flex>
+);
 
 export default ViewProfile;

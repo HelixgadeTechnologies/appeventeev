@@ -30,8 +30,10 @@ const ProfileSettings = () => {
     firstname,
     lastname,
     email,
+    gender,
     organisationName,
     organisationWebsite,
+
   } = userDetails;
 
   const [formData, setFormData] = useState({
@@ -39,7 +41,7 @@ const ProfileSettings = () => {
     firstName: firstname || "",
     lastName: lastname || "",
     email: email || "",
-    gender: "",
+    gender: gender || "" ,
     timeZone: "",
     country: "",
     organization: organisationName || "",
@@ -76,6 +78,7 @@ const ProfileSettings = () => {
       );
 
       console.log("user update----->>", response.data);
+      console.log('the endpoint id ', _id);
       
       localStorage.setItem("UpdatedUserDetails", JSON.stringify(response.data.updatedUser));
 
@@ -98,6 +101,10 @@ const ProfileSettings = () => {
         isClosable: true,
         position: "top-right",
       });
+
+
+      console.log(formData);
+      
     } finally {
       setLoading(false);
     }
