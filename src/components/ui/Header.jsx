@@ -180,7 +180,7 @@ const Header = () => {
 
         {/* Tickets Page Button */}
         {isTicketPage && (
-          <Box className="mr-10">
+          <Box className="inset-10 mr-14">
             <AddTicket />
           </Box>
         )}
