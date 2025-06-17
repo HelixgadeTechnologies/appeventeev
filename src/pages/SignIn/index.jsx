@@ -29,6 +29,7 @@ import { UserAuthContext } from "../../contexts/UserAuthContext";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const [isLoading, setIsLoading] = useState(false);
   const [buttonText, setButtonText] = useState("Sign In");
   const [showPassword, setShowPassword] = useState(false);
   const { setUserId, setIsVerified, setUserDetails, setToken } = useContext(UserAuthContext);
@@ -46,7 +47,7 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setButtonText(<Spinner />);
-  
+    setIsLoading(true);
     console.log("🟠 Submitting login with:", formData);
   
     try {
@@ -87,6 +88,7 @@ const SignIn = () => {
   
         console.log("🆔 User ID:", userData._id);
         console.log("🔐 Token:", authToken);
+        setIsLoading(false);
       }
   
       setTimeout(() => {
@@ -106,10 +108,11 @@ const SignIn = () => {
         isClosable: true,
         position: "top-right",
       });
-  
+     setIsLoading(false);
       setButtonText("Try Again");
     } finally {
       setButtonText("Sign In");
+      setIsLoading(false);
     }
   };
   
@@ -205,7 +208,7 @@ const SignIn = () => {
         gap={'2px'}
       >
         <Text fontSize={'small'}>Don't have an account?</Text>
-        <Link fontSize={'small'} ml={1} color="orange.500" onClick={() => navigate('/signUp')}>
+        <Link fontSize={'small'} ml={1} color="orange.500" onClick={() => navigate('/signUp')} _disabled={isLoading}>
           Sign up!
         </Link>
       </Flex>

@@ -19,6 +19,7 @@
     "cloudinary": "^2.6.0",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.4.10",
+    "lucide-react": "^0.514.0",
     "react": "^19.0.0",
     "react-datepicker": "^8.2.1",
     "react-dom": "^19.0.0",
