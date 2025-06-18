@@ -22,7 +22,7 @@ const ViewProfile = () => {
   const navigate = useNavigate();
 
   return (
-    <Box maxW="full" mx="auto" mt={10} px={4}>
+    <Box maxW="full" mx="auto" mt={5} px={0}>
       <Card boxShadow="lg" borderRadius="xl">
         <CardHeader>
           <Flex align="center" gap={4}>
